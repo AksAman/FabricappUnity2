@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ae32af2cf5dda4d94596634006652a, type: 3}
+  m_Name: MARBELLA
+  m_EditorClassIdentifier: 
+  c_name: Marbella
+  c_description: Marbella Description
+  c_thumbnail: {fileID: 21300000, guid: 8547d20b4bd6bdc4da6afefacb88794f, type: 3}
+  manufacturer_name: by Prime Living
+  c_fabrics:
+  - f_title: 38
+    f_thumbnail: {fileID: 21300000, guid: a0ee154cb711f774ba4da3a0a2c20812, type: 3}
+    f_material: {fileID: 2100000, guid: 7a22a3658243977419a01e3af4413848, type: 2}
+  - f_title: b48
+    f_thumbnail: {fileID: 21300000, guid: 1f768eba5426fa04a8dc8b6650342b3a, type: 3}
+    f_material: {fileID: 2100000, guid: 9c5fd71a1c7581344af07016d9852b65, type: 2}

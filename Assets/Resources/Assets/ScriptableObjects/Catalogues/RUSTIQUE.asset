@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ae32af2cf5dda4d94596634006652a, type: 3}
+  m_Name: RUSTIQUE
+  m_EditorClassIdentifier: 
+  c_name: RUSTIQUE
+  c_description: Rustique description text
+  c_thumbnail: {fileID: 21300000, guid: 4a81513f3bc5c314c9bf46b7de29b9b0, type: 3}
+  manufacturer_name: by Prime Living
+  c_fabrics:
+  - f_title: 06
+    f_thumbnail: {fileID: 21300000, guid: 66c861540ca844b449be62a96baf3dcd, type: 3}
+    f_material: {fileID: 2100000, guid: 2ef8d864e41355e4bbde9c3cea371f3b, type: 2}
+  - f_title: 19
+    f_thumbnail: {fileID: 21300000, guid: 467d63f2efc6c6f468e6900b72169f6f, type: 3}
+    f_material: {fileID: 2100000, guid: 48365718df96b7e4abaaeb331ea27f3b, type: 2}

@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6852093596652801347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6852093596652801349}
+  - component: {fileID: 6852093596652801348}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6852093596652801349
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6852093596652801347}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6852093596652801348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6852093596652801347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398aa153f2195444f8d0191d48e533c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 1
+  debugMatCount: 4
+  matScrollHolder: {fileID: 0}
+  materialButtonPrefab: {fileID: 2841492100294585033, guid: 9e8f3a2c45cc501488695948085bd57a,
+    type: 3}
+  allMaterials: {fileID: 11400000, guid: 03cc4ac239db7324ea640a8a663324a0, type: 2}
+  notifier: {fileID: 0}
+  tweener: {fileID: 0}
+  curModel: {fileID: 0}
+  mats:
+  - {fileID: 2100000, guid: 214f703513ad04e47886d105bd9a7dd9, type: 2}
+  - {fileID: 2100000, guid: ad39645ed1effaa4b806e3e7bf1e7ddb, type: 2}
+  - {fileID: 2100000, guid: fcbd3b6c1aeee2741afe5bd91e1e7b34, type: 2}
+  - {fileID: 2100000, guid: c0b2c01537dc2684487ebfcc6d6feb7e, type: 2}
+  matNames:
+  - Scifi Leather
+  - Leather Big Grain
+  - Leather Bag
+  - Scarf Wool

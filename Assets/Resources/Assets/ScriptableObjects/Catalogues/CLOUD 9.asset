@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ae32af2cf5dda4d94596634006652a, type: 3}
+  m_Name: CLOUD 9
+  m_EditorClassIdentifier: 
+  c_name: Cloud 9
+  c_description: Cloud 9 Description
+  c_thumbnail: {fileID: 21300000, guid: 8a26b5e675de9414394ad10feb0f7409, type: 3}
+  manufacturer_name: by Prime Living
+  c_fabrics:
+  - f_title: 27
+    f_thumbnail: {fileID: 21300000, guid: a18f3afb6843cc143a860c643a046cf5, type: 3}
+    f_material: {fileID: 2100000, guid: 6cf2fba8e6fe7e44d8e37e5e6c7046ea, type: 2}
+  - f_title: 29
+    f_thumbnail: {fileID: 21300000, guid: c8f7d1cd25c4d1148babfb6c5d90a0e7, type: 3}
+    f_material: {fileID: 2100000, guid: 12f2be70f1880cc4bacadc40296e8a5d, type: 2}
