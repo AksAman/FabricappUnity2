@@ -15,7 +15,7 @@ namespace helloVoRld.Networking.RestClient
 {
     internal class FixedCountDownloader : Singleton<FixedCountDownloader>
     {
-        readonly IEnumerator[] Routines = new IEnumerator[1];
+        readonly IEnumerator[] Routines = new IEnumerator[5];
         readonly Queue<(string, Action<Sprite>)> Queue = new Queue<(string, Action<Sprite>)>();
         
         void Update()
@@ -30,11 +30,12 @@ namespace helloVoRld.Networking.RestClient
                 (var Path, var Action) = Queue.Dequeue();
                 Routines[emptyIndex] = RestWebClient.Instance.HttpDownloadImage(Path, (response, _) =>
                 {
+                    Debug.Log(Path);
                     // Clear Array Index
                     Routines[emptyIndex] = default;
                     
                     Texture2D tex = response.textureDownloaded;
-                    if (response.Error != "")
+                    if (response.textureDownloaded == null)
                         return;
 
                     Sprite s = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));

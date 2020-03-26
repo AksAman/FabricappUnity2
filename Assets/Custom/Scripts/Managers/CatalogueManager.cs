@@ -28,7 +28,6 @@ namespace helloVoRld.Test.Managers
 
         // private variables
         private ObjectPooler catalogueButtonPooler;
-
         #endregion
 
         #region main code

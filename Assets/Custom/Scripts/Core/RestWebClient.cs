@@ -57,7 +57,7 @@ namespace helloVoRld.Networking.RestClient
 
                 yield return webRequest.SendWebRequest();
 
-                if (webRequest.isNetworkError || webRequest.error != "")
+                if (webRequest.isNetworkError || (webRequest.error != null && webRequest.error != ""))
                 {
                     callback(new ImageResponse
                     {
