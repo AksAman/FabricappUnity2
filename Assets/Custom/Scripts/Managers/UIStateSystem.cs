@@ -3,10 +3,11 @@ using UnityEngine.UI;
 using helloVoRld.Test.UI;
 using System.Collections.Generic;
 using helloVoRld.Utilities.Debugging;
+using helloVoRld.Core.Singletons;
 
 namespace helloVoRld.Test.Managers
 {
-    public class UIStateSystem : MonoBehaviour
+    public class UIStateSystem : Singleton<UIStateSystem>
     {
         [SerializeField] private UIPanel startPanel;
 
@@ -14,6 +15,9 @@ namespace helloVoRld.Test.Managers
         [SerializeField] private UIPanel previousPanel;
 
         [SerializeField] private Stack<UIPanel> panelsVisited = new Stack<UIPanel>();
+
+        [SerializeField] private GameObject loadingPanel;
+
         private void Start()
         {
             currentPanel = startPanel;
@@ -21,7 +25,7 @@ namespace helloVoRld.Test.Managers
         }
         public virtual void ChangePanel(UIPanel newPanel)
         {
-            if(newPanel)
+            if (newPanel)
             {
                 if (previousPanel)
                 {
@@ -38,7 +42,7 @@ namespace helloVoRld.Test.Managers
 
         public virtual void BackToPreviousPanel()
         {
-            if(panelsVisited.Count > 0)
+            if (panelsVisited.Count > 0)
             {
                 previousPanel = currentPanel;
                 currentPanel.StopPanel();
@@ -54,11 +58,21 @@ namespace helloVoRld.Test.Managers
 
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 DebugHelper.Log("Back");
                 BackToPreviousPanel();
             }
+        }
+
+        public virtual void ShowLoadingScreen()
+        {
+            loadingPanel.SetActive(true);
+        }
+
+        public virtual void RemoveLoadingScreen()
+        {
+            loadingPanel.SetActive(false);
         }
     }
 }

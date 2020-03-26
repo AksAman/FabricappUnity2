@@ -28,13 +28,18 @@ namespace helloVoRld.Test.Managers
 
         // private variables
         private ObjectPooler catalogueButtonPooler;
+        private UIStateSystem uistatesystem;
+
         #endregion
 
         #region main code
         private void Start()
         {
+            uistatesystem = UIStateSystem.Instance;
+
             catalogueButtonPooler = GetComponent<ObjectPooler>();
             catalogueButtonPooler.InitializePool(buttonsToPool);
+            uistatesystem.ShowLoadingScreen();
             if (catalogueButtonPooler.isPoolInitialized)
             {
                 CatalogueClient.Instance.GetCatalogues(() => { PopulateCatalogues(); });
@@ -47,6 +52,7 @@ namespace helloVoRld.Test.Managers
 
         private void PopulateCatalogues()
         {
+            uistatesystem.RemoveLoadingScreen();
             TransformUtils.ClearChilds(catalogueScrollContentHolder, catalogueButtonPooler);
             loadingProgress = 0;
 
