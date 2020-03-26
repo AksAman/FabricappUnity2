@@ -35,7 +35,7 @@ namespace helloVoRld.Test.Managers
         private ObjectPooler fabricButtonPooler;
         private CatalogueManager catalogueManager;
         private int currentCatalogueIndex;
-        private UIStateSystem uistatesystem;
+        
 
         #endregion
 
@@ -43,8 +43,6 @@ namespace helloVoRld.Test.Managers
         #region main code
         private void Start()
         {
-            uistatesystem = UIStateSystem.Instance;
-
             fabricButtonPooler = GetComponent<ObjectPooler>();
             fabricButtonPooler.InitializePool(buttonsToPool);
             if (fabricButtonPooler.isPoolInitialized)
@@ -66,11 +64,10 @@ namespace helloVoRld.Test.Managers
         {
             CurrentCatalogueIndex = catalogueButtonIndex;
             DebugHelper.Log(catalogueButtonIndex.ToString());
-            uistatesystem.ShowLoadingScreen();
+
             CatalogueClient.Instance.LoadFabrics(catalogueButtonIndex,
                 OnSuccess: () =>
                 {
-                    uistatesystem.RemoveLoadingScreen();
                     // Populate Fabric panel based on catalogues[i].fabrics
                     PopulateFabrics(catalogueManager.Catalogues[catalogueButtonIndex]);
 
@@ -81,7 +78,7 @@ namespace helloVoRld.Test.Managers
                 OnFailure:
                 () =>
                 {
-                    uistatesystem.RemoveLoadingScreen();
+
                 });
         }
 

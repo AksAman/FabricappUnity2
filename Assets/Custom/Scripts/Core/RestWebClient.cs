@@ -50,29 +50,29 @@ namespace helloVoRld.Networking.RestClient
 
         public IEnumerator HttpDownloadImage(string url, System.Action<ImageResponse, int> callback, int index)
         {
-            using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+            using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
             {
-                DownloadHandlerTexture textureDownloader = new DownloadHandlerTexture();
-                webRequest.downloadHandler = textureDownloader;
+                //DownloadHandlerTexture textureDownloader = new DownloadHandlerTexture();
+                //webRequest.downloadHandler = textureDownloader;
 
                 yield return webRequest.SendWebRequest();
 
-                if (webRequest.isNetworkError)
+                if (webRequest.isNetworkError || webRequest.error != "")
                 {
                     callback(new ImageResponse
                     {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
+                        textureDownloaded = null
                     }, index);
                 }
-                if (webRequest.isDone)
+                else if (webRequest.isDone)
                 {
-                    string data = System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data);
                     callback(new ImageResponse
                     {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
-                        textureDownloaded = textureDownloader.texture,
+                        textureDownloaded = DownloadHandlerTexture.GetContent(webRequest),
                     }, index);
                 }
             }

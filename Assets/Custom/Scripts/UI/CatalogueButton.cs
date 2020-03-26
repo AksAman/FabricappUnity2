@@ -5,6 +5,7 @@ using TMPro;
 using System;
 using helloVoRld.Utilities.Debugging;
 using UnityEngine.EventSystems;
+using helloVoRld.Networking.RestClient;
 
 namespace helloVoRld.Test.UI
 {
@@ -23,6 +24,7 @@ namespace helloVoRld.Test.UI
         public Button CB_button;
 
         public static Action<int> OnCatalogueButtonClicked;
+        bool TextureLoaded = false;
         #endregion
 
 
@@ -36,8 +38,14 @@ namespace helloVoRld.Test.UI
                 if (CB_name != null) this.CB_name.text = catalogue.c_name;
                 //if (CB_description != null) this.CB_description.text = catalogue.c_description;
                 if (CB_manufacturer != null) this.CB_manufacturer.text = catalogue.manufacturer_name;
-                if (CB_thumbnail != null) this.CB_thumbnail.sprite = catalogue.c_thumbnail;
-
+                if (!TextureLoaded && CB_thumbnail != null)
+                {
+                    FixedCountDownloader.Instance.AddTask(catalogue.c_thumbnail_url, (sprite) => 
+                    {
+                        CB_thumbnail.sprite = sprite;
+                        TextureLoaded = true;
+                    });
+                }
                 if (CB_button != null) CB_button.onClick.AddListener(() => OnClick(this.index));
             }
 

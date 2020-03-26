@@ -13,6 +13,45 @@ using helloVoRld.Test.Databases;
 
 namespace helloVoRld.Networking.RestClient
 {
+    internal class FixedCountDownloader : Singleton<FixedCountDownloader>
+    {
+        readonly IEnumerator[] Routines = new IEnumerator[1];
+        readonly Queue<(string, Action<Sprite>)> Queue = new Queue<(string, Action<Sprite>)>();
+        
+        void Update()
+        {
+            if (Queue.Count != 0)
+            {
+                int emptyIndex = Array.IndexOf(Routines, default);
+
+                if (emptyIndex == -1)
+                    return;
+
+                (var Path, var Action) = Queue.Dequeue();
+                Routines[emptyIndex] = RestWebClient.Instance.HttpDownloadImage(Path, (response, _) =>
+                {
+                    // Clear Array Index
+                    Routines[emptyIndex] = default;
+                    
+                    Texture2D tex = response.textureDownloaded;
+                    if (response.Error != "")
+                        return;
+
+                    Sprite s = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+                    
+                    // Do Whatever to do with sprite
+                    Action(s);
+                }, 0);
+                StartCoroutine(Routines[emptyIndex]);
+            }
+        }
+
+        public void AddTask(string path, Action<Sprite> Act)
+        {
+            Queue.Enqueue((path, Act));
+        }
+    }
+
     public class CatalogueClient : Singleton<CatalogueClient>
     {
         enum State
@@ -24,18 +63,19 @@ namespace helloVoRld.Networking.RestClient
         private readonly List<Action> OnSuccessWaiters = new List<Action>();
         private State CurState = State.RequestNotSent;
 
-        private readonly string IP = @"http://hvrplfabricapp.ml";
-        private readonly RequestHeader requestHeader = new RequestHeader { Key = "Authorization", Value = "Token " + "0ef442a637f1570b5f848f164ee972219eaca8bc" };
+        readonly string IP = @"http://hvrplfabricapp.ml";
+        readonly RequestHeader requestHeader = new RequestHeader { Key = "Authorization", Value = "Token " + "0ef442a637f1570b5f848f164ee972219eaca8bc" };
 
         public readonly List<S_Catalogue> Catalogues = new List<S_Catalogue>();
 
         public void Awake()
-        {
+        {/*
             StartCoroutine(RestWebClient.Instance.HttpGet(IP + @"/fabricapp/api/rest-auth/login", (response) =>
             {
                 Debug.Log("Key : " + response.Error + " --- " +  response.Data);
-            }));
+            }));*/
         }
+
         public void GetCatalogues(Action OnSuccess)
         {
             if (CurState == State.RequestCompleted)
@@ -67,15 +107,16 @@ namespace helloVoRld.Networking.RestClient
 
                         foreach (var catalog in list)
                         {
-                            Catalogues.Add(new S_Catalogue
+                            S_Catalogue cat = new S_Catalogue
                             {
                                 WEB_Id = catalog.id,
                                 c_name = catalog.c_name,
                                 c_description = catalog.c_description,
-                                c_thumbnail = default,
+                                c_thumbnail_url = IP + catalog.c_thumbnail_url,
                                 manufacturer_name = catalog.c_manufacturer_name,
                                 c_fabrics = null
-                            });
+                            };
+                            Catalogues.Add(cat);
                         }
 
                         LoadFabrics(0, OnSuccess: () =>
