@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace helloVoRld.Networking.RestClient
 {
     public class FixedCountDownloader
     {
-        readonly IEnumerator[] Routines = new IEnumerator[1];
-        readonly Queue<(string, Action<Sprite>, Action<float>)> Queue = new Queue<(string, Action<Sprite>, Action<float>)>();
-        readonly MonoBehaviour monoBehaviour;
+        private readonly IEnumerator[] Routines = new IEnumerator[1];
+        private readonly Queue<(string, Action<Sprite>, Action<float>)> Queue = new Queue<(string, Action<Sprite>, Action<float>)>();
+        private readonly MonoBehaviour monoBehaviour;
 
         public FixedCountDownloader(MonoBehaviour behaviour)
         {
             if (behaviour == null)
+            {
                 throw new Exception("Behaviour was null when passed to FixedCountDownloader");
+            }
+
             if (monoBehaviour == null)
+            {
                 monoBehaviour = behaviour;
+            }
         }
 
         public void Update()
@@ -29,7 +31,9 @@ namespace helloVoRld.Networking.RestClient
                 int emptyIndex = Array.IndexOf(Routines, default);
 
                 if (emptyIndex == -1)
+                {
                     return;
+                }
 
                 (var Path, var Action, var Progreess) = Queue.Dequeue();
                 Routines[emptyIndex] = RestWebClient.Instance.HttpDownloadImage(Path, (response) =>
@@ -39,7 +43,9 @@ namespace helloVoRld.Networking.RestClient
 
                     Texture2D tex = response.textureDownloaded;
                     if (response.textureDownloaded == null)
+                    {
                         return;
+                    }
 
                     Sprite s = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
 

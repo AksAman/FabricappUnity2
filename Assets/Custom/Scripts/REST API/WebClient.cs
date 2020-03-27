@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using helloVoRld.Networking.RestClient;
+﻿using helloVoRld.Core.Singletons;
 using helloVoRld.Networking.Models;
-using helloVoRld.Core.Singletons;
-using Newtonsoft.Json;
-using UnityEngine;
 using helloVoRld.Test.Databases;
+using Newtonsoft.Json;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace helloVoRld.Networking.RestClient
 {
     public class WebClient : Singleton<WebClient>
     {
-        enum State
+        private enum State
         {
             RequestNotSent,
             RequestSent,
@@ -23,9 +20,8 @@ namespace helloVoRld.Networking.RestClient
         }
         private readonly List<Action> OnSuccessWaiters = new List<Action>();
         private State CurState = State.RequestNotSent;
-
-        readonly string IP = @"http://hvrplfabricapp.ml";
-        readonly RequestHeader requestHeader = new RequestHeader { Key = "Authorization", Value = "Token " + "0ef442a637f1570b5f848f164ee972219eaca8bc" };
+        private readonly string IP = @"http://hvrplfabricapp.ml";
+        private readonly RequestHeader requestHeader = new RequestHeader { Key = "Authorization", Value = "Token " + "0ef442a637f1570b5f848f164ee972219eaca8bc" };
 
         public readonly List<S_Catalogue> Catalogues = new List<S_Catalogue>();
 
@@ -40,9 +36,13 @@ namespace helloVoRld.Networking.RestClient
         public void GetCatalogues(Action OnSuccess)
         {
             if (CurState == State.RequestCompleted)
+            {
                 OnSuccess();
+            }
             else if (CurState == State.RequestSent)
+            {
                 OnSuccessWaiters.Add(OnSuccess);
+            }
             else
             {
                 CurState = State.RequestSent;
@@ -53,14 +53,14 @@ namespace helloVoRld.Networking.RestClient
                         Debug.Log("Internet Available");
                         StartCoroutine(CatalogueRequest());
                     },
-                    OnFail:() => 
-                    {
-                        Debug.Log("No Internet!!!");
-                    }));
+                    OnFail: () =>
+                     {
+                         Debug.Log("No Internet!!!");
+                     }));
             }
         }
 
-        IEnumerator CatalogueRequest()
+        private IEnumerator CatalogueRequest()
         {
             return RestWebClient.Instance.HttpGet(IP + @"/fabricapp/api/catalogues", (response) =>
             {
@@ -116,7 +116,9 @@ namespace helloVoRld.Networking.RestClient
         public void LoadFabrics(int CatIndex, Action OnSuccess, Action OnFailure)
         {
             if (CatIndex >= Catalogues.Count || CatIndex < 0)
+            {
                 throw new Exception("Invalid index passed for fabric: " + CatIndex);
+            }
 
             if (Catalogues[CatIndex].c_fabrics != null && Catalogues[CatIndex].c_fabrics.Count != 0)
             {

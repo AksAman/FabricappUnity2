@@ -1,12 +1,10 @@
 ﻿using helloVoRld.Test.Databases;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System;
 using helloVoRld.Utilities.Debugging;
+using System;
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
-using helloVoRld.Networking.RestClient;
-using helloVoRld.Test.Managers;
+using UnityEngine.UI;
 
 namespace helloVoRld.Test.UI
 {
@@ -38,11 +36,18 @@ namespace helloVoRld.Test.UI
             {
                 this.index = index;
 
-                if (CB_name != null) this.CB_name.text = catalogue.c_name;
+                if (CB_name != null)
+                {
+                    this.CB_name.text = catalogue.c_name;
+                }
                 //if (CB_description != null) this.CB_description.text = catalogue.c_description;
-                if (CB_manufacturer != null) this.CB_manufacturer.text = catalogue.manufacturer_name;
+                if (CB_manufacturer != null)
+                {
+                    this.CB_manufacturer.text = catalogue.manufacturer_name;
+                }
 
                 if (CB_thumbnail != null)
+                {
                     catalogue.LoadThumbnail(
                         (sprite) =>
                         {
@@ -55,8 +60,12 @@ namespace helloVoRld.Test.UI
                             progressBar.fillAmount = progress;
                             //Debug.Log((progress * 100).ToString("0.00"));
                         });
+                }
 
-                if (CB_button != null) CB_button.onClick.AddListener(() => OnClick(this.index));
+                if (CB_button != null)
+                {
+                    CB_button.onClick.AddListener(() => OnClick(this.index));
+                }
             }
 
             catch (Exception exception)

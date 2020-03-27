@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SelectedTest : MonoBehaviour
@@ -11,7 +9,8 @@ public class SelectedTest : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(null);
     }
-    void Update()
+
+    private void Update()
     {
         currentSelected = EventSystem.current.currentSelectedGameObject;
     }

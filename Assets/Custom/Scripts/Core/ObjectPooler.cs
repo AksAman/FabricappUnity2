@@ -18,7 +18,7 @@ namespace helloVoRld.Core.Pooling
 
         public void InitializePool(int count)
         {
-            while(count > 0)
+            while (count > 0)
             {
                 CreatePooledObject();
                 count--;
@@ -46,7 +46,7 @@ namespace helloVoRld.Core.Pooling
         {
             GameObject objectToReturn;
 
-            if(inactiveInstancesStack.Count > 0)
+            if (inactiveInstancesStack.Count > 0)
             {
                 objectToReturn = inactiveInstancesStack.Pop();
             }
@@ -89,7 +89,7 @@ namespace helloVoRld.Core.Pooling
                 return false;
             }
         }
-        
+
         #endregion
     }
 }

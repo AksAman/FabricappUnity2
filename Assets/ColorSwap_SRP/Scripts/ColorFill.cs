@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+﻿using DG.Tweening;
+using UnityEngine;
 using UnityEngine.UI.Michsky.UI.ModernUIPack;
-using DG.Tweening;
 
 namespace helloVoRld.Test.UI
 {
@@ -16,7 +14,7 @@ namespace helloVoRld.Test.UI
         public Color previousColor;
         public Color newColor;
         public float finalValue;
-        private float radius;
+        private readonly float radius;
 
         // Tweening Settings
         public float easeDuration = 1;
@@ -60,7 +58,7 @@ namespace helloVoRld.Test.UI
         //        StopCoroutine("SetMaterialParams");
         //        currentCoroutine = StartCoroutine(SetMaterialParams(finalValue));
         //    }
-            
+
         //    //valueTweener = DOTween.To(x => radius = x, 0, finalValue, easeDuration)
         //    //    .SetEase(easeType)
         //    //    .SetAutoKill(false);
@@ -85,7 +83,7 @@ namespace helloVoRld.Test.UI
                 worldFillMaterial.SetColor("_FrontColor", newColor);
                 finalValue = Screen.orientation == ScreenOrientation.Landscape ? Mathf.Sqrt(Mathf.Pow((float)width / height, 2) + 1)
                     : Mathf.Sqrt(Mathf.Pow((float)height / width, 2) + 1);
-                worldFillMaterial.DOFloat(finalValue, "_Radius", easeDuration).SetEase(easeType).OnComplete(()=> worldFillMaterial.SetColor("_BackColor", newColor));
+                worldFillMaterial.DOFloat(finalValue, "_Radius", easeDuration).SetEase(easeType).OnComplete(() => worldFillMaterial.SetColor("_BackColor", newColor));
             }
         }
 

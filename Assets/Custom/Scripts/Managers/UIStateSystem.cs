@@ -1,22 +1,21 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using helloVoRld.Core.Singletons;
 using helloVoRld.Test.UI;
-using System.Collections.Generic;
 using helloVoRld.Utilities.Debugging;
-using helloVoRld.Core.Singletons;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace helloVoRld.Test.Managers
 {
     public class UIStateSystem : Singleton<UIStateSystem>
     {
-        [SerializeField] private UIPanel startPanel;
+        [SerializeField] private readonly UIPanel startPanel;
 
         [SerializeField] private UIPanel currentPanel;
         [SerializeField] private UIPanel previousPanel;
 
-        [SerializeField] private Stack<UIPanel> panelsVisited = new Stack<UIPanel>();
+        [SerializeField] private readonly Stack<UIPanel> panelsVisited = new Stack<UIPanel>();
 
-        [SerializeField] private GameObject loadingPanel;
+        [SerializeField] private readonly GameObject loadingPanel;
 
         private void Start()
         {
@@ -72,7 +71,7 @@ namespace helloVoRld.Test.Managers
 
         public virtual void RemoveLoadingScreen()
         {
-           // loadingPanel.SetActive(false);
+            // loadingPanel.SetActive(false);
         }
     }
 }

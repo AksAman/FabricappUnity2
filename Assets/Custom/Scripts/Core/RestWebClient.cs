@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using helloVoRld.Core.Singletons;
+﻿using helloVoRld.Core.Singletons;
 using helloVoRld.Networking.Models;
-using helloVoRld.Utilities.Debugging;
+using System;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using System;
 
 namespace helloVoRld.Networking.RestClient
 {
@@ -18,14 +18,16 @@ namespace helloVoRld.Networking.RestClient
 
         private const string defaultContentType = "application/json";
 
-        public IEnumerator HttpGet(string url, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
+        public IEnumerator HttpGet(string url, Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
             {
                 if (headers != null)
                 {
                     foreach (var x in headers)
+                    {
                         webRequest.SetRequestHeader(x.Key, x.Value);
+                    }
                 }
 
                 yield return webRequest.SendWebRequest();
@@ -41,7 +43,7 @@ namespace helloVoRld.Networking.RestClient
 
                 if (webRequest.isDone)
                 {
-                    string data = System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data);
+                    string data = Encoding.UTF8.GetString(webRequest.downloadHandler.data);
                     callback(new Response
                     {
                         StatusCode = webRequest.responseCode,
@@ -52,7 +54,7 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-        public IEnumerator HttpDownloadImage(string url, System.Action<ImageResponse, int> callback, int index)
+        public IEnumerator HttpDownloadImage(string url, Action<ImageResponse, int> callback, int index)
         {
             using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
             {
@@ -78,7 +80,7 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-        public IEnumerator HttpDownloadImage(string url, System.Action<ImageResponse> callback, System.Action<float> Progress)
+        public IEnumerator HttpDownloadImage(string url, Action<ImageResponse> callback, Action<float> Progress)
         {
             using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
             {
@@ -115,7 +117,7 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-        public IEnumerator HttpDelete(string url, System.Action<Response> callback)
+        public IEnumerator HttpDelete(string url, Action<Response> callback)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Delete(url))
             {
@@ -140,7 +142,7 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-        public IEnumerator HttpPost(string url, string body, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
+        public IEnumerator HttpPost(string url, string body, Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
 
             using (UnityWebRequest webRequest = UnityWebRequest.Post(url, body))
@@ -154,7 +156,7 @@ namespace helloVoRld.Networking.RestClient
                 }
 
                 webRequest.uploadHandler.contentType = defaultContentType;
-                webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(body));
+                webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
 
                 yield return webRequest.SendWebRequest();
 
@@ -169,7 +171,7 @@ namespace helloVoRld.Networking.RestClient
 
                 if (webRequest.isDone)
                 {
-                    string data = System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data);
+                    string data = Encoding.UTF8.GetString(webRequest.downloadHandler.data);
                     callback(new Response
                     {
                         StatusCode = webRequest.responseCode,
@@ -180,7 +182,7 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-        public IEnumerator HttpPost(string url, WWWForm form, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
+        public IEnumerator HttpPost(string url, WWWForm form, Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Post(url, form))
             {
@@ -193,7 +195,7 @@ namespace helloVoRld.Networking.RestClient
                 }
 
                 webRequest.uploadHandler.contentType = defaultContentType;
-                //webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(form.ToString()));
+                //webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(form.ToString()));
 
                 yield return webRequest.SendWebRequest();
 
@@ -208,7 +210,7 @@ namespace helloVoRld.Networking.RestClient
 
                 if (webRequest.isDone)
                 {
-                    string data = System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data);
+                    string data = Encoding.UTF8.GetString(webRequest.downloadHandler.data);
                     callback(new Response
                     {
                         StatusCode = webRequest.responseCode,
@@ -219,7 +221,7 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-        public IEnumerator HttpPut(string url, string body, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
+        public IEnumerator HttpPut(string url, string body, Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Put(url, body))
             {
@@ -232,7 +234,7 @@ namespace helloVoRld.Networking.RestClient
                 }
 
                 webRequest.uploadHandler.contentType = defaultContentType;
-                webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(body));
+                webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
 
                 yield return webRequest.SendWebRequest();
 
@@ -255,7 +257,7 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-        public IEnumerator HttpHead(string url, System.Action<Response> callback)
+        public IEnumerator HttpHead(string url, Action<Response> callback)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Head(url))
             {
@@ -290,9 +292,13 @@ namespace helloVoRld.Networking.RestClient
                 webRequest.timeout = 5;
                 yield return webRequest.SendWebRequest();
                 if (webRequest.responseCode < 299 && webRequest.responseCode >= 200)
+                {
                     OnSuccess();
+                }
                 else
+                {
                     OnFail();
+                }
             }
         }
     }

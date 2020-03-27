@@ -1,11 +1,10 @@
 ﻿using helloVoRld.Test.Databases;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System;
 using helloVoRld.Utilities.Debugging;
+using System;
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
-using helloVoRld.Networking.RestClient;
+using UnityEngine.UI;
 namespace helloVoRld.Test.UI
 {
     public class FabricButton : MonoBehaviour
@@ -30,14 +29,21 @@ namespace helloVoRld.Test.UI
             {
                 this.index = index;
 
-                if (FB_name != null) this.FB_name.text = fabric.f_title;
+                if (FB_name != null)
+                {
+                    this.FB_name.text = fabric.f_title;
+                }
+
                 if (FB_thumbnail != null)
                 {
                     fabric.LoadThumbnail(
                         (sprite) => FB_thumbnail.sprite = sprite,
                         (progress) => Debug.Log((progress * 100).ToString("0.00")));
                 }
-                if (FB_button != null) FB_button.onClick.AddListener(() => OnClick(this.index));
+                if (FB_button != null)
+                {
+                    FB_button.onClick.AddListener(() => OnClick(this.index));
+                }
             }
 
             catch (Exception exception)

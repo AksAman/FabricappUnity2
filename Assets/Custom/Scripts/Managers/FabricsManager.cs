@@ -1,13 +1,13 @@
-﻿using helloVoRld.Core.Singletons;
-using helloVoRld.Test.UI;
-using helloVoRld.Test.Databases;
-using UnityEngine;
-using TMPro;
-using System.Collections.Generic;
-using helloVoRld.Utilities;
-using helloVoRld.Core.Pooling;
-using helloVoRld.Utilities.Debugging;
+﻿using helloVoRld.Core.Pooling;
+using helloVoRld.Core.Singletons;
 using helloVoRld.Networking.RestClient;
+using helloVoRld.Test.Databases;
+using helloVoRld.Test.UI;
+using helloVoRld.Utilities;
+using helloVoRld.Utilities.Debugging;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 namespace helloVoRld.Test.Managers
 {
@@ -47,7 +47,7 @@ namespace helloVoRld.Test.Managers
         {
             TextureDownloader = new FixedCountDownloader(this);
         }
-        
+
         private void Start()
         {
             uistatesystem = UIStateSystem.Instance;

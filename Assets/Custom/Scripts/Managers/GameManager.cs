@@ -1,6 +1,4 @@
 ﻿using helloVoRld.Utilities.Debugging;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace helloVoRld.Test.Managers
@@ -19,7 +17,7 @@ namespace helloVoRld.Test.Managers
             Application.quitting += Application_quitting;
             Application.focusChanged += Application_focusChanged;
             Application.lowMemory += Application_lowMemory;
-            
+
         }
 
         private void Application_lowMemory()
@@ -29,7 +27,7 @@ namespace helloVoRld.Test.Managers
 
         private void Application_focusChanged(bool newfocus)
         {
-            DebugHelper.Log("Focus : "+ newfocus.ToString());
+            DebugHelper.Log("Focus : " + newfocus.ToString());
         }
 
         private void Application_quitting()

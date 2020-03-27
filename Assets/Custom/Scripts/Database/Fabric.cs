@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System;
-using helloVoRld.Networking.RestClient;
+﻿using helloVoRld.Networking.RestClient;
 using helloVoRld.Test.Managers;
+using System;
+using UnityEngine;
 
 namespace helloVoRld.Test.Databases
 {
@@ -10,11 +10,11 @@ namespace helloVoRld.Test.Databases
     {
         public string f_title;
         public string f_thumbnail_url;
-        Sprite f_thumbnail;
+        private Sprite f_thumbnail;
         //public Texture f_diffuseTexture;
         public Material f_material;
 
-        FixedCountDownloader TextureDownloader => FabricsManager.Instance.TextureDownloader;
+        private FixedCountDownloader TextureDownloader => FabricsManager.Instance.TextureDownloader;
 
         public void LoadThumbnail(Action<Sprite> OnThumbnailDonwloadComplete, Action<float> Progress)
         {
@@ -33,7 +33,7 @@ namespace helloVoRld.Test.Databases
                 {
                     Progress(progress);
                 });
-            
+
         }
     }
 }

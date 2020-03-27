@@ -12,7 +12,7 @@ namespace Michsky.UI.ModernUIPack
         [Header("SETTINGS")]
         public float fadeOutValue;
 
-        void Update()
+        private void Update()
         {
             if (listScrollbar.value >= fadeOutValue)
             {
