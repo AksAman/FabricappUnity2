@@ -1,5 +1,7 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace helloVoRld.Utilities.Debugging
 {
@@ -8,7 +10,7 @@ namespace helloVoRld.Utilities.Debugging
         public static void Log(string message)
         {
             Debug.Log(message);
-            ShowAndroidToastMessage(message);
+            ShowAndroidToastMessage(message); 
         }
 
         public static void LogWarning(string message)
@@ -53,7 +55,7 @@ namespace helloVoRld.Utilities.Debugging
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception exc)
             {
                 //Debug.Log(exc.Message);
                 ////throw;

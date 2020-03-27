@@ -2,6 +2,7 @@
 using helloVoRld.Test.UI;
 using TMPro;
 using UnityEngine;
+using helloVoRld.Networking.RestClient;
 namespace helloVoRld.Test.Managers
 {
     public class MaterialManager : Singleton<MaterialManager>
@@ -11,7 +12,7 @@ namespace helloVoRld.Test.Managers
         public int CurrentFabricIndex { get => currentFabricIndex; private set => currentFabricIndex = value; }
 
         // private
-        [SerializeField] private readonly TextMeshProUGUI currentFabricText;
+        [SerializeField] private TextMeshProUGUI currentFabricText;
         private ModelManager modelManager;
         private CatalogueManager catalogueManager;
         private FabricsManager fabricsManager;
@@ -37,7 +38,7 @@ namespace helloVoRld.Test.Managers
             CurrentFabricIndex = fabricButtonIndex;
             int catalogueIndex = fabricsManager.CurrentCatalogueIndex;
             //UpdateCurrentFabricText(CurrentFabricIndex, catalogueIndex);
-            ChangeCurModelMaterial(modelManager.models[modelManager.CurrentModelIndex].materialIndexToChange,
+            ChangeCurModelMaterial(modelManager.models[modelManager.CurrentModelIndex].materialIndexToChange, 
                 catalogueIndex, CurrentFabricIndex);
         }
 
@@ -50,7 +51,7 @@ namespace helloVoRld.Test.Managers
                 Material[] allMats = modelMesh.GetComponent<MeshRenderer>().materials;
                 allMats[atIndex] = newMaterial;
                 modelMesh.GetComponent<MeshRenderer>().materials = allMats;
-
+                
             }
         }
         public void ChangeCurModelMaterial(int atIndex, int currentCatalogueIndex, int currentFabricIndex)

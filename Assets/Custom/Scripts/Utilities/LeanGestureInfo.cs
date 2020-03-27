@@ -1,21 +1,22 @@
-﻿using Lean.Touch;
+﻿using System;
 using System.Collections.Generic;
+using Lean.Touch;
 using TMPro;
 using UnityEngine;
 
 public class LeanGestureInfo : MonoBehaviour
 {
     public RectTransform t_fingersCount, t_pinchScale, t_twistRad, t_twistDeg, t_screenDelta;
-    private int fingersCount;
-    private float pinchScale, twistRad, twistDeg;
-    private Vector2 screenDelta;
+    int fingersCount;
+    float pinchScale, twistRad, twistDeg;
+    Vector2 screenDelta;
 
-    private void OnEnable()
+    void OnEnable()
     {
         LeanTouch.OnGesture += UpdateGestureInfo;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         LeanTouch.OnGesture -= UpdateGestureInfo;
     }
@@ -35,7 +36,7 @@ public class LeanGestureInfo : MonoBehaviour
         SetUIText(t_screenDelta, screenDelta.ToString());
     }
 
-    private void SetUIText(RectTransform uitextParentRect, string text)
+    void SetUIText(RectTransform uitextParentRect, string text)
     {
         uitextParentRect.GetChild(1).GetComponent<TextMeshProUGUI>().text = text;
     }

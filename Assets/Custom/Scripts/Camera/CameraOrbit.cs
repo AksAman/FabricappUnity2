@@ -1,12 +1,14 @@
-﻿using DG.Tweening;
+﻿using UnityEngine;
+using System.Collections;
 using Lean.Touch;
-using UnityEngine;
+using helloVoRld.Test.UI;
+using DG.Tweening;
 
 namespace helloVoRld.Utilities.CameraUtils
 {
     public class CameraOrbit : MonoBehaviour
     {
-        private enum CurrentState
+        enum CurrentState
         {
             NoTouch,
             JustTouched,
@@ -25,14 +27,12 @@ namespace helloVoRld.Utilities.CameraUtils
 
         private CurrentState state = CurrentState.NoTouch;
         private bool isResetingCamera;
-
         //public ScriptableBool overui;
         //public Tweener tweener;
 
-        private readonly bool isScrolling;
-
+        bool isScrolling;
         // Use this for initialization
-        private void Start()
+        void Start()
         {
             _XForm_Camera = transform;
             _XForm_Parent = transform.parent;
@@ -41,23 +41,20 @@ namespace helloVoRld.Utilities.CameraUtils
             isResetingCamera = false;
         }
 
-        private void LateUpdate()
-        {
 
+        void LateUpdate()
+        {
+            
             if (Input.GetMouseButtonDown(0))
-            {
                 state = CurrentState.JustTouched;
-            }
             else if (Input.GetMouseButtonUp(0))
-            {
                 state = CurrentState.NoTouch;
-            }
 
             bool isSingleFinger = LeanTouch.Fingers.Count == 1;
             if (isSingleFinger)
             {
                 //_LocalRotation = Vector3.zero;
-                if (LeanTouch.Fingers[0].IsOverGui)
+                if(LeanTouch.Fingers[0].IsOverGui)
                 {
                     return;
                 }
@@ -74,13 +71,9 @@ namespace helloVoRld.Utilities.CameraUtils
 
                     // Clamp the y Rotation to horizon and not flipping over at the top
                     if (_LocalRotation.y < camMinMaxRot.x)
-                    {
                         _LocalRotation.y = camMinMaxRot.x;
-                    }
                     else if (_LocalRotation.y > camMinMaxRot.y)
-                    {
                         _LocalRotation.y = camMinMaxRot.y;
-                    }
                 }
 
 

@@ -14,5 +14,5 @@ namespace helloVoRld.Test.UI
         {
             this.gameObject.SetActive(false);
         }
-    }
+    } 
 }

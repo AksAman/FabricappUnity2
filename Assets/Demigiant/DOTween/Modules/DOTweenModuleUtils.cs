@@ -1,12 +1,12 @@
 // Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2018/07/13
 
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Core.PathCore;
-using DG.Tweening.Plugins.Options;
 using System;
 using System.Reflection;
 using UnityEngine;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Core.PathCore;
+using DG.Tweening.Plugins.Options;
 
 #pragma warning disable 1591
 namespace DG.Tweening
@@ -25,7 +25,7 @@ namespace DG.Tweening
     /// </summary>
 	public static class DOTweenModuleUtils
     {
-        private static bool _initialized;
+        static bool _initialized;
 
         #region Reflection
 
@@ -37,10 +37,7 @@ namespace DG.Tweening
 #endif
         public static void Init()
         {
-            if (_initialized)
-            {
-                return;
-            }
+            if (_initialized) return;
 
             _initialized = true;
             DOTweenExternalCommand.SetOrientationOnPath += Physics.SetOrientationOnPath;
@@ -72,15 +69,11 @@ namespace DG.Tweening
         // Fires OnApplicationPause in DOTweenComponent even when Editor is paused (otherwise it's only fired at runtime)
 #if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5 || UNITY_2017_1
         static void PlaymodeStateChanged()
-#else
-        private static void PlaymodeStateChanged(UnityEditor.PlayModeStateChange state)
+        #else
+        static void PlaymodeStateChanged(UnityEditor.PlayModeStateChange state)
 #endif
         {
-            if (DOTween.instance == null)
-            {
-                return;
-            }
-
+            if (DOTween.instance == null) return;
             DOTween.instance.OnApplicationPause(UnityEditor.EditorApplication.isPaused);
         }
 #endif
@@ -135,8 +128,7 @@ namespace DG.Tweening
 #endif
             public static TweenerCore<Vector3, Path, PathOptions> CreateDOTweenPathTween(
                 MonoBehaviour target, bool tweenRigidbody, bool isLocal, Path path, float duration, PathMode pathMode
-            )
-            {
+            ){
                 TweenerCore<Vector3, Path, PathOptions> t;
 #if false // PHYSICS_MARKER
                 Rigidbody rBody = tweenRigidbody ? target.GetComponent<Rigidbody>() : null;

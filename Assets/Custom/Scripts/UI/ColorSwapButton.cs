@@ -15,15 +15,13 @@ namespace helloVoRld.Test.UI
         {
             thisButton = GetComponent<Button>();
             thisGradient = GetComponentInChildren<UIGradient>();
-            thisButton.onClick.AddListener(() => WallButtonClicked(thisGradient));
+            thisButton.onClick.AddListener(()=>WallButtonClicked(thisGradient));
         }
 
         private void WallButtonClicked(UIGradient thisGradient)
         {
-            if (OnWallButtonClicked != null)
-            {
+            if(OnWallButtonClicked!=null)
                 OnWallButtonClicked(thisGradient);
-            }
         }
     }
 }

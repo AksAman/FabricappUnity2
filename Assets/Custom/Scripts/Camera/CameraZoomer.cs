@@ -1,9 +1,10 @@
 ﻿using DG.Tweening;
-using helloVoRld.Test.UI;
-using Lean.Touch;
 using System.Collections.Generic;
 using UnityEngine;
+using Lean.Touch;
 using UnityEngine.UI;
+using System;
+using helloVoRld.Test.UI;
 
 namespace helloVoRld.Utilities.CameraUtils
 {
@@ -22,17 +23,17 @@ namespace helloVoRld.Utilities.CameraUtils
         public float zoomResetDuration;
 
         // private
-        private Camera cameraMain;
-        private float newFOV = 67.0f;
-        private float originalFOV;
+        Camera cameraMain;
+        float newFOV = 67.0f;
+        float originalFOV;
         private float velocity = 0;
-        private float oldFOV;
-        private bool isReseterActive = false;
-        private readonly float zoomResetButtonDuration = 0.1f;
-        private readonly Ease zoomResetButtonEase = Ease.OutBack;
+        float oldFOV;
+        bool isReseterActive = false;
+        float zoomResetButtonDuration = 0.1f;
+        Ease zoomResetButtonEase = Ease.OutBack;
         #endregion
 
-        private void Start()
+        void Start()
         {
             cameraMain = GetComponent<Camera>();
             originalFOV = cameraMain.fieldOfView;
@@ -56,7 +57,7 @@ namespace helloVoRld.Utilities.CameraUtils
                 cameraMain.DOFieldOfView(originalFOV, zoomResetDuration).SetEase(zoomResetEaseType);
 
             });
-
+            
         }
 
         protected virtual void OnEnable()
@@ -71,10 +72,7 @@ namespace helloVoRld.Utilities.CameraUtils
         private void HandleGesture(List<LeanFinger> fingers)
         {
             // if finger over UI, do nothing!
-            if (fingers[0].IsOverGui)
-            {
-                return;
-            }
+            if (fingers[0].IsOverGui) return;
 
             float pinchRatio = LeanGesture.GetPinchRatio(fingers);
             //Debug.Log("Pinchscale : " + pinchRatio);
@@ -89,15 +87,15 @@ namespace helloVoRld.Utilities.CameraUtils
                 isReseterActive = true;
                 //zoomReseter.gameObject.SetActive(true);
             }
-            else if (cameraMain.fieldOfView > thresholdFOVToEnableZoomReset && isReseterActive)
+            else if(cameraMain.fieldOfView > thresholdFOVToEnableZoomReset && isReseterActive)
             {
                 zoomReseter.GetComponent<RectTransform>().DOAnchorPosY(resetButtonOnOff.y, zoomResetButtonDuration).SetEase(zoomResetButtonEase);
                 isReseterActive = false;
             }
-
+            
         }
 
-
+        
     }
 
 }

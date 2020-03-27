@@ -20,19 +20,19 @@ namespace UnityEngine.UI
 
             [Header("SETTINGS")]
             [SerializeField]
-            private Type _gradientType;
+            Type _gradientType;
 
             [SerializeField]
-            private Blend _blendMode = Blend.Multiply;
+            Blend _blendMode = Blend.Multiply;
 
             [SerializeField]
             [Range(-1, 1)]
-            private float _offset = 0f;
+            float _offset = 0f;
 
             #region Properties
             public Blend BlendMode
             {
-                get => _blendMode;
+                get { return _blendMode; }
                 set
                 {
                     _blendMode = value;
@@ -42,7 +42,7 @@ namespace UnityEngine.UI
 
             public UnityEngine.Gradient EffectGradient
             {
-                get => _effectGradient;
+                get { return _effectGradient; }
                 set
                 {
                     _effectGradient = value;
@@ -52,7 +52,7 @@ namespace UnityEngine.UI
 
             public Type GradientType
             {
-                get => _gradientType;
+                get { return _gradientType; }
                 set
                 {
                     _gradientType = value;
@@ -62,7 +62,7 @@ namespace UnityEngine.UI
 
             public float Offset
             {
-                get => _offset;
+                get { return _offset; }
                 set
                 {
                     _offset = value;
@@ -74,9 +74,7 @@ namespace UnityEngine.UI
             public override void ModifyMesh(VertexHelper helper)
             {
                 if (!IsActive() || helper.currentVertCount == 0)
-                {
                     return;
-                }
 
                 List<UIVertex> _vertexList = new List<UIVertex>();
 
@@ -95,14 +93,8 @@ namespace UnityEngine.UI
                             {
                                 x = _vertexList[i].position.x;
 
-                                if (x > right)
-                                {
-                                    right = x;
-                                }
-                                else if (x < left)
-                                {
-                                    left = x;
-                                }
+                                if (x > right) right = x;
+                                else if (x < left) left = x;
                             }
 
                             float width = 1f / (right - left);
@@ -129,14 +121,8 @@ namespace UnityEngine.UI
                             {
                                 y = _vertexList[i].position.y;
 
-                                if (y > top)
-                                {
-                                    top = y;
-                                }
-                                else if (y < bottom)
-                                {
-                                    bottom = y;
-                                }
+                                if (y > top) top = y;
+                                else if (y < bottom) bottom = y;
                             }
 
                             float height = 1f / (top - bottom);
@@ -164,38 +150,23 @@ namespace UnityEngine.UI
                             {
                                 y = _vertexList[i].position.y;
 
-                                if (y > top)
-                                {
-                                    top = y;
-                                }
-                                else if (y < bottom)
-                                {
-                                    bottom = y;
-                                }
+                                if (y > top) top = y;
+                                else if (y < bottom) bottom = y;
                             }
 
                             float height = 1f / (top - bottom);
 
                             helper.Clear();
-                            for (int i = 0; i < nCount; i++)
-                            {
-                                helper.AddVert(_vertexList[i]);
-                            }
+                            for (int i = 0; i < nCount; i++) helper.AddVert(_vertexList[i]);
 
                             float center = (bottom + top) / 2f;
-                            UIVertex centralVertex = new UIVertex
-                            {
-                                position = (Vector3.right + Vector3.up) * center + Vector3.forward * _vertexList[0].position.z,
-                                normal = _vertexList[0].normal,
-                                color = Color.white
-                            };
+                            UIVertex centralVertex = new UIVertex();
+                            centralVertex.position = (Vector3.right + Vector3.up) * center + Vector3.forward * _vertexList[0].position.z;
+                            centralVertex.normal = _vertexList[0].normal;
+                            centralVertex.color = Color.white;
                             helper.AddVert(centralVertex);
 
-                            for (int i = 1; i < nCount; i++)
-                            {
-                                helper.AddTriangle(i - 1, i, nCount);
-                            }
-
+                            for (int i = 1; i < nCount; i++) helper.AddTriangle(i - 1, i, nCount);
                             helper.AddTriangle(0, nCount - 1, nCount);
 
                             UIVertex vertex = new UIVertex();
@@ -227,25 +198,13 @@ namespace UnityEngine.UI
                             {
                                 x = _vertexList[i].position.x;
 
-                                if (x > right)
-                                {
-                                    right = x;
-                                }
-                                else if (x < left)
-                                {
-                                    left = x;
-                                }
+                                if (x > right) right = x;
+                                else if (x < left) left = x;
 
                                 y = _vertexList[i].position.y;
 
-                                if (y > top)
-                                {
-                                    top = y;
-                                }
-                                else if (y < bottom)
-                                {
-                                    bottom = y;
-                                }
+                                if (y > top) top = y;
+                                else if (y < bottom) bottom = y;
                             }
 
                             float width = 1f / (right - left);
@@ -257,18 +216,16 @@ namespace UnityEngine.UI
                             float centerY = (bottom + top) / 2f;
                             float radiusX = (right - left) / 2f;
                             float radiusY = (top - bottom) / 2f;
-                            UIVertex centralVertex = new UIVertex
-                            {
-                                position = Vector3.right * centerX + Vector3.up * centerY + Vector3.forward * _vertexList[0].position.z,
-                                normal = _vertexList[0].normal,
-                                color = Color.white
-                            };
+                            UIVertex centralVertex = new UIVertex();
+                            centralVertex.position = Vector3.right * centerX + Vector3.up * centerY + Vector3.forward * _vertexList[0].position.z;
+                            centralVertex.normal = _vertexList[0].normal;
+                            centralVertex.color = Color.white;
 
                             int steps = 64;
                             for (int i = 0; i < steps; i++)
                             {
                                 UIVertex curVertex = new UIVertex();
-                                float angle = i * 360f / steps;
+                                float angle = (float)i * 360f / (float)steps;
                                 float curX = Mathf.Cos(Mathf.Deg2Rad * angle) * radiusX;
                                 float curY = Mathf.Sin(Mathf.Deg2Rad * angle) * radiusY;
 
@@ -280,11 +237,7 @@ namespace UnityEngine.UI
 
                             helper.AddVert(centralVertex);
 
-                            for (int i = 1; i < steps; i++)
-                            {
-                                helper.AddTriangle(i - 1, i, steps);
-                            }
-
+                            for (int i = 1; i < steps; i++) helper.AddTriangle(i - 1, i, steps);
                             helper.AddTriangle(0, steps - 1, steps);
 
                             UIVertex vertex = new UIVertex();
@@ -305,7 +258,7 @@ namespace UnityEngine.UI
                 }
             }
 
-            private Color BlendColor(Color colorA, Color colorB)
+            Color BlendColor(Color colorA, Color colorB)
             {
                 switch (BlendMode)
                 {

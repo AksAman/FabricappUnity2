@@ -1,12 +1,14 @@
-﻿using DG.Tweening;
-using helloVoRld.Core.Singletons;
-using helloVoRld.Networking.RestClient;
-using helloVoRld.Utilities.Debugging;
-using Lean.Touch;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lean.Touch;
 using UnityEngine.UI;
+using helloVoRld.Networking.RestClient;
+using helloVoRld.Core.Singletons;
+using helloVoRld.Utilities.Debugging;
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 namespace helloVoRld.Test.Managers
 {
@@ -14,21 +16,21 @@ namespace helloVoRld.Test.Managers
     public class SlideshowManager : Singleton<SlideshowManager>
     {
         #region Variables
-        [SerializeField] private readonly List<Sprite> slideShowImages = new List<Sprite>();
-        [SerializeField] private readonly int debugImageCount = 10;
+        [SerializeField] private List<Sprite> slideShowImages = new List<Sprite>();
+        [SerializeField] private int debugImageCount = 10;
 
-        [SerializeField] private readonly int secondsToWaitForSlideshow = 50;
-        [SerializeField] private readonly float fadeDuration = 0.3f;
-        [SerializeField] private readonly WaitForSeconds waitAfterFadeIn = new WaitForSeconds(2);
+        [SerializeField] private int secondsToWaitForSlideshow = 50;
+        [SerializeField] private float fadeDuration = 0.3f;
+        [SerializeField] private WaitForSeconds waitAfterFadeIn = new WaitForSeconds(2);
         [SerializeField] private bool isFingerDown;
         [SerializeField] private bool isSlideShowActive;
         [SerializeField] private float timer = 0;
         [SerializeField] private float loadingProgress;
 
-        [SerializeField] private readonly GameObject slideShowPanel;
-        [SerializeField] private readonly Image slideShowImage;
-        [SerializeField] private readonly Image slideShowMask;
-        [SerializeField] private readonly CanvasGroup slideshowCanvasGroup;
+        [SerializeField] private GameObject slideShowPanel;
+        [SerializeField] private Image slideShowImage;
+        [SerializeField] private Image slideShowMask;
+        [SerializeField] private CanvasGroup slideshowCanvasGroup;
 
 
         #endregion
@@ -48,20 +50,20 @@ namespace helloVoRld.Test.Managers
 
         private void Start()
         {
-            LoadImages();
+            LoadImages();    
         }
 
         private void Update()
         {
-            if (isFingerDown)
+            if(isFingerDown)
             {
                 timer = 0;
                 StopSlideShow();
             }
-            else if (!isFingerDown & !isSlideShowActive)
+            else if(!isFingerDown & !isSlideShowActive)
             {
                 timer += Time.deltaTime;
-                if (timer > secondsToWaitForSlideshow)
+                if(timer > secondsToWaitForSlideshow)
                 {
                     StartSlideShow();
                 }
@@ -73,7 +75,7 @@ namespace helloVoRld.Test.Managers
         #region HelperFunctions
         private void LoadImages()
         {
-
+            
             for (int i = 0; i < debugImageCount; i++)
             {
                 string width = "1280";
@@ -91,13 +93,13 @@ namespace helloVoRld.Test.Managers
         private void HandleFingerUp(LeanFinger finger)
         {
             isFingerDown = false;
-
+            
         }
 
         private void StartSlideShow()
         {
             isSlideShowActive = true;
-            if (slideShowImages.Count > 0)
+            if(slideShowImages.Count > 0)
             {
                 slideshowCanvasGroup.DOFade(1.0f, fadeDuration).OnComplete(() =>
                 {
@@ -106,16 +108,15 @@ namespace helloVoRld.Test.Managers
                     StartCoroutine(SlideShow());
                 });
             }
-
-
+            
+            
         }
 
         private void StopSlideShow()
         {
             isSlideShowActive = false;
             StopCoroutine("SlideShow");
-            slideshowCanvasGroup.DOFade(0.0f, fadeDuration).OnComplete(() =>
-            {
+            slideshowCanvasGroup.DOFade(0.0f, fadeDuration).OnComplete(() => {
                 slideShowPanel.SetActive(isSlideShowActive);
                 //slideShowImage.raycastTarget = false;
             });
@@ -129,7 +130,7 @@ namespace helloVoRld.Test.Managers
         private void SetImageInList(ImageResponse response, int index)
         {
             Texture2D downloadedTexture = response.textureDownloaded;
-            if (string.IsNullOrEmpty(response.Error) && downloadedTexture != null)
+            if (string.IsNullOrEmpty(response.Error) && downloadedTexture!=null)
             {
                 Sprite createdSprite = Sprite.Create(response.textureDownloaded, new Rect(0.0f, 0.0f, downloadedTexture.width, downloadedTexture.height), new Vector2(0.5f, 0.5f));
                 slideShowImages.Add(createdSprite);

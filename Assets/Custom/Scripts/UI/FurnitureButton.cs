@@ -1,10 +1,12 @@
-﻿using helloVoRld.Test.Databases;
-using helloVoRld.Utilities.Debugging;
-using System;
-using TMPro;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
+using System;
+using helloVoRld.Utilities.Debugging;
+using helloVoRld.Test.Databases;
+using UnityEngine.EventSystems;
 
 namespace helloVoRld.Test.UI
 {
@@ -30,20 +32,10 @@ namespace helloVoRld.Test.UI
             {
                 this.index = index;
 
-                if (FuB_name != null)
-                {
-                    this.FuB_name.text = model.modelName;
-                }
+                if (FuB_name != null) this.FuB_name.text = model.modelName;
+                if (FuB_thumbnail != null) this.FuB_thumbnail.sprite = model.modelThumbnail;
 
-                if (FuB_thumbnail != null)
-                {
-                    this.FuB_thumbnail.sprite = model.modelThumbnail;
-                }
-
-                if (FuB_button != null)
-                {
-                    FuB_button.onClick.AddListener(() => OnClick(this.index));
-                }
+                if (FuB_button != null) FuB_button.onClick.AddListener(() => OnClick(this.index));
             }
 
             catch (Exception exception)

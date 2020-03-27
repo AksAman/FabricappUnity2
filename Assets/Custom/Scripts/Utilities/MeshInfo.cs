@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Mesh))]
 public class MeshInfo : MonoBehaviour
 {
-    private Mesh mesh;
+    Mesh mesh;
     public List<int> subMeshVerticesCount;
 
-    private void Start()
+    void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
         if (mesh == null)
@@ -20,7 +21,7 @@ public class MeshInfo : MonoBehaviour
         GetsubMeshVerticesCount(mesh);
     }
 
-    private void GetsubMeshVerticesCount(Mesh mesh)
+    void GetsubMeshVerticesCount(Mesh mesh)
     {
         for (int i = 0; i < mesh.subMeshCount; i++)
         {
@@ -37,12 +38,11 @@ public class MeshInfo : MonoBehaviour
         {
             verticesTillNow += subMeshVerticesCount[listIndex];
             if (correspondingVertexIndex < verticesTillNow)
-            {
                 return listIndex;
-            }
+
         }
         return -1;
 
-
+        
     }
 }

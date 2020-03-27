@@ -1,13 +1,13 @@
-﻿using helloVoRld.Core.Pooling;
-using helloVoRld.Core.Singletons;
-using helloVoRld.Networking.RestClient;
-using helloVoRld.Test.Databases;
-using helloVoRld.Test.UI;
-using helloVoRld.Utilities;
-using helloVoRld.Utilities.Debugging;
+﻿using helloVoRld.Core.Singletons;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using helloVoRld.Test.Databases;
+using helloVoRld.Core.Pooling;
+using helloVoRld.Utilities;
+using helloVoRld.Test.UI;
+using helloVoRld.Utilities.Debugging;
+using TMPro;
+using helloVoRld.Networking.RestClient;
 
 namespace helloVoRld.Test.Managers
 {
@@ -25,20 +25,20 @@ namespace helloVoRld.Test.Managers
 
         //private
         [Header("Scene References")]
-        [SerializeField] private readonly Transform modelHolder;
-        [SerializeField] private readonly RectTransform furnitureScrollContentHolder;
-        [SerializeField] private readonly TextMeshProUGUI currentFurnitureText;
+        [SerializeField] private Transform modelHolder;
+        [SerializeField] private RectTransform furnitureScrollContentHolder;
+        [SerializeField] private TextMeshProUGUI currentFurnitureText;
 
         [Header("Pooling")]
-        [SerializeField] private readonly int buttonsToPool;
+        [SerializeField] private int buttonsToPool;
 
-        [SerializeField] private readonly bool rememberMaterials;
-        private readonly Dictionary<int, Dictionary<string, int>> modelMaterialReferences = new Dictionary<int, Dictionary<string, int>>();
-        private readonly Dictionary<int, bool> isModelSpawned = new Dictionary<int, bool>();
+        [SerializeField] private bool rememberMaterials;
+        private Dictionary<int, Dictionary<string, int>> modelMaterialReferences = new Dictionary<int, Dictionary<string, int>>();
+        private Dictionary<int, bool> isModelSpawned = new Dictionary<int, bool>();
         private float loadingProgress = 0;
         private GameObject currentModel;
         private ObjectPooler furnitureButtonPooler;
-        private readonly List<GameObject> spawnedModels = new List<GameObject>();
+        private List<GameObject> spawnedModels = new List<GameObject>();
         private int currentModelIndex;
         private MaterialManager materialManager;
         private CatalogueManager catalogueManager;
@@ -74,7 +74,7 @@ namespace helloVoRld.Test.Managers
                     FabricButton.OnFabricButtonClicked += AssignModelMaterialReference;
                 }
             });
-
+            
         }
 
         #endregion
@@ -85,7 +85,7 @@ namespace helloVoRld.Test.Managers
         private void FurnitureButtonClicked(int furnitureButtonIndex)
         {
             //SubMeshTriangle.clickedMatIndex = 0;
-
+            
             ChangeFurniture(furnitureButtonIndex);
         }
 
@@ -130,7 +130,7 @@ namespace helloVoRld.Test.Managers
 
         private void ChangeFurniture(int newIndex)
         {
-            if (CurrentModel)
+            if(CurrentModel)
             {
                 Destroy(CurrentModel);
             }
@@ -141,7 +141,7 @@ namespace helloVoRld.Test.Managers
             GameObject spawnedModelGO = Instantiate(models[CurrentModelIndex].modelPrefab, modelHolder);
             CurrentModel = spawnedModelGO;
 
-            if (rememberMaterials)
+            if(rememberMaterials)
             {
                 //Apply last remembered material
                 if (modelMaterialReferences.ContainsKey(CurrentModelIndex))

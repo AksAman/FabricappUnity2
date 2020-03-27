@@ -1,5 +1,7 @@
 ﻿using DG.Tweening;
 using helloVoRld.Core.Singletons;
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,10 +30,11 @@ public class AnimationManager : Singleton<AnimationManager>
     [Header("Tweening SelectionPanel")]
     public RectTransform selectionMainPanel;
     public RectTransform SelectionPanel;
-    private float startValue;
-    private float endValue;
-    private float initialSelectorFWidth;
-    private float currentDuration;
+
+    float startValue;
+    float endValue;
+    float initialSelectorFWidth;
+    float currentDuration;
     //private Tweener valueTweener;
 
     public float cameraX { get; private set; }
@@ -54,7 +57,7 @@ public class AnimationManager : Singleton<AnimationManager>
         float xToMove = wRatio * mainWidth;
         float currentDuration = isSelectionOpen ? outDuration : inDuration;
         Debug.Log(xToMove);
-        if (isSelectionOpen)
+        if(isSelectionOpen)
         {
             hamburgerAnimator.Play("HTE Hamburger");
             selectionMainPanel.DOAnchorPosX(xToMove, currentDuration).SetEase(easeType);
@@ -72,7 +75,7 @@ public class AnimationManager : Singleton<AnimationManager>
 
     public void TweenCameraParent()
     {
-        float endValue = isSelectionOpen ? cameraParentXPositions.x : cameraParentXPositions.y;
+        float endValue = isSelectionOpen ? cameraParentXPositions.x:cameraParentXPositions.y;
         Debug.Log(endValue);
         //cameraParentTransform.DOLocalMove(transform.right * endValue, duration, false).SetEase(easeType);
     }
@@ -85,7 +88,7 @@ public class AnimationManager : Singleton<AnimationManager>
         startValue = isSelectionOpen ? 0 : -1 * startRatio;
         endValue = isSelectionOpen ? -1 * startRatio : 0;
         currentDuration = isSelectionOpen ? outDuration : inDuration;
-
+        
         Debug.Log(endValue);
         //cameraToTween.rect = new Rect()
         var valueTweener = DOTween.To(x => cameraX = x, startValue, endValue, currentDuration)
