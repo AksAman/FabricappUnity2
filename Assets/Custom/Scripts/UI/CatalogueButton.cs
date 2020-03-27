@@ -23,6 +23,9 @@ namespace helloVoRld.Test.UI
         public Image CB_thumbnail;
         public Button CB_button;
 
+        public GameObject progressElements;
+        public Image progressBar;
+
         public static Action<int> OnCatalogueButtonClicked;
         bool TextureLoaded = false;
         #endregion
@@ -42,12 +45,15 @@ namespace helloVoRld.Test.UI
                 {
                     FixedCountDownloader.Instance.AddTask(catalogue.c_thumbnail_url, (sprite) => 
                     {
+                        ToggleProgressElements(false);
                         CB_thumbnail.sprite = sprite;
                         TextureLoaded = true;
                     },
                     (progress) =>
                     {
-                         Debug.Log((progress * 100).ToString("0.00"));
+                        ToggleProgressElements(true);
+                        progressBar.fillAmount = progress;
+                        //Debug.Log((progress * 100).ToString("0.00"));
                     });
                 }
                 if (CB_button != null) CB_button.onClick.AddListener(() => OnClick(this.index));
@@ -74,6 +80,11 @@ namespace helloVoRld.Test.UI
         #endregion
 
         #region helper code
+
+        private void ToggleProgressElements(bool newState)
+        {
+            progressElements.SetActive(newState);
+        }
         #endregion
     }
 }
