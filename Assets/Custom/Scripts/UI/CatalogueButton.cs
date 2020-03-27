@@ -44,6 +44,10 @@ namespace helloVoRld.Test.UI
                     {
                         CB_thumbnail.sprite = sprite;
                         TextureLoaded = true;
+                    },
+                    (progress) =>
+                    {
+                         Debug.Log((progress * 100).ToString("0.00"));
                     });
                 }
                 if (CB_button != null) CB_button.onClick.AddListener(() => OnClick(this.index));

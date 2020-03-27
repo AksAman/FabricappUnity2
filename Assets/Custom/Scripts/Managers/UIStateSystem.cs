@@ -67,12 +67,12 @@ namespace helloVoRld.Test.Managers
 
         public virtual void ShowLoadingScreen()
         {
-            loadingPanel.SetActive(true);
+            // loadingPanel.SetActive(true);
         }
 
         public virtual void RemoveLoadingScreen()
         {
-            loadingPanel.SetActive(false);
+           // loadingPanel.SetActive(false);
         }
     }
 }

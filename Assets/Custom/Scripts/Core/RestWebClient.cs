@@ -19,7 +19,7 @@ namespace helloVoRld.Networking.RestClient
 
         public IEnumerator HttpGet(string url, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
-            using(UnityWebRequest webRequest = UnityWebRequest.Get(url))
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
             {
                 if (headers != null)
                 {
@@ -28,18 +28,21 @@ namespace helloVoRld.Networking.RestClient
                 }
 
                 yield return webRequest.SendWebRequest();
-                
-                if(webRequest.isNetworkError){
-                    callback(new Response {
+
+                if (webRequest.isNetworkError)
+                {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
                     });
                 }
-                
-                if(webRequest.isDone)
+
+                if (webRequest.isDone)
                 {
                     string data = System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data);
-                    callback(new Response {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
                         Data = data
@@ -52,11 +55,7 @@ namespace helloVoRld.Networking.RestClient
         {
             using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
             {
-                //DownloadHandlerTexture textureDownloader = new DownloadHandlerTexture();
-                //webRequest.downloadHandler = textureDownloader;
-
                 yield return webRequest.SendWebRequest();
-
                 if (webRequest.isNetworkError || (webRequest.error != null && webRequest.error != ""))
                 {
                     callback(new ImageResponse
@@ -78,22 +77,61 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
+        public IEnumerator HttpDownloadImage(string url, System.Action<ImageResponse> callback, System.Action<float> Progress)
+        {
+            using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
+            {
+                DownloadHandlerTexture handlerTexture = new DownloadHandlerTexture();
+                webRequest.downloadHandler = handlerTexture;
+
+                var operation = webRequest.SendWebRequest();
+
+                while (!operation.isDone)
+                {
+                    Progress(webRequest.downloadProgress);
+                    yield return null;
+                }
+
+                if (webRequest.isNetworkError || (webRequest.error != null && webRequest.error != ""))
+                {
+                    callback(new ImageResponse
+                    {
+                        StatusCode = webRequest.responseCode,
+                        Error = webRequest.error,
+                        textureDownloaded = null
+                    });
+                }
+                else if (webRequest.isDone)
+                {
+                    callback(new ImageResponse
+                    {
+                        StatusCode = webRequest.responseCode,
+                        Error = webRequest.error,
+                        textureDownloaded = DownloadHandlerTexture.GetContent(webRequest),
+                    });
+                }
+            }
+        }
+
         public IEnumerator HttpDelete(string url, System.Action<Response> callback)
         {
-            using(UnityWebRequest webRequest = UnityWebRequest.Delete(url))
+            using (UnityWebRequest webRequest = UnityWebRequest.Delete(url))
             {
                 yield return webRequest.SendWebRequest();
 
-                if(webRequest.isNetworkError){
-                    callback(new Response {
+                if (webRequest.isNetworkError)
+                {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error
                     });
                 }
-                
-                if(webRequest.isDone)
+
+                if (webRequest.isDone)
                 {
-                    callback(new Response {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode
                     });
                 }
@@ -102,10 +140,10 @@ namespace helloVoRld.Networking.RestClient
 
         public IEnumerator HttpPost(string url, string body, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
-            
-            using(UnityWebRequest webRequest = UnityWebRequest.Post(url, body))
+
+            using (UnityWebRequest webRequest = UnityWebRequest.Post(url, body))
             {
-                if(headers != null)
+                if (headers != null)
                 {
                     foreach (RequestHeader header in headers)
                     {
@@ -118,18 +156,20 @@ namespace helloVoRld.Networking.RestClient
 
                 yield return webRequest.SendWebRequest();
 
-                if(webRequest.isNetworkError)
+                if (webRequest.isNetworkError)
                 {
-                    callback(new Response {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error
                     });
                 }
-                
-                if(webRequest.isDone)
+
+                if (webRequest.isDone)
                 {
                     string data = System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data);
-                    callback(new Response {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
                         Data = data
@@ -179,9 +219,9 @@ namespace helloVoRld.Networking.RestClient
 
         public IEnumerator HttpPut(string url, string body, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
-            using(UnityWebRequest webRequest = UnityWebRequest.Put(url, body))
+            using (UnityWebRequest webRequest = UnityWebRequest.Put(url, body))
             {
-                if(headers != null)
+                if (headers != null)
                 {
                     foreach (RequestHeader header in headers)
                     {
@@ -194,17 +234,19 @@ namespace helloVoRld.Networking.RestClient
 
                 yield return webRequest.SendWebRequest();
 
-                if(webRequest.isNetworkError)
+                if (webRequest.isNetworkError)
                 {
-                    callback(new Response {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
                     });
                 }
-                
-                if(webRequest.isDone)
+
+                if (webRequest.isDone)
                 {
-                    callback(new Response {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                     });
                 }
@@ -213,21 +255,24 @@ namespace helloVoRld.Networking.RestClient
 
         public IEnumerator HttpHead(string url, System.Action<Response> callback)
         {
-            using(UnityWebRequest webRequest = UnityWebRequest.Head(url))
+            using (UnityWebRequest webRequest = UnityWebRequest.Head(url))
             {
                 yield return webRequest.SendWebRequest();
-                
-                if(webRequest.isNetworkError){
-                    callback(new Response {
+
+                if (webRequest.isNetworkError)
+                {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
                     });
                 }
-                
-                if(webRequest.isDone)
+
+                if (webRequest.isDone)
                 {
                     var responseHeaders = webRequest.GetResponseHeaders();
-                    callback(new Response {
+                    callback(new Response
+                    {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
                         Headers = responseHeaders
@@ -236,6 +281,6 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-        
+
     }
 }
