@@ -5,6 +5,7 @@ using helloVoRld.Networking.Models;
 using helloVoRld.Utilities.Debugging;
 using UnityEngine;
 using UnityEngine.Networking;
+using System;
 
 namespace helloVoRld.Networking.RestClient
 {
@@ -282,6 +283,17 @@ namespace helloVoRld.Networking.RestClient
             }
         }
 
-
+        public IEnumerator HttpInternetCheck(string url, Action OnSuccess, Action OnFail)
+        {
+            using (UnityWebRequest webRequest = new UnityWebRequest(url))
+            {
+                webRequest.timeout = 5;
+                yield return webRequest.SendWebRequest();
+                if (webRequest.responseCode < 299 && webRequest.responseCode >= 200)
+                    OnSuccess();
+                else
+                    OnFail();
+            }
+        }
     }
 }

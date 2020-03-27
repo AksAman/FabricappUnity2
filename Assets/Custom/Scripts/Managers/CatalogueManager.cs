@@ -14,7 +14,7 @@ namespace helloVoRld.Test.Managers
     public class CatalogueManager : Singleton<CatalogueManager>
     {
         #region variables
-        public List<S_Catalogue> Catalogues => CatalogueClient.Instance.Catalogues;
+        public List<S_Catalogue> Catalogues => WebClient.Instance.Catalogues;
 
         [Header("Database")]
         public float loadingProgress;
@@ -49,7 +49,7 @@ namespace helloVoRld.Test.Managers
             uistatesystem.ShowLoadingScreen();
             if (catalogueButtonPooler.isPoolInitialized)
             {
-                CatalogueClient.Instance.GetCatalogues(() => { PopulateCatalogues(); });
+                WebClient.Instance.GetCatalogues(() => { PopulateCatalogues(); });
             }
         }
 

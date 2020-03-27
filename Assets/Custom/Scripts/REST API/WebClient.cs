@@ -13,7 +13,7 @@ using helloVoRld.Test.Databases;
 
 namespace helloVoRld.Networking.RestClient
 {
-    public class CatalogueClient : Singleton<CatalogueClient>
+    public class WebClient : Singleton<WebClient>
     {
         enum State
         {
@@ -47,12 +47,27 @@ namespace helloVoRld.Networking.RestClient
             {
                 CurState = State.RequestSent;
                 OnSuccessWaiters.Add(OnSuccess);
-                StartCoroutine(RestWebClient.Instance.HttpGet(IP + @"/fabricapp/api/catalogues", (response) =>
-                {
-                    if (response.Error == "" || response.Error == null)
+                StartCoroutine(RestWebClient.Instance.HttpInternetCheck(IP + "/fabricapp/",
+                    OnSuccess: () =>
                     {
-                        var responseCatalog = new[]
-                        {
+                        Debug.Log("Internet Available");
+                        StartCoroutine(CatalogueRequest());
+                    },
+                    OnFail:() => 
+                    {
+                        Debug.Log("No Internet!!!");
+                    }));
+            }
+        }
+
+        IEnumerator CatalogueRequest()
+        {
+            return RestWebClient.Instance.HttpGet(IP + @"/fabricapp/api/catalogues", (response) =>
+            {
+                if (response.Error == "" || response.Error == null)
+                {
+                    var responseCatalog = new[]
+                    {
                             new
                             {
                                 id = 0,
@@ -64,39 +79,38 @@ namespace helloVoRld.Networking.RestClient
                             }
                         }.ToList();
 
-                        var list = JsonConvert.DeserializeAnonymousType(response.Data, responseCatalog);
+                    var list = JsonConvert.DeserializeAnonymousType(response.Data, responseCatalog);
 
-                        foreach (var catalog in list)
+                    foreach (var catalog in list)
+                    {
+                        S_Catalogue cat = new S_Catalogue
                         {
-                            S_Catalogue cat = new S_Catalogue
-                            {
-                                WEB_Id = catalog.id,
-                                c_name = catalog.c_name,
-                                c_description = catalog.c_description,
-                                c_thumbnail_url = IP + catalog.c_thumbnail_url,
-                                manufacturer_name = catalog.c_manufacturer_name,
-                                c_fabrics = null
-                            };
-                            Catalogues.Add(cat);
-                        }
-
-                        LoadFabrics(0, OnSuccess: () =>
-                        {
-                            CurState = State.RequestCompleted;
-                            for (int i = 0; i < OnSuccessWaiters.Count; ++i)
-                            {
-                                OnSuccessWaiters[i]();
-                                OnSuccessWaiters[i] = null;
-                            }
-                            OnSuccessWaiters.Clear();
-                        },
-                        OnFailure: () => 
-                        {
-                            
-                        });
+                            WEB_Id = catalog.id,
+                            c_name = catalog.c_name,
+                            c_description = catalog.c_description,
+                            c_thumbnail_url = IP + catalog.c_thumbnail_url,
+                            manufacturer_name = catalog.c_manufacturer_name,
+                            c_fabrics = null
+                        };
+                        Catalogues.Add(cat);
                     }
-                }, new[] { requestHeader }));
-            }
+
+                    LoadFabrics(0, OnSuccess: () =>
+                    {
+                        CurState = State.RequestCompleted;
+                        for (int i = 0; i < OnSuccessWaiters.Count; ++i)
+                        {
+                            OnSuccessWaiters[i]();
+                            OnSuccessWaiters[i] = null;
+                        }
+                        OnSuccessWaiters.Clear();
+                    },
+                    OnFailure: () =>
+                    {
+
+                    });
+                }
+            }, new[] { requestHeader });
         }
 
         public void LoadFabrics(int CatIndex, Action OnSuccess, Action OnFailure)

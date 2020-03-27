@@ -55,7 +55,7 @@ namespace helloVoRld.Test.Managers
             furnitureButtonPooler = GetComponent<ObjectPooler>();
             furnitureButtonPooler.InitializePool(buttonsToPool);
 
-            CatalogueClient.Instance.GetCatalogues(() =>
+            WebClient.Instance.GetCatalogues(() =>
             {
                 if (furnitureButtonPooler.isPoolInitialized)
                 {

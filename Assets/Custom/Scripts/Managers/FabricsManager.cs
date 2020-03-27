@@ -80,7 +80,7 @@ namespace helloVoRld.Test.Managers
             DebugHelper.Log(catalogueButtonIndex.ToString());
             uistatesystem.ShowLoadingScreen();
             TextureDownloader.StopAll();
-            CatalogueClient.Instance.LoadFabrics(catalogueButtonIndex,
+            WebClient.Instance.LoadFabrics(catalogueButtonIndex,
                 OnSuccess: () =>
                 {
                     uistatesystem.RemoveLoadingScreen();
