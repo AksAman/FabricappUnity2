@@ -19,6 +19,9 @@ namespace helloVoRld.Test.UI
         public Image FB_thumbnail;
         public Button FB_button;
 
+        public GameObject progressElements;
+        public Image progressBar;
+
         public static Action<int> OnFabricButtonClicked;
         #endregion
 
@@ -35,8 +38,16 @@ namespace helloVoRld.Test.UI
                 {
                     FB_thumbnail.sprite = null;
                     fabric.LoadThumbnail(
-                        (sprite) => FB_thumbnail.sprite = sprite,
-                        (progress) => Debug.Log((progress * 100).ToString("0.00")));
+                        (sprite) =>
+                        {
+                            ToggleProgressElements(false);
+                            FB_thumbnail.sprite = sprite;
+                        },
+                        (progress) =>
+                        {
+                            ToggleProgressElements(true);
+                            progressBar.fillAmount = progress;
+                        });
                 }
                 if (FB_button != null) FB_button.onClick.AddListener(() => OnClick(this.index));
             }
@@ -62,6 +73,11 @@ namespace helloVoRld.Test.UI
         #endregion
 
         #region helper code
+        private void ToggleProgressElements(bool newState)
+        {
+            progressElements.SetActive(newState);
+        }
+
         #endregion
     }
 }
