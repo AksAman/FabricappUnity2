@@ -10,18 +10,16 @@ namespace helloVoRld.Networking.RestClient
 {
     public class FixedCountDownloader
     {
-        readonly IEnumerator[] Routines = new IEnumerator[5];
+        readonly IEnumerator[] Routines = new IEnumerator[1];
         readonly Queue<(string, Action<Sprite>, Action<float>)> Queue = new Queue<(string, Action<Sprite>, Action<float>)>();
-
-        static MonoBehaviour monoBehaviour;
-        static FixedCountDownloader Current;
+        readonly MonoBehaviour monoBehaviour;
 
         public FixedCountDownloader(MonoBehaviour behaviour)
         {
+            if (behaviour == null)
+                throw new Exception("Behaviour was null when passed to FixedCountDownloader");
             if (monoBehaviour == null)
                 monoBehaviour = behaviour;
-            if (behaviour == null && monoBehaviour == null)
-                throw new Exception("Behaviour was null when passed to FixedCountDownloader");
         }
 
         public void Update()
@@ -58,16 +56,17 @@ namespace helloVoRld.Networking.RestClient
             Queue.Enqueue((path, Act, Progress));
         }
 
-        public static void StopAll(FixedCountDownloader downloader)
+        public void StopAll()
         {
-            for (int i = 0; i < downloader.Routines.Length; ++i)
+            for (int i = 0; i < Routines.Length; ++i)
             {
-                if (downloader.Routines[i] != default)
+                if (Routines[i] != default)
                 {
-                    monoBehaviour.StopCoroutine(downloader.Routines[i]);
-                    downloader.Routines[i] = null;
+                    monoBehaviour.StopCoroutine(Routines[i]);
+                    Routines[i] = null;
                 }
             }
+            Queue.Clear();
         }
     }
 }

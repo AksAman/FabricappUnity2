@@ -139,7 +139,7 @@ namespace helloVoRld.Networking.RestClient
                         Catalogues[CatIndex].c_fabrics.Add(new Fabric
                         {
                             f_title = fabrics.f_name,
-                            f_thumbnail_url = fabrics.f_thumbnail_url,
+                            f_thumbnail_url = IP + fabrics.f_thumbnail_url,
                             f_material = null
                         });
                     }

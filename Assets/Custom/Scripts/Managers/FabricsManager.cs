@@ -29,6 +29,7 @@ namespace helloVoRld.Test.Managers
 
         // Fields
         public int CurrentCatalogueIndex { get => currentCatalogueIndex; private set => currentCatalogueIndex = value; }
+        public FixedCountDownloader TextureDownloader;
 
 
         // private
@@ -41,6 +42,12 @@ namespace helloVoRld.Test.Managers
 
 
         #region main code
+
+        private void Awake()
+        {
+            TextureDownloader = new FixedCountDownloader(this);
+        }
+        
         private void Start()
         {
             uistatesystem = UIStateSystem.Instance;
@@ -57,6 +64,11 @@ namespace helloVoRld.Test.Managers
 
         }
 
+        private void Update()
+        {
+            TextureDownloader.Update();
+        }
+
         #endregion
 
 
@@ -67,6 +79,7 @@ namespace helloVoRld.Test.Managers
             CurrentCatalogueIndex = catalogueButtonIndex;
             DebugHelper.Log(catalogueButtonIndex.ToString());
             uistatesystem.ShowLoadingScreen();
+            TextureDownloader.StopAll();
             CatalogueClient.Instance.LoadFabrics(catalogueButtonIndex,
                 OnSuccess: () =>
                 {
