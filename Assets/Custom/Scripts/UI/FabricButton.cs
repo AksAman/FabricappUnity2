@@ -33,6 +33,7 @@ namespace helloVoRld.Test.UI
                 if (FB_name != null) this.FB_name.text = fabric.f_title;
                 if (FB_thumbnail != null)
                 {
+                    FB_thumbnail.sprite = null;
                     fabric.LoadThumbnail(
                         (sprite) => FB_thumbnail.sprite = sprite,
                         (progress) => Debug.Log((progress * 100).ToString("0.00")));
