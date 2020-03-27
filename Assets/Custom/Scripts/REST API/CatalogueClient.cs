@@ -13,47 +13,6 @@ using helloVoRld.Test.Databases;
 
 namespace helloVoRld.Networking.RestClient
 {
-    internal class FixedCountDownloader : Singleton<FixedCountDownloader>
-    {
-        readonly IEnumerator[] Routines = new IEnumerator[5];
-        readonly Queue<(string, Action<Sprite>, Action<float>)> Queue = new Queue<(string, Action<Sprite>, Action<float>)>();
-        
-        void Update()
-        {
-            if (Queue.Count != 0)
-            {
-                int emptyIndex = Array.IndexOf(Routines, default);
-
-                if (emptyIndex == -1)
-                    return;
-
-                (var Path, var Action, var Progreess) = Queue.Dequeue();
-                Routines[emptyIndex] = RestWebClient.Instance.HttpDownloadImage(Path, (response) =>
-                {
-                    Debug.Log(Path);
-                    // Clear Array Index
-                    Routines[emptyIndex] = default;
-
-                    Texture2D tex = response.textureDownloaded;
-                    if (response.textureDownloaded == null)
-                        return;
-
-                    Sprite s = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
-
-                    // Do Whatever to do with sprite
-                    Action(s);
-                },
-                (progress) => Progreess(progress));
-                StartCoroutine(Routines[emptyIndex]);
-            }
-        }
-
-        public void AddTask(string path, Action<Sprite> Act, Action<float> Progress)
-        {
-            Queue.Enqueue((path, Act, Progress));
-        }
-    }
-
     public class CatalogueClient : Singleton<CatalogueClient>
     {
         enum State
@@ -180,7 +139,7 @@ namespace helloVoRld.Networking.RestClient
                         Catalogues[CatIndex].c_fabrics.Add(new Fabric
                         {
                             f_title = fabrics.f_name,
-                            f_thumbnail = null,
+                            f_thumbnail_url = fabrics.f_thumbnail_url,
                             f_material = null
                         });
                     }

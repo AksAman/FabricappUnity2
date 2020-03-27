@@ -30,9 +30,16 @@ namespace helloVoRld.Test.Managers
         private ObjectPooler catalogueButtonPooler;
         private UIStateSystem uistatesystem;
 
+        public FixedCountDownloader TextureDownloader;
+
         #endregion
 
         #region main code
+        private void Awake()
+        {
+            TextureDownloader = new FixedCountDownloader(this);
+        }
+
         private void Start()
         {
             uistatesystem = UIStateSystem.Instance;
@@ -44,6 +51,11 @@ namespace helloVoRld.Test.Managers
             {
                 CatalogueClient.Instance.GetCatalogues(() => { PopulateCatalogues(); });
             }
+        }
+
+        private void Update()
+        {
+            TextureDownloader.Update();
         }
 
         #endregion
