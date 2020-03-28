@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using helloVoRld.Networking.RestClient;
 using helloVoRld.NewScripts.Engine;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
-using helloVoRld.Networking.RestClient;
 
 namespace helloVoRld.NewScripts
 {
@@ -21,10 +18,17 @@ namespace helloVoRld.NewScripts
         public FixedCountDownloader TextureDownloader { get; set; }
         protected List<Model> ModelList { get; private set; } = new List<Model>();
 
-        public void AddModels(IEnumerable<Model> models) => ModelList.AddRange(models);
-        public void AddModel(Model model) => ModelList.Add(model);
+        public void AddModels(IEnumerable<Model> models)
+        {
+            ModelList.AddRange(models);
+        }
 
-        void Awake()
+        public void AddModel(Model model)
+        {
+            ModelList.Add(model);
+        }
+
+        private void Awake()
         {
             TextureDownloader = new FixedCountDownloader(this);
 

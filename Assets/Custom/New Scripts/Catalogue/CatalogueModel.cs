@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using helloVoRld.Networking.RestClient;
-using helloVoRld.NewScripts.Engine;
-using helloVoRld.NewScripts;
+﻿using helloVoRld.Networking.RestClient;
 
 namespace helloVoRld.NewScripts.Catalogue
 {

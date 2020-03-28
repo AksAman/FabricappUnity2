@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace helloVoRld.NewScripts.Engine
@@ -12,7 +8,7 @@ namespace helloVoRld.NewScripts.Engine
         private static T _instance;
 
         // In multithreading environment, _instance==null condition may give rise to errors
-        public static T Instance 
+        public static T Instance
         {
             get
             {

@@ -1,19 +1,16 @@
-﻿using System;
+﻿using helloVoRld.Utilities.Debugging;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using helloVoRld.Utilities.Debugging;
 
 namespace helloVoRld.NewScripts.Engine
 {
     public class Pooler
     {
-        readonly GameObject PrefabToPool;
-        readonly List<GameObject> AllObjects = new List<GameObject>();
-        readonly List<bool> IsIdle = new List<bool>();
-        
+        private readonly GameObject PrefabToPool;
+        private readonly List<GameObject> AllObjects = new List<GameObject>();
+        private readonly List<bool> IsIdle = new List<bool>();
+
         public Pooler(GameObject g)
         {
             PrefabToPool = g != null ? g : throw new ArgumentNullException("g", "Gameobject for Pooler is null");
@@ -30,10 +27,10 @@ namespace helloVoRld.NewScripts.Engine
 
             GameObject spawnedObject = UnityEngine.Object.Instantiate(PrefabToPool, Parent);
             spawnedObject.SetActive(true);
-           
+
             AllObjects.Add(spawnedObject);
             IsIdle.Add(false);
-            
+
             return spawnedObject;
         }
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using helloVoRld.Networking.RestClient;
+using System;
 using UnityEngine;
-using helloVoRld.Networking.RestClient;
 
 namespace helloVoRld.NewScripts
 {
@@ -37,7 +33,7 @@ namespace helloVoRld.NewScripts
                     ThumbnailSprite = sprite;
                     OnSuccess(ThumbnailSprite);
                 },
-                (progress) => 
+                (progress) =>
                 {
                     Progress(progress);
                 });
