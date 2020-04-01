@@ -49,7 +49,7 @@ namespace helloVoRld.Test.Managers
             uistatesystem.ShowLoadingScreen();
             if (catalogueButtonPooler.isPoolInitialized)
             {
-                WebClient.Instance.GetCatalogues(() => { PopulateCatalogues(); });
+                WebClient.Instance.GetCatalogues((abcd) => { PopulateCatalogues(); });
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using helloVoRld.Networking.RestClient;
+using helloVoRld.NewScripts.UI;
 
 namespace helloVoRld.NewScripts.Catalogue
 {
@@ -9,7 +10,7 @@ namespace helloVoRld.NewScripts.Catalogue
         public readonly string Description;
         public readonly string ManufacturerName;
 
-        protected override FixedCountDownloader TextureDownloader => CatalogueManager.Instance.TextureDownloader;
+
 
         public CatalogueModel(CatalogueWebModel model) : base(model.c_thumbnail_url)
         {
@@ -18,6 +19,8 @@ namespace helloVoRld.NewScripts.Catalogue
             Description = model.c_description;
             ManufacturerName = model.c_manufacturer_name;
         }
+
+        protected override FixedCountDownloader TextureDownloader => CatalogueView.Instance.TextureDownloader;
 
         public override string ToString()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace helloVoRld.NewScripts.Catalogue
 {
@@ -13,8 +14,8 @@ namespace helloVoRld.NewScripts.Catalogue
 
         private void Awake()
         {
-            var names = new[] { nameof(Name), nameof(Description), nameof(Manufacturer), nameof(Thumbnail), nameof(Button), nameof(ProgressObject), nameof(ProgressBar) };
-            var objs = new object[] { Name, Description, Manufacturer, Thumbnail, Button, ProgressObject, ProgressBar };
+            var names = new[] { nameof(Name),  nameof(Manufacturer), nameof(Thumbnail), nameof(Button), nameof(ProgressObject), nameof(ProgressBar) };
+            var objs = new object[] { Name,  Manufacturer, Thumbnail, Button, ProgressObject, ProgressBar };
 
             for (int i = 0; i < names.Length; ++i)
             {
@@ -25,13 +26,12 @@ namespace helloVoRld.NewScripts.Catalogue
             }
         }
 
-        public void Initialize(CatalogueModel model, int index)
+        public override void Initialize(CatalogueModel model, Action OnButtonClick)
         {
             Name.text = model.Name;
-            Description.text = model.Description;
+            // Description.text = model.Description;
             Manufacturer.text = model.ManufacturerName;
-
-            base.Initialize(model, () => CatalogueManager.Instance.OnModelButtonClick(index));
+            base.Initialize(model, OnButtonClick);
         }
     }
 }

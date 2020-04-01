@@ -10,7 +10,7 @@ namespace helloVoRld.Networking.RestClient
 {
     public class FixedCountDownloader
     {
-        readonly IEnumerator[] Routines = new IEnumerator[1];
+        readonly IEnumerator[] Routines = new IEnumerator[6];
         readonly Queue<(string, Action<Sprite>, Action<float>)> Queue = new Queue<(string, Action<Sprite>, Action<float>)>();
         readonly MonoBehaviour monoBehaviour;
 

@@ -15,10 +15,10 @@ namespace helloVoRld.NewScripts
 
         protected Model(string URL)
         {
-            ThumbnailURL = (Globals.IP + "/" + URL).Replace("//", "/");
+            ThumbnailURL = (Globals.IP + URL);
             ThumbnailSprite = null;
         }
-
+        
         public void LoadThumbnail(Action<Sprite> OnSuccess, Action<float> Progress)
         {
             if (ThumbnailSprite != null)

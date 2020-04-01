@@ -1,17 +1,24 @@
 ﻿using helloVoRld.NewScripts.Engine;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace helloVoRld.NewScripts.UI
 {
-    public sealed class NavigationHandler : Singleton<NavigationHandler>
+    public class NavigationHandler : Singleton<NavigationHandler>
     {
+        [Header("Buttons")]
         [SerializeField]
-        private readonly GameObject FurniturePanel;
+        private Button FurnitureButton;
         [SerializeField]
-        private readonly GameObject CataloguePanel;
+        private Button CatalogueButton;
+        [Header("Panels")]
         [SerializeField]
-        private readonly GameObject FabricPanel;
+        private GameObject FurniturePanel;
+        [SerializeField]
+        private GameObject CataloguePanel;
+        [SerializeField]
+        private GameObject FabricPanel;
 
         private GameObject[] Panels { get; set; }
 
@@ -27,24 +34,37 @@ namespace helloVoRld.NewScripts.UI
                     throw new ArgumentNullException(names[i], "Watch for reference of object in " + gameObject.name + ".");
                 }
             }
+
+            if (FurnitureButton == null)
+                throw new ArgumentNullException("Furniture Button", "Watch for reference of object in " + gameObject.name + ".");
+            if (CatalogueButton == null)
+                throw new ArgumentNullException("Catalogue Button", "Watch for reference of object in " + gameObject.name + ".");
+
+            FurnitureButton.onClick.RemoveAllListeners();
+            FurnitureButton.onClick.AddListener(() => SwitchToFurniture());
+            CatalogueButton.onClick.RemoveAllListeners();
+            CatalogueButton.onClick.AddListener(() => SwitchToCatalogues());
         }
 
-        public void SwitchToFurniture()
+        private void SwitchToFurniture()
         {
             SwitchTo(FurniturePanel);
+            CatalogueView.Instance.OnUILeave();
         }
 
-        public void SwitchToCatalogues()
+        private void SwitchToCatalogues()
         {
             SwitchTo(CataloguePanel);
+            CatalogueView.Instance.OnUIVisible();
         }
 
-        public void SwitchToFabricPanel()
+        internal void SwitchToFabricPanel()
         {
             SwitchTo(FabricPanel);
+            CatalogueView.Instance.OnUILeave();
         }
 
-        private void SwitchTo(GameObject g)
+        internal void SwitchTo(GameObject g)
         {
             foreach (var x in Panels)
             {

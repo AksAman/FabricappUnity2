@@ -7,47 +7,37 @@ namespace helloVoRld.NewScripts.Engine
 {
     public class Pooler
     {
+        private readonly RectTransform ScrollViewer;
         private readonly GameObject PrefabToPool;
+
         private readonly List<GameObject> AllObjects = new List<GameObject>();
-        private readonly List<bool> IsIdle = new List<bool>();
 
-        public Pooler(GameObject g)
+        public Pooler(GameObject ButtonUIToPool, RectTransform ScrollTransfrom)
         {
-            PrefabToPool = g != null ? g : throw new ArgumentNullException("g", "Gameobject for Pooler is null");
+            PrefabToPool = ButtonUIToPool != null ? ButtonUIToPool : throw new ArgumentNullException(nameof(ButtonUIToPool), "Gameobject for Pooler is null");
+            ScrollViewer = ScrollTransfrom != null ? ScrollTransfrom : throw new ArgumentNullException(nameof(ScrollTransfrom), "Gameobject for Pooler is null");
         }
 
-        public GameObject GetObject(Transform Parent)
+        public void FillViewer(int Count, Action<int, GameObject> OnObjectCreated)
         {
-            int index = IsIdle.IndexOf(true);
-            if (index != -1)
+            while (Count > AllObjects.Count)
             {
-                IsIdle[index] = false;
-                return AllObjects[index];
+                GameObject spawnedObject = UnityEngine.Object.Instantiate(PrefabToPool, ScrollViewer);
+                spawnedObject.GetComponent<RectTransform>().localScale = Vector3.one;
+                AllObjects.Add(spawnedObject);
             }
 
-            GameObject spawnedObject = UnityEngine.Object.Instantiate(PrefabToPool, Parent);
-            spawnedObject.SetActive(true);
-
-            AllObjects.Add(spawnedObject);
-            IsIdle.Add(false);
-
-            return spawnedObject;
+            for (int i = 0; i < Count; ++i)
+            {
+                AllObjects[i].SetActive(true);
+                OnObjectCreated(i, AllObjects[i]);
+            }
         }
 
-        public bool ReturnToPool(GameObject obj)
+        public  void ClearViewer()
         {
-            int index = AllObjects.IndexOf(obj);
-
-            if (index == -1)
-            {
-                UnityEngine.Object.Destroy(obj);
-                DebugHelper.LogWarning(obj.name + " was returned to a different pool, destroying it!");
-                return false;
-            }
-
-            obj.SetActive(false);
-            IsIdle[index] = true;
-            return true;
+            foreach (var x in AllObjects)
+                x.SetActive(false);
         }
     }
 }
