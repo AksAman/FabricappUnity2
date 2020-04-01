@@ -34,5 +34,10 @@ namespace helloVoRld.NewScripts.UI
             Debug.Log("Button Clicked : " + Model.ToString());
         }
 
+        public override void OnUILeave()
+        {
+            base.OnUILeave();
+        }
+
     }
 }

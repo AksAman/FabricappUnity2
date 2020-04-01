@@ -12,6 +12,8 @@ namespace helloVoRld.NewScripts.UI
         private Button FurnitureButton;
         [SerializeField]
         private Button CatalogueButton;
+        [SerializeField]
+        private Button BackButton;
         [Header("Panels")]
         [SerializeField]
         private GameObject FurniturePanel;
@@ -39,16 +41,22 @@ namespace helloVoRld.NewScripts.UI
                 throw new ArgumentNullException("Furniture Button", "Watch for reference of object in " + gameObject.name + ".");
             if (CatalogueButton == null)
                 throw new ArgumentNullException("Catalogue Button", "Watch for reference of object in " + gameObject.name + ".");
+            if (BackButton == null)
+                throw new ArgumentNullException("Back Button", "Watch for reference of object in " + gameObject.name + ".");
 
             if (FurnitureButton.onClick.GetPersistentEventCount() != 0)
                 throw new Exception("Remove all Listeners from Furniture Click Button");
             if (CatalogueButton.onClick.GetPersistentEventCount() != 0)
                 throw new Exception("Remove all Listeners from Catalogue Click Button");
+            if (BackButton.onClick.GetPersistentEventCount() != 0)
+                throw new Exception("Remove all Listeners from Back Button");
 
             FurnitureButton.onClick.RemoveAllListeners();
             FurnitureButton.onClick.AddListener(() => SwitchToFurniture());
             CatalogueButton.onClick.RemoveAllListeners();
             CatalogueButton.onClick.AddListener(() => SwitchToCatalogues());
+            BackButton.onClick.RemoveAllListeners();
+            BackButton.onClick.AddListener(() => SwitchToCatalogues());
         }
 
         private void SwitchToFurniture(object param = null)

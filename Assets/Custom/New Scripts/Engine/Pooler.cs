@@ -23,6 +23,8 @@ namespace helloVoRld.NewScripts.Engine
 
         public void FillViewer(int Count, Action<int, T> OnObjectCreated)
         {
+            ClearViewer();
+
             while (Count > AllObjects.Count)
             {
                 GameObject spawnedObject = UnityEngine.Object.Instantiate(PrefabToPool.gameObject, ScrollViewer);
