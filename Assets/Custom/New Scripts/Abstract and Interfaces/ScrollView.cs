@@ -56,7 +56,10 @@ namespace helloVoRld.NewScripts
 
             PoolObject.FillViewer(ModelList.Count, (index, Button) =>
             {
-                Button.GetComponent<T>().Initialize(ModelList[index], () => OnButtonClick(ModelList[index]));
+                Button.GetComponent<T>().Initialize(ModelList[index], () =>
+                {
+                    OnButtonClick(ModelList[index]);
+                });
             });
 
             DownloaderCoroutine = null;
@@ -72,8 +75,8 @@ namespace helloVoRld.NewScripts
             {
                 StopCoroutine(DownloaderCoroutine);
                 DownloaderCoroutine = null;
-                PoolObject.ClearViewer();
             }
+            PoolObject.ClearViewer();
         }
     }
 }

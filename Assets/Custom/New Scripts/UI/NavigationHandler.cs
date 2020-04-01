@@ -61,23 +61,23 @@ namespace helloVoRld.NewScripts.UI
 
         private void SwitchToFurniture(object param = null)
         {
-            SwitchTo(FurniturePanel);
             FabricView.Instance.OnUILeave();
             CatalogueView.Instance.OnUILeave();
+            SwitchTo(FurniturePanel);
         }
 
         private void SwitchToCatalogues(object param = null)
         {
-            SwitchTo(CataloguePanel);
             FabricView.Instance.OnUILeave();
             CatalogueView.Instance.OnUIVisible(param);
+            SwitchTo(CataloguePanel);
         }
 
         internal void SwitchToFabricPanel(object param = null)
         {
-            SwitchTo(FabricPanel);
             CatalogueView.Instance.OnUILeave();
             FabricView.Instance.OnUIVisible(param);
+            SwitchTo(FabricPanel);
         }
 
         internal void SwitchTo(GameObject g)

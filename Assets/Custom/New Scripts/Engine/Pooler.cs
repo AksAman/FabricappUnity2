@@ -23,23 +23,22 @@ namespace helloVoRld.NewScripts.Engine
 
         public void FillViewer(int Count, Action<int, T> OnObjectCreated)
         {
-            ClearViewer();
-
             while (Count > AllObjects.Count)
             {
                 GameObject spawnedObject = UnityEngine.Object.Instantiate(PrefabToPool.gameObject, ScrollViewer);
                 spawnedObject.GetComponent<RectTransform>().localScale = Vector3.one;
                 AllObjects.Add(spawnedObject.GetComponent<T>());
             }
-
+            /*
             while (Count < AllObjects.Count)
             {
                 UnityEngine.Object.Destroy(AllObjects[AllObjects.Count - 1]);
                 AllObjects.RemoveAt(AllObjects.Count - 1);
-            }
+            }*/
 
             for (int i = 0; i < Count; ++i)
             {
+                AllObjects[i].transform.SetParent(ScrollViewer);
                 AllObjects[i].gameObject.SetActive(true);
                 OnObjectCreated(i, AllObjects[i]);
             }
