@@ -26,15 +26,13 @@ namespace helloVoRld.NewScripts
         protected Coroutine DownloaderCoroutine;
         protected Pooler CataloguePooler { get; set; }
         internal FixedCountDownloader TextureDownloader { get; set; }
-        protected List<U> ModelList { get; set; } = new List<U>();
+        public List<U> ModelList { get; protected set; } = new List<U>();
         protected bool DownloadingCompleted = false;
 
         public void Awake()
         {
             TextureDownloader = new FixedCountDownloader(this);
             CataloguePooler = new Pooler(ObjectToPool.gameObject, ScrollViewer);
-            if (!DownloadingCompleted)
-                DownloadList();
         }
 
         public void Update()
@@ -42,10 +40,12 @@ namespace helloVoRld.NewScripts
             TextureDownloader.Update();
         }
 
-        public abstract void DownloadList();
+        public abstract void GetList(object param = null);
 
         public virtual void OnUIVisible(object param = null)
         {
+            DownloadingCompleted = false;
+            GetList(param);
             DownloaderCoroutine = StartCoroutine(LoadUI());
         }
 
@@ -62,7 +62,7 @@ namespace helloVoRld.NewScripts
             DownloaderCoroutine = null;
         }
 
-        public abstract void OnButtonClick(U VAL);
+        public abstract void OnButtonClick(U Model);
 
         public void OnUILeave()
         {

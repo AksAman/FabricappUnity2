@@ -40,28 +40,36 @@ namespace helloVoRld.NewScripts.UI
             if (CatalogueButton == null)
                 throw new ArgumentNullException("Catalogue Button", "Watch for reference of object in " + gameObject.name + ".");
 
+            if (FurnitureButton.onClick.GetPersistentEventCount() != 0)
+                throw new Exception("Remove all Listeners from Furniture Click Button");
+            if (CatalogueButton.onClick.GetPersistentEventCount() != 0)
+                throw new Exception("Remove all Listeners from Catalogue Click Button");
+
             FurnitureButton.onClick.RemoveAllListeners();
             FurnitureButton.onClick.AddListener(() => SwitchToFurniture());
             CatalogueButton.onClick.RemoveAllListeners();
             CatalogueButton.onClick.AddListener(() => SwitchToCatalogues());
         }
 
-        private void SwitchToFurniture()
+        private void SwitchToFurniture(object param = null)
         {
             SwitchTo(FurniturePanel);
+            FabricView.Instance.OnUILeave();
             CatalogueView.Instance.OnUILeave();
         }
 
-        private void SwitchToCatalogues()
+        private void SwitchToCatalogues(object param = null)
         {
             SwitchTo(CataloguePanel);
-            CatalogueView.Instance.OnUIVisible();
+            FabricView.Instance.OnUILeave();
+            CatalogueView.Instance.OnUIVisible(param);
         }
 
-        internal void SwitchToFabricPanel()
+        internal void SwitchToFabricPanel(object param = null)
         {
             SwitchTo(FabricPanel);
             CatalogueView.Instance.OnUILeave();
+            FabricView.Instance.OnUIVisible(param);
         }
 
         internal void SwitchTo(GameObject g)

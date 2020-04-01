@@ -14,7 +14,7 @@ namespace helloVoRld.NewScripts.UI
 {
     public class CatalogueView : ScrollView<CatalogueButton, CatalogueModel, CatalogueWebModel>
     {
-        public override void DownloadList()
+        public override void GetList(object param = null)
         {
             WebClient.Instance.GetCatalogues((_List) =>
             {
@@ -28,9 +28,10 @@ namespace helloVoRld.NewScripts.UI
             base.OnUIVisible(param);
         }
 
-        public override void OnButtonClick(CatalogueModel button)
+        public override void OnButtonClick(CatalogueModel Model)
         {
-            Debug.Log("Button Clicked : " + button.ToString());
+            NavigationHandler.Instance.SwitchToFabricPanel(ModelList.IndexOf(Model));
+            Debug.Log("Button Clicked : " + Model.ToString());
         }
 
     }

@@ -81,7 +81,7 @@ namespace helloVoRld.Test.Managers
             uistatesystem.ShowLoadingScreen();
             TextureDownloader.StopAll();
             WebClient.Instance.LoadFabrics(catalogueButtonIndex,
-                OnSuccess: () =>
+                OnSuccess: (abc) =>
                 {
                     uistatesystem.RemoveLoadingScreen();
                     // Populate Fabric panel based on catalogues[i].fabrics

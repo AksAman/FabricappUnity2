@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using helloVoRld.Test.Databases;
 using helloVoRld.NewScripts.Catalogue;
+using helloVoRld.NewScripts.Fabric;
 
 namespace helloVoRld.Networking.RestClient
 {
@@ -51,9 +52,9 @@ namespace helloVoRld.Networking.RestClient
                         StartCoroutine(CatalogueRequest());
                     },
                     OnFail: () =>
-                     {
+                    {
                          Debug.Log("No Internet!!!");
-                     }));
+                    }));
             }
         }
 
@@ -67,39 +68,30 @@ namespace helloVoRld.Networking.RestClient
 
                     CatalogueModels.AddRange(from x in list select new CatalogueModel(x));
 
-                    LoadFabrics(0, OnSuccess: () =>
+                    CurState = State.RequestCompleted;
+                    for (int i = 0; i < QueueList.Count; ++i)
                     {
-                        CurState = State.RequestCompleted;
-                        for (int i = 0; i < QueueList.Count; ++i)
-                        {
-                            QueueList[i](CatalogueModels);
-                            QueueList[i] = null;
-                        }
-                        QueueList.Clear();
-                    },
-                    OnFailure: () =>
-                    {
-
-                    });
+                        QueueList[i](CatalogueModels);
+                        QueueList[i] = null;
+                    }
+                    QueueList.Clear();
                 }
             }, new[] { requestHeader });
         }
 
-        public void LoadFabrics(int CatIndex, Action OnSuccess, Action OnFailure)
+        public void LoadFabrics(int CatIndex, Action<List<FabricModel>> OnSuccess, Action OnFailure)
         {
             if (CatIndex >= CatalogueModels.Count || CatIndex < 0)
                 throw new Exception("Invalid index passed for fabric: " + CatIndex);
 
-            OnSuccess();
-            /*
-            if (Catalogues[CatIndex].c_fabrics != null && Catalogues[CatIndex].c_fabrics.Count != 0)
+
+            if (CatalogueModels[CatIndex].FabricList.Count != 0)
             {
-                OnSuccess();
+                OnSuccess(CatalogueModels[CatIndex].FabricList);
                 return;
             }
 
-            Catalogues[CatIndex].c_fabrics = new List<Fabric>();
-            StartCoroutine(RestWebClient.Instance.HttpGet(IP + @"/fabricapp/api/fabrics?catpk=" + Catalogues[CatIndex].WEB_Id, (response) =>
+            StartCoroutine(RestWebClient.Instance.HttpGet(IP + @"/fabricapp/api/fabrics?catpk=" + CatalogueModels[CatIndex].WebID, (response) =>
             {
                 if (response.Error != null)
                 {
@@ -108,34 +100,16 @@ namespace helloVoRld.Networking.RestClient
                 }
                 else
                 {
-                    var responseCatalog = new[]
+                    var list = JsonConvert.DeserializeObject<List<FabricWebModel>>(response.Data);
+                    foreach (var fabric in list)
                     {
-                        new
-                        {
-                            id = 0,
-                            f_name = "",
-                            f_thumbnail_url = "",
-                            f_fabric_texture = "",
-                            catalogue = 0,
-                            f_material = 0
-                        }
-                    }.ToList();
-
-                    var list = JsonConvert.DeserializeAnonymousType(response.Data, responseCatalog);
-                    foreach (var fabrics in list)
-                    {
-                        Catalogues[CatIndex].c_fabrics.Add(new Fabric
-                        {
-                            f_title = fabrics.f_name,
-                            f_thumbnail_url = IP + fabrics.f_thumbnail_url,
-                            f_material = null
-                        });
+                        CatalogueModels[CatIndex].FabricList.Add(new FabricModel(fabric));
                     }
 
-                    OnSuccess();
+                    OnSuccess(CatalogueModels[CatIndex].FabricList);
                 }
             },
-            new[] { requestHeader }));*/
+            new[] { requestHeader }));
         }
     }
 }

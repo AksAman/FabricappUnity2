@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Assets.Custom.New_Scripts.Fabrics
+﻿namespace helloVoRld.NewScripts.Fabric
 {
-    class FabricWebModel
+    public class FabricWebModel : IWebModel
     {
+        public int id;
+        public string f_name;
+        public string f_thumbnail_url;
+        public string f_fabric_texture;
+        public int catalogue;
+        public int f_material;
     }
 }
