@@ -5,39 +5,51 @@ using UnityEngine;
 
 namespace helloVoRld.NewScripts.Engine
 {
-    public class Pooler
+    public class Pooler<T, U, V>
+        where T : ButtonModel<U, V>
+        where U : Model<V>
+        where V : IWebModel
     {
         private readonly RectTransform ScrollViewer;
-        private readonly GameObject PrefabToPool;
+        private readonly T PrefabToPool;
 
-        private readonly List<GameObject> AllObjects = new List<GameObject>();
+        public readonly List<T> AllObjects = new List<T>();
 
-        public Pooler(GameObject ButtonUIToPool, RectTransform ScrollTransfrom)
+        public Pooler(T ButtonUIToPool, RectTransform ScrollTransfrom)
         {
             PrefabToPool = ButtonUIToPool != null ? ButtonUIToPool : throw new ArgumentNullException(nameof(ButtonUIToPool), "Gameobject for Pooler is null");
             ScrollViewer = ScrollTransfrom != null ? ScrollTransfrom : throw new ArgumentNullException(nameof(ScrollTransfrom), "Gameobject for Pooler is null");
         }
 
-        public void FillViewer(int Count, Action<int, GameObject> OnObjectCreated)
+        public void FillViewer(int Count, Action<int, T> OnObjectCreated)
         {
             while (Count > AllObjects.Count)
             {
-                GameObject spawnedObject = UnityEngine.Object.Instantiate(PrefabToPool, ScrollViewer);
+                GameObject spawnedObject = UnityEngine.Object.Instantiate(PrefabToPool.gameObject, ScrollViewer);
                 spawnedObject.GetComponent<RectTransform>().localScale = Vector3.one;
-                AllObjects.Add(spawnedObject);
+                AllObjects.Add(spawnedObject.GetComponent<T>());
+            }
+
+            while (Count < AllObjects.Count)
+            {
+                UnityEngine.Object.Destroy(AllObjects[AllObjects.Count - 1]);
+                AllObjects.RemoveAt(AllObjects.Count - 1);
             }
 
             for (int i = 0; i < Count; ++i)
             {
-                AllObjects[i].SetActive(true);
+                AllObjects[i].gameObject.SetActive(true);
                 OnObjectCreated(i, AllObjects[i]);
             }
         }
 
-        public  void ClearViewer()
+        public void ClearViewer()
         {
             foreach (var x in AllObjects)
-                x.SetActive(false);
+            {
+                x.UnloadOject();
+                x.gameObject.SetActive(false);
+            }
         }
     }
 }

@@ -30,5 +30,11 @@ namespace helloVoRld.NewScripts.Fabric
             Name.text = model.Title;
             base.Initialize(model, ButtonClick);
         }
+
+        public override void UnloadOject()
+        {
+            Name.text = "";
+            base.UnloadOject();
+        }
     }
 }

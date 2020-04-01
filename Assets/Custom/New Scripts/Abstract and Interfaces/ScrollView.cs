@@ -24,7 +24,7 @@ namespace helloVoRld.NewScripts
         public RectTransform ScrollViewer;
 
         protected Coroutine DownloaderCoroutine;
-        protected Pooler CataloguePooler { get; set; }
+        protected Pooler<T, U, V> PoolObject { get; set; }
         internal FixedCountDownloader TextureDownloader { get; set; }
         public List<U> ModelList { get; protected set; } = new List<U>();
         protected bool DownloadingCompleted = false;
@@ -32,7 +32,7 @@ namespace helloVoRld.NewScripts
         public void Awake()
         {
             TextureDownloader = new FixedCountDownloader(this);
-            CataloguePooler = new Pooler(ObjectToPool.gameObject, ScrollViewer);
+            PoolObject = new Pooler<T, U, V>(ObjectToPool, ScrollViewer);
         }
 
         public void Update()
@@ -54,7 +54,7 @@ namespace helloVoRld.NewScripts
             while (!DownloadingCompleted)
                 yield return null;
 
-            CataloguePooler.FillViewer(ModelList.Count, (index, Button) =>
+            PoolObject.FillViewer(ModelList.Count, (index, Button) =>
             {
                 Button.GetComponent<T>().Initialize(ModelList[index], () => OnButtonClick(ModelList[index]));
             });
@@ -64,13 +64,15 @@ namespace helloVoRld.NewScripts
 
         public abstract void OnButtonClick(U Model);
 
-        public void OnUILeave()
+        public virtual void OnUILeave()
         {
+            foreach (var x in PoolObject.AllObjects)
+                x.Thumbnail.sprite = null;
             if (DownloaderCoroutine != null)
             {
                 StopCoroutine(DownloaderCoroutine);
                 DownloaderCoroutine = null;
-                CataloguePooler.ClearViewer();
+                PoolObject.ClearViewer();
             }
         }
     }

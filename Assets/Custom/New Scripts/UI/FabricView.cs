@@ -22,6 +22,7 @@ namespace helloVoRld.NewScripts.UI
                 (list) =>
                 {
                     ModelList = list;
+                    Debug.Log(ModelList.Count);
                     DownloadingCompleted = true;
                 },
                 () =>
@@ -38,6 +39,11 @@ namespace helloVoRld.NewScripts.UI
         public override void OnButtonClick(FabricModel Model)
         {
             Debug.Log("Fabric Clicked : " + Model.ToString());
+        }
+
+        public override void OnUILeave()
+        {
+            base.OnUILeave();
         }
     }
 }

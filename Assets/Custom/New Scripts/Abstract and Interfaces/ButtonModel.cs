@@ -33,5 +33,11 @@ namespace helloVoRld.NewScripts
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() => ButtonClick());
         }
+
+        public virtual void UnloadOject()
+        {
+            Thumbnail.sprite = null;
+            Button.onClick.RemoveAllListeners();
+        }
     }
 }

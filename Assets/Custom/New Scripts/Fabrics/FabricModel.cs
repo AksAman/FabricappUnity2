@@ -11,8 +11,8 @@ namespace helloVoRld.NewScripts.Fabric
         public string Title;
         public CatalogueModel Catalogue;
 
-        protected override FixedCountDownloader TextureDownloader => throw new System.NotImplementedException();
-    
+        protected override FixedCountDownloader TextureDownloader => FabricView.Instance.TextureDownloader;
+
         public FabricModel(FabricWebModel model) : base(model.f_thumbnail_url)
         {
             WebID = model.id;

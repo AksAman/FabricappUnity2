@@ -104,7 +104,6 @@ namespace helloVoRld.Networking.RestClient
                 }
                 else if (webRequest.isDone)
                 {
-                    Debug.Log(string.Format("{0:0.00} KB", webRequest.downloadedBytes / 1024));
                     callback(new ImageResponse
                     {
                         StatusCode = webRequest.responseCode,

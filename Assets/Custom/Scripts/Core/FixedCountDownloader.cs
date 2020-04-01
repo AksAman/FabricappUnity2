@@ -34,7 +34,6 @@ namespace helloVoRld.Networking.RestClient
                 (var Path, var Action, var Progreess) = Queue.Dequeue();
                 Routines[emptyIndex] = RestWebClient.Instance.HttpDownloadImage(Path, (response) =>
                 {
-                    Debug.Log(Path);
                     Routines[emptyIndex] = default;
 
                     Texture2D tex = response.textureDownloaded;
