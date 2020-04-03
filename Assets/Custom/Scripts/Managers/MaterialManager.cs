@@ -1,4 +1,4 @@
-﻿using helloVoRld.Core.Singletons;
+﻿/*using helloVoRld.Core.Singletons;
 using helloVoRld.Test.UI;
 using TMPro;
 using UnityEngine;
@@ -77,3 +77,4 @@ namespace helloVoRld.Test.Managers
     }
 }
 
+*/

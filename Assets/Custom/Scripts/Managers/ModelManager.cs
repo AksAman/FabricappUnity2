@@ -1,4 +1,4 @@
-﻿using helloVoRld.Core.Singletons;
+﻿/*using helloVoRld.Core.Singletons;
 using System.Collections.Generic;
 using UnityEngine;
 using helloVoRld.Test.Databases;
@@ -7,7 +7,7 @@ using helloVoRld.Utilities;
 using helloVoRld.Test.UI;
 using helloVoRld.Utilities.Debugging;
 using TMPro;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Utilities.Outliner;
 
 namespace helloVoRld.Test.Managers
 {
@@ -17,11 +17,12 @@ namespace helloVoRld.Test.Managers
         #region Variables
         // public
         [Header("Database")]
-        public List<Model> models = new List<Model>();
+        public S_Models s_models;
 
         // Fields
         public GameObject CurrentModel { get => currentModel; private set => currentModel = value; }
-        public int CurrentModelIndex { get => currentModelIndex; private set => currentModelIndex = value; }
+       
+        [SerializeField] S_CurrentModel s_currentModel;
 
         //private
         [Header("Scene References")]
@@ -39,7 +40,7 @@ namespace helloVoRld.Test.Managers
         private GameObject currentModel;
         private ObjectPooler furnitureButtonPooler;
         private List<GameObject> spawnedModels = new List<GameObject>();
-        private int currentModelIndex;
+
         private MaterialManager materialManager;
         private CatalogueManager catalogueManager;
         private FabricsManager fabricsManager;
@@ -54,27 +55,22 @@ namespace helloVoRld.Test.Managers
             fabricsManager = FabricsManager.Instance;
             furnitureButtonPooler = GetComponent<ObjectPooler>();
             furnitureButtonPooler.InitializePool(buttonsToPool);
-
-            WebClient.Instance.GetCatalogues((abcd) =>
+            if(furnitureButtonPooler.isPoolInitialized)
             {
-                if (furnitureButtonPooler.isPoolInitialized)
-                {
-                    PopulateFurnitureButtons();
-                }
+                PopulateFurnitureButtons();
+            }
 
-                FurnitureButton.OnFurnitureButtonClicked += FurnitureButtonClicked;
+            FurnitureButton.OnFurnitureButtonClicked += FurnitureButtonClicked;
 
-                if (models.Count > 0)
-                {
-                    ChangeFurniture(0);
-                }
+            if(s_models.modelList.Count > 0)
+            {
+                ChangeFurniture(0);
+            }
 
-                if (rememberMaterials)
-                {
-                    FabricButton.OnFabricButtonClicked += AssignModelMaterialReference;
-                }
-            });
-            
+            if(rememberMaterials)
+            {
+                FabricButton.OnFabricButtonClicked += AssignModelMaterialReference;
+            }
         }
 
         #endregion
@@ -91,14 +87,14 @@ namespace helloVoRld.Test.Managers
 
         private void UpdateCurrentFurnitureText(int furnitureButtonIndex)
         {
-            currentFurnitureText.text = $"Furniture : {models[furnitureButtonIndex].modelName}".ToUpper();
+            currentFurnitureText.text = $"Furniture : {s_models.modelList[furnitureButtonIndex].modelName}".ToUpper();
         }
 
         private void PopulateFurnitureButtons()
         {
             TransformUtils.ClearChilds(furnitureScrollContentHolder, furnitureButtonPooler);
             loadingProgress = 0;
-            int modelsCount = models.Count;
+            int modelsCount = s_models.modelList.Count;
             if (modelsCount > 0)
             {
                 for (int i = 0; i < modelsCount; i++)
@@ -108,7 +104,7 @@ namespace helloVoRld.Test.Managers
                     catalogueButtonGO.transform.SetParent(furnitureScrollContentHolder);
                     catalogueButtonGO.GetComponent<RectTransform>().localScale = Vector3.one;
                     //Initialize
-                    bool success = catalogueButtonGO.GetComponentInChildren<FurnitureButton>().Init(models[i], i);
+                    bool success = catalogueButtonGO.GetComponentInChildren<FurnitureButton>().Init(s_models.modelList[i], i);
 
                     // SetLoadProgress
                     if (success)
@@ -125,30 +121,35 @@ namespace helloVoRld.Test.Managers
 
         private void SetLoadProgress(int indexLoaded)
         {
-            loadingProgress = ((float)(indexLoaded + 1) / models.Count) * 100;
+            loadingProgress = ((float)(indexLoaded + 1) / s_models.modelList.Count) * 100;
         }
 
         private void ChangeFurniture(int newIndex)
         {
+            
             if(CurrentModel)
             {
+                if (newIndex == s_currentModel.currentModelIndex) return;
                 Destroy(CurrentModel);
             }
 
-            CurrentModelIndex = newIndex;
-            UpdateCurrentFurnitureText(CurrentModelIndex);
+            //CurrentModelIndex = newIndex;
+            s_currentModel.currentModelIndex = newIndex;
+            UpdateCurrentFurnitureText(s_currentModel.currentModelIndex);
 
-            GameObject spawnedModelGO = Instantiate(models[CurrentModelIndex].modelPrefab, modelHolder);
+            GameObject spawnedModelGO = Instantiate(s_models.modelList[s_currentModel.currentModelIndex].modelPrefab, modelHolder);
+            
             CurrentModel = spawnedModelGO;
+            s_currentModel.currentSubModelIndex = s_models.modelList[s_currentModel.currentModelIndex].meshForMaterialUpdate;
 
             if(rememberMaterials)
             {
                 //Apply last remembered material
-                if (modelMaterialReferences.ContainsKey(CurrentModelIndex))
+                if (modelMaterialReferences.ContainsKey(s_currentModel.currentModelIndex))
                 {
-                    int catalogueIndex = modelMaterialReferences[CurrentModelIndex]["Catalogue"];
-                    int fabricIndex = modelMaterialReferences[CurrentModelIndex]["Fabric"];
-                    materialManager.ChangeCurModelMaterial(models[CurrentModelIndex].materialIndexToChange, catalogueIndex, fabricIndex);
+                    int catalogueIndex = modelMaterialReferences[s_currentModel.currentModelIndex]["Catalogue"];
+                    int fabricIndex = modelMaterialReferences[s_currentModel.currentModelIndex]["Fabric"];
+                    materialManager.ChangeCurModelMaterial(s_models.modelList[s_currentModel.currentModelIndex].materialIndexToChange, catalogueIndex, fabricIndex);
                 }
 
             }
@@ -156,7 +157,7 @@ namespace helloVoRld.Test.Managers
             {
                 int catalogueIndex = fabricsManager.CurrentCatalogueIndex;
                 int fabricIndex = materialManager.CurrentFabricIndex;
-                materialManager.ChangeCurModelMaterial(models[CurrentModelIndex].materialIndexToChange, catalogueIndex, fabricIndex);
+                materialManager.ChangeCurModelMaterial(s_models.modelList[s_currentModel.currentModelIndex].materialIndexToChange, catalogueIndex, fabricIndex);
             }
 
             // Set gameobject active
@@ -166,7 +167,7 @@ namespace helloVoRld.Test.Managers
 
         private void AssignModelMaterialReference(int fabricButtonIndex)
         {
-            int modelIndex = CurrentModelIndex;
+            int modelIndex = s_currentModel.currentModelIndex;
             int catalogueIndex = fabricsManager.CurrentCatalogueIndex;
             Dictionary<string, int> materialReference = new Dictionary<string, int>()
             {
@@ -176,7 +177,7 @@ namespace helloVoRld.Test.Managers
 
             if (modelMaterialReferences.ContainsKey(modelIndex))
             {
-                modelMaterialReferences[CurrentModelIndex] = materialReference;
+                modelMaterialReferences[s_currentModel.currentModelIndex] = materialReference;
 
             }
             else
@@ -190,3 +191,4 @@ namespace helloVoRld.Test.Managers
     }
 }
 
+*/

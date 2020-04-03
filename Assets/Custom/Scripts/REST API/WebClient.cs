@@ -33,7 +33,7 @@ namespace helloVoRld.Networking.RestClient
         [Obsolete]
         public readonly List<S_Catalogue> Catalogues = new List<S_Catalogue>();
 
-        readonly List<CatalogueModel> CatalogueModels = new List<CatalogueModel>();
+        List<CatalogueModel> CatalogueModels => Globals.Catalogues;
 
         public void GetCatalogues(Action<List<CatalogueModel>> OnSuccess)
         {

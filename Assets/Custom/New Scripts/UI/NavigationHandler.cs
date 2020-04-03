@@ -63,11 +63,13 @@ namespace helloVoRld.NewScripts.UI
         {
             FabricView.Instance.OnUILeave();
             CatalogueView.Instance.OnUILeave();
+            FurnitureView.Instance.OnUIVisible(param);
             SwitchTo(FurniturePanel);
         }
 
         private void SwitchToCatalogues(object param = null)
         {
+            FurnitureView.Instance.OnUILeave();
             FabricView.Instance.OnUILeave();
             CatalogueView.Instance.OnUIVisible(param);
             SwitchTo(CataloguePanel);
@@ -75,6 +77,7 @@ namespace helloVoRld.NewScripts.UI
 
         internal void SwitchToFabricPanel(object param = null)
         {
+            FurnitureView.Instance.OnUILeave();
             CatalogueView.Instance.OnUILeave();
             FabricView.Instance.OnUIVisible(param);
             SwitchTo(FabricPanel);

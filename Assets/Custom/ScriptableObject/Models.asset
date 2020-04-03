@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50be320d4d1f3a439ee17b7011f5e2c, type: 3}
+  m_Name: Models
+  m_EditorClassIdentifier: 
+  modelList:
+  - modelName: George
+    modelThumbnail: {fileID: 21300000, guid: c3d1c4de83ff24f449f0d58f2f6b3da0, type: 3}
+    allowedParts:
+    - name: 
+      allowed: 1
+    meshForMaterialUpdate: 0
+    materialIndexToChange: 0
+    modelPrefab: {fileID: 5022037535114800568, guid: e6ff23d9f25e77c489446313571693f7,
+      type: 3}
+  - modelName: Maria
+    modelThumbnail: {fileID: 21300000, guid: 1d68e91bc270e4849830ec6db43e25e8, type: 3}
+    allowedParts:
+    - name: 
+      allowed: 1
+    meshForMaterialUpdate: 0
+    materialIndexToChange: 1
+    modelPrefab: {fileID: 1677767970292775113, guid: 3f867d24d236e234090fef05b054935b,
+      type: 3}
+  - modelName: Mia
+    modelThumbnail: {fileID: 21300000, guid: f854457d7414fb648b83674f8f1b171d, type: 3}
+    allowedParts:
+    - name: 
+      allowed: 1
+    meshForMaterialUpdate: 0
+    materialIndexToChange: 0
+    modelPrefab: {fileID: 8428982171043170212, guid: 98b8791442972ad4e86618d48501506c,
+      type: 3}
+  - modelName: Pluto
+    modelThumbnail: {fileID: 21300000, guid: c9cf3daaffd17f742aded87da57b518e, type: 3}
+    allowedParts:
+    - name: 
+      allowed: 1
+    meshForMaterialUpdate: 0
+    materialIndexToChange: 0
+    modelPrefab: {fileID: 3027184820356208703, guid: d34be84aba2178d40ab17cf50da29ffd,
+      type: 3}
+  - modelName: Riley
+    modelThumbnail: {fileID: 21300000, guid: 673fdf2757d145349bfe7b4c417529c4, type: 3}
+    allowedParts:
+    - name: 
+      allowed: 1
+    meshForMaterialUpdate: 0
+    materialIndexToChange: 0
+    modelPrefab: {fileID: 5002759952315085389, guid: ed0d3dcd48a5ba34aba5949ec81dbd54,
+      type: 3}
+  - modelName: 1
+    modelThumbnail: {fileID: 21300000, guid: 673fdf2757d145349bfe7b4c417529c4, type: 3}
+    allowedParts:
+    - name: Steel
+      allowed: 0
+    - name: Legs
+      allowed: 0
+    - name: Back Cushion
+      allowed: 1
+    - name: Seat Cushion
+      allowed: 1
+    - name: Stopper
+      allowed: 0
+    meshForMaterialUpdate: 3
+    materialIndexToChange: 0
+    modelPrefab: {fileID: 3502983247281342626, guid: c052a8883399b0e45aadcf6d46e02b21,
+      type: 3}
+  - modelName: 4
+    modelThumbnail: {fileID: 21300000, guid: 673fdf2757d145349bfe7b4c417529c4, type: 3}
+    allowedParts:
+    - name: Wood
+      allowed: 0
+    - name: Cushion
+      allowed: 1
+    meshForMaterialUpdate: 1
+    materialIndexToChange: 0
+    modelPrefab: {fileID: 3869764572030084378, guid: ad75029bc8cfe3e49a06b4a31a147faa,
+      type: 3}

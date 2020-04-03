@@ -26,7 +26,7 @@ namespace helloVoRld.NewScripts
         protected Coroutine DownloaderCoroutine;
         protected Pooler<T, U, V> PoolObject { get; set; }
         internal FixedCountDownloader TextureDownloader { get; set; }
-        public List<U> ModelList { get; protected set; } = new List<U>();
+        public List<U> ModelList { get; protected set; }
         protected bool DownloadingCompleted = false;
 
         public void Awake()

@@ -29,8 +29,8 @@ namespace helloVoRld.NewScripts.Catalogue
         public override void Initialize(CatalogueModel model, Action OnButtonClick)
         {
             Name.text = model.Name;
-
             Manufacturer.text = model.ManufacturerName;
+
             base.Initialize(model, OnButtonClick);
         }
 
@@ -38,6 +38,7 @@ namespace helloVoRld.NewScripts.Catalogue
         {
             Name.text = "";
             Manufacturer.text = "";
+
             base.UnloadOject();
         }
     }

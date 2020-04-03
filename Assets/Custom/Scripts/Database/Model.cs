@@ -11,9 +11,11 @@ namespace helloVoRld.Test.Databases
         #region Variables
         public string modelName;
         public Sprite modelThumbnail;
-        public List<string> materialPartNames = new List<string>();
+        public List<AllowedParts> allowedParts = new List<AllowedParts>();
+        public int meshForMaterialUpdate = 0;
         public int materialIndexToChange;
         public GameObject modelPrefab;
+
         #endregion
 
 
@@ -38,6 +40,13 @@ namespace helloVoRld.Test.Databases
             
         }
         #endregion
+    }
+
+    [System.Serializable]
+    public struct AllowedParts
+    {
+        public string name;
+        public bool allowed;
     }
 }
 

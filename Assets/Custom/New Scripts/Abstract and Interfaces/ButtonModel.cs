@@ -18,16 +18,19 @@ namespace helloVoRld.NewScripts
 
         public virtual void Initialize(T model, Action ButtonClick)
         {
-            ProgressObject.SetActive(true);
+            if (ProgressObject != null)
+                ProgressObject.SetActive(true);
             model.LoadThumbnail(
                 (sprite) =>
                 {
-                    ProgressObject.SetActive(false);
+                    if (ProgressObject != null)
+                        ProgressObject.SetActive(false);
                     Thumbnail.sprite = sprite;
                 },
                 (progress) =>
                 {
-                    ProgressBar.fillAmount = progress;
+                    if (ProgressBar != null)
+                        ProgressBar.fillAmount = progress;
                 });
 
             Button.onClick.RemoveAllListeners();
