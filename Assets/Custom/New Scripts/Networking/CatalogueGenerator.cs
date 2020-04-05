@@ -4,19 +4,53 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using helloVoRld.Networking.RestClient;
 using helloVoRld.Networking.Models;
-using helloVoRld.Core.Singletons;
+using helloVoRld.NewScripts.Engine;
 using Newtonsoft.Json;
 using UnityEngine;
 using helloVoRld.Test.Databases;
 using helloVoRld.NewScripts.Catalogue;
 using helloVoRld.NewScripts.Fabric;
 
-namespace helloVoRld.Networking.RestClient
+namespace helloVoRld.Networking
 {
-    public class WebClient : Singleton<WebClient>
+    public class CatalogueGenerator : Singleton<CatalogueGenerator>
     {
+        static string IP => Globals.IP;
+        static List<CatalogueModel> Catalogues => Globals.Catalogues;
+
+        public void GetCatalogues(Action<List<CatalogueModel>> OnSuccess)
+        {
+            StartCoroutine(RestWebClient.Instance.HttpInternetCheck(IP + "/fabricapp/",
+                OnSuccess: () =>
+                {
+                    Debug.Log("Internet Available");
+                    StartCoroutine(CatalogueRequest(OnSuccess));
+                },
+                OnFail: () =>
+                {
+                    Debug.Log("No Internet!!!");
+                }));
+        }
+
+        IEnumerator CatalogueRequest(Action<List<CatalogueModel>> OnSuccess)
+        {
+            return RestWebClient.Instance.HttpGet(IP + @"/fabricapp/api/catalogues", response =>
+            {
+                if (response.IsValidResponse)
+                {
+                    var list = JsonConvert.DeserializeObject<List<CatalogueWebModel>>(response.Data);
+
+                    Catalogues.AddRange(from x in list select new CatalogueModel(x));
+
+                    OnSuccess(Catalogues);
+                }
+            }, new[] { Globals.RequestHeader });
+        }
+    }
+
+    #region OLD Code
+    /*
         enum State
         {
             RequestNotSent,
@@ -78,38 +112,6 @@ namespace helloVoRld.Networking.RestClient
                 }
             }, new[] { requestHeader });
         }
-
-        public void LoadFabrics(int CatIndex, Action<List<FabricModel>> OnSuccess, Action OnFailure)
-        {
-            if (CatIndex >= CatalogueModels.Count || CatIndex < 0)
-                throw new Exception("Invalid index passed for fabric: " + CatIndex);
-
-
-            if (CatalogueModels[CatIndex].FabricList.Count != 0)
-            {
-                OnSuccess(CatalogueModels[CatIndex].FabricList);
-                return;
-            }
-
-            StartCoroutine(RestWebClient.Instance.HttpGet(IP + @"/fabricapp/api/fabrics?catpk=" + CatalogueModels[CatIndex].WebID, (response) =>
-            {
-                if (response.Error != null)
-                {
-                    OnFailure();
-                    return;
-                }
-                else
-                {
-                    var list = JsonConvert.DeserializeObject<List<FabricWebModel>>(response.Data);
-                    foreach (var fabric in list)
-                    {
-                        CatalogueModels[CatIndex].FabricList.Add(new FabricModel(fabric));
-                    }
-
-                    OnSuccess(CatalogueModels[CatIndex].FabricList);
-                }
-            },
-            new[] { requestHeader }));
-        }
-    }
+*/
+    #endregion
 }

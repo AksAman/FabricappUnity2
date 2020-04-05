@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿/*using System.Collections.Generic;
 using UnityEngine;
 using helloVoRld.Test.Databases;
 using helloVoRld.Core.Singletons;
@@ -6,7 +6,7 @@ using helloVoRld.Test.UI;
 using helloVoRld.Utilities.Debugging;
 using helloVoRld.Utilities;
 using helloVoRld.Core.Pooling;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Networking;
 
 namespace helloVoRld.Test.Managers
 {
@@ -14,7 +14,7 @@ namespace helloVoRld.Test.Managers
     public class CatalogueManager : Singleton<CatalogueManager>
     {
         #region variables
-        public List<S_Catalogue> Catalogues => WebClient.Instance.Catalogues;
+        public List<S_Catalogue> Catalogues => CatalogueGenerator.Instance.Catalogues;
 
         [Header("Database")]
         public float loadingProgress;
@@ -49,7 +49,7 @@ namespace helloVoRld.Test.Managers
             uistatesystem.ShowLoadingScreen();
             if (catalogueButtonPooler.isPoolInitialized)
             {
-                WebClient.Instance.GetCatalogues((abcd) => { PopulateCatalogues(); });
+                CatalogueGenerator.Instance.GetCatalogues((abcd) => { PopulateCatalogues(); });
             }
         }
 
@@ -101,4 +101,4 @@ namespace helloVoRld.Test.Managers
 
         #endregion
     }
-}
+}*/

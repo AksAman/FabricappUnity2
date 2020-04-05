@@ -1,4 +1,4 @@
-﻿using helloVoRld.Networking.RestClient;
+﻿using helloVoRld.Networking;
 using System;
 using UnityEngine;
 

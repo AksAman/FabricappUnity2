@@ -2,7 +2,7 @@
 using helloVoRld.Test.UI;
 using TMPro;
 using UnityEngine;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Networking;
 namespace helloVoRld.Test.Managers
 {
     public class MaterialManager : Singleton<MaterialManager>

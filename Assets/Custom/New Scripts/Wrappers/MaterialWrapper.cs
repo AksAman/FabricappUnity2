@@ -13,7 +13,7 @@ namespace helloVoRld.NewScripts.Wrappers
 	{
 		private static readonly List<(string PropName, Type PropType)> PropertiesNames = new List<(string PropName, Type PropType)>
 		{
-            //----- Albedo and Texture Coordinates  ----
+			//----- Albedo and Texture Coordinates  ----
             ("_MainTex", typeof(Texture2D)),
 			("_MainTex_Tiling", typeof(Vector2Wrapper)),
 			("_Rotation", typeof(float)),
@@ -90,7 +90,7 @@ namespace helloVoRld.NewScripts.Wrappers
 			}
 		}
 
-		internal void DeserializeValues(Dictionary<string, object> input)
+		public void DeserializeValues(Dictionary<string, object> input)
 		{
 			MainObject = new Material(Shader.Find("Standard"));
 			Properties = input;

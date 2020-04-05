@@ -1,5 +1,8 @@
 ﻿using helloVoRld.NewScripts.Catalogue;
+using helloVoRld.NewScripts.Furniture;
+using helloVoRld.NewScripts.Fabric;
 using System.Collections.Generic;
+using helloVoRld.Networking.Models;
 using Newtonsoft.Json;
 using UnityEngine;
 using helloVoRld.NewScripts.Wrappers;
@@ -12,13 +15,20 @@ namespace helloVoRld
         public static readonly string IP = @"http://hvrplfabricapp.ml";
         public static readonly string AllCataloguesIP = IP + @"/fabricapp/api/catalogues";
         public static readonly string AllFabricsIP = IP + @"/fabricapp/api/fabrics";
+        public static readonly RequestHeader RequestHeader = new RequestHeader { Key = "Authorization", Value = "Token " + "0ef442a637f1570b5f848f164ee972219eaca8bc" };
+
+
         public static readonly List<CatalogueModel> Catalogues = new List<CatalogueModel>();
+        public static readonly List<FurnitureModel> Furnitures = new List<FurnitureModel>();
+
+        public static FurnitureModel SelectedFurniture;
+        public static CatalogueModel SelectedCatalogue;
+        public static FabricModel SelectedFabric;
 
         public static string FabricIP(int catIndex)
         {
             return IP + @"/fabricapp/api/fabrics?catpk=" + catIndex;
         }
-
 
         public static string ToHexString(this Color c, bool IncludeA = false)
         {

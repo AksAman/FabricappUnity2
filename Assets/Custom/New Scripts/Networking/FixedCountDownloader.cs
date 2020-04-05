@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace helloVoRld.Networking.RestClient
+namespace helloVoRld.Networking
 {
     public class FixedCountDownloader
     {

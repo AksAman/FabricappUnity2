@@ -1,7 +1,9 @@
 using UnityEngine;
+using System;
 
 namespace helloVoRld.Core.Singletons
 {
+    [Obsolete]
     public class Singleton<T> : MonoBehaviour
         where T : Component
     {

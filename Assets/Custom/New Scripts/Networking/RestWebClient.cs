@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 
-namespace helloVoRld.Networking.RestClient
+namespace helloVoRld.Networking
 {
     public class RestWebClient : Singleton<RestWebClient>
     {

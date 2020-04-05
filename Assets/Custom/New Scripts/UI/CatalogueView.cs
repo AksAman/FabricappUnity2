@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using helloVoRld.NewScripts.Catalogue;
 using helloVoRld.NewScripts.Engine;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Networking;
 
 namespace helloVoRld.NewScripts.UI
 {
@@ -16,7 +16,7 @@ namespace helloVoRld.NewScripts.UI
     {
         public override void GetList(object param = null)
         {
-            WebClient.Instance.GetCatalogues((_List) =>
+            CatalogueGenerator.Instance.GetCatalogues((_List) =>
             {
                 ModelList = _List;
                 DownloadingCompleted = true;
@@ -30,12 +30,14 @@ namespace helloVoRld.NewScripts.UI
 
         public override void OnButtonClick(CatalogueModel Model)
         {
+            Globals.SelectedCatalogue = Model;
             NavigationHandler.Instance.SwitchToFabricPanel(ModelList.IndexOf(Model));
             Debug.Log("Button Clicked : " + Model.ToString());
         }
 
         public override void OnUILeave()
         {
+            // Don't remove catalogue reference from here, because the next panel may be fabric and we need selected catalogue there
             base.OnUILeave();
         }
 

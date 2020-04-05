@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using helloVoRld.NewScripts.Fabric;
 using helloVoRld.NewScripts.Engine;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Networking;
 
 namespace helloVoRld.NewScripts.UI
 {
@@ -18,7 +18,7 @@ namespace helloVoRld.NewScripts.UI
         {
             int catalogueIndex = (int)param;
 
-            WebClient.Instance.LoadFabrics(catalogueIndex,
+            FabricGenerator.Instance.LoadFabrics(catalogueIndex,
                 (list) =>
                 {
                     ModelList = list;
@@ -38,6 +38,7 @@ namespace helloVoRld.NewScripts.UI
 
         public override void OnButtonClick(FabricModel Model)
         {
+            Globals.SelectedFabric = Model;
             Debug.Log("Fabric Clicked : " + Model.ToString());
         }
 

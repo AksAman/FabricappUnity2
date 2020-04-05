@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using helloVoRld.NewScripts.Furniture;
 using helloVoRld.NewScripts.Engine;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Networking;
 
 namespace helloVoRld.NewScripts.UI
 {
@@ -20,11 +20,14 @@ namespace helloVoRld.NewScripts.UI
         public override void GetList(object param = null)
         {
             ModelList = new List<FurnitureModel>(from x in modelsList.modelList select new FurnitureModel(x));
+            Globals.Furnitures.Clear();
+            Globals.Furnitures.AddRange(ModelList);
             DownloadingCompleted = true;
         }
 
         public override void OnButtonClick(FurnitureModel Model)
         {
+            Globals.SelectedFurniture = Model;
             Debug.Log("Clicked : " + Model.Name);
         }
     }

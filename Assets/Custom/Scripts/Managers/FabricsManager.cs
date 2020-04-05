@@ -1,4 +1,4 @@
-﻿using helloVoRld.Core.Singletons;
+﻿/*using helloVoRld.Core.Singletons;
 using helloVoRld.Test.UI;
 using helloVoRld.Test.Databases;
 using UnityEngine;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using helloVoRld.Utilities;
 using helloVoRld.Core.Pooling;
 using helloVoRld.Utilities.Debugging;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Networking;
 
 namespace helloVoRld.Test.Managers
 {
@@ -132,3 +132,4 @@ namespace helloVoRld.Test.Managers
         #endregion
     }
 }
+*/

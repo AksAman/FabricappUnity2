@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lean.Touch;
 using UnityEngine.UI;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Networking;
 using helloVoRld.Core.Singletons;
 using helloVoRld.Utilities.Debugging;
 using DG.Tweening;

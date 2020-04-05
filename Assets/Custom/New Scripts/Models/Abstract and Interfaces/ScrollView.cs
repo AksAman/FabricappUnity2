@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using helloVoRld.NewScripts.Catalogue;
 using helloVoRld.NewScripts.Engine;
-using helloVoRld.Networking.RestClient;
+using helloVoRld.Networking;
 
 namespace helloVoRld.NewScripts
 {

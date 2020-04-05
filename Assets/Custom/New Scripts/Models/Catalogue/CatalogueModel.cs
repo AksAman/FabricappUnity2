@@ -1,4 +1,4 @@
-﻿using helloVoRld.Networking.RestClient;
+﻿using helloVoRld.Networking;
 using helloVoRld.NewScripts.UI;
 using System.Collections.Generic;
 using helloVoRld.NewScripts.Fabric;
@@ -13,7 +13,7 @@ namespace helloVoRld.NewScripts.Catalogue
         public readonly string ManufacturerName;
 
         public readonly List<FabricModel> FabricList;
-               
+
         public CatalogueModel(CatalogueWebModel model) : base(model.c_thumbnail_url)
         {
             WebID = model.id;
