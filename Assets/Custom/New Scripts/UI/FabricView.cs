@@ -39,6 +39,10 @@ namespace helloVoRld.NewScripts.UI
         public override void OnButtonClick(FabricModel Model)
         {
             Globals.SelectedFabric = Model;
+            MaterialGenerator.Instance.GetAppropriateMaterial(material => 
+            {
+                // Attach to furniture here
+            });
             Debug.Log("Fabric Clicked : " + Model.ToString());
         }
 

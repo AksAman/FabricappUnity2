@@ -12,6 +12,8 @@ namespace helloVoRld.NewScripts.Catalogue
         public readonly string Description;
         public readonly string ManufacturerName;
 
+        public readonly string NormalMapURL;
+
         public readonly List<FabricModel> FabricList;
 
         public CatalogueModel(CatalogueWebModel model) : base(model.c_thumbnail_url)
@@ -20,6 +22,7 @@ namespace helloVoRld.NewScripts.Catalogue
             Name = model.c_name;
             Description = model.c_description;
             ManufacturerName = model.c_manufacturer_name;
+            NormalMapURL = model.c_normal_map;
 
             FabricList = new List<FabricModel>();
         }

@@ -16,8 +16,8 @@ namespace helloVoRld.NewScripts.Furniture
 
         public void Awake()
         {
-            var names = new[] { nameof(Name), nameof(Thumbnail), nameof(Button), nameof(ProgressObject), nameof(ProgressBar) };
-            var objs = new object[] { Name, Thumbnail, Button, ProgressObject, ProgressBar };
+            var names = new[] { nameof(Name), nameof(Thumbnail), nameof(Button) };
+            var objs = new object[] { Name, Thumbnail, Button };
 
             for (int i = 0; i < names.Length; ++i)
             {

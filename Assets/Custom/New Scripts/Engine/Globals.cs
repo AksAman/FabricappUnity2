@@ -30,6 +30,11 @@ namespace helloVoRld
             return IP + @"/fabricapp/api/fabrics?catpk=" + catIndex;
         }
 
+        public static string MaterialIP(int index)
+        {
+            return IP + "/fabricapp/api/materials?pk=" + index;
+        }
+
         public static string ToHexString(this Color c, bool IncludeA = false)
         {
             int R = (int)(c.r * 255);

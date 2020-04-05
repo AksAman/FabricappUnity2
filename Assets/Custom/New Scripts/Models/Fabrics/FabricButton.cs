@@ -12,8 +12,8 @@ namespace helloVoRld.NewScripts.Fabric
 
         private void Awake()
         {
-            var names = new[] { nameof(Name), nameof(Thumbnail), nameof(Button) };
-            var objs = new object[] { Name, Thumbnail, Button };
+            var names = new[] { nameof(Name), nameof(Thumbnail), nameof(Button), nameof(ProgressObject), nameof(ProgressBar) };
+            var objs = new object[] { Name, Thumbnail, Button, ProgressObject, ProgressBar };
 
             for (int i = 0; i < names.Length; ++i)
             {
