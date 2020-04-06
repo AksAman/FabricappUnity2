@@ -15,50 +15,36 @@ namespace helloVoRld.NewScripts.Wrappers
 		{
 			//----- Albedo and Texture Coordinates  ----
             ("_MainTex", typeof(Texture2D)),
-			("_MainTex_Tiling", typeof(Vector2Wrapper)),
-			("_Rotation", typeof(float)),
+			("_MainTex_Tiling", typeof(Vector2)),
 			("_Color", typeof(Color)),
 			("_MainCon", typeof(float)),
 			("_MainBgt", typeof(float)),
-
-			//---- Dirt Pattern ----
-
-			//Dirt UV is individually registered
-			("_DirtTex", typeof(Texture2D)),
-			("_DirtTex_Tiling", typeof(Vector2Wrapper)),
-			("_DirtGray", typeof(float)),
-			("_Dirt1", typeof(float)),
-			("_Dirt0", typeof(float)),
-
-			//Macro Adjustment
-			("_DirtPre", typeof(float)),
-			("_DirtCol", typeof(Color)),
-			("_DirtRgh", typeof(float)),
-			("_DirtNorm", typeof(float)),
 
 			//---- Specular ----
 			("_Spec", typeof(float)),
 
 			//----- Roughness -----
 			("_RghTex", typeof(Texture2D)),
-			("_RghTex_Tiling", typeof(Vector2Wrapper)),
-			("_RghGray", typeof(float)),
-			("_Rgh1", typeof(float)),
 			("_RghAmp", typeof(float)),
-
 
 			//----- Normal -----
 
 			//Primary Normal
 			("_NormTex", typeof(Texture2D)),
-			("_NormTex_Tiling", typeof(Vector2Wrapper)),
 			("_Norm", typeof(float)),
 			("_NormBas", typeof(float)),
 
 			//Secondary Normal, and its UV is individually registered
-			("_NormTex2", typeof(Texture2D)),
+			
+			("_UVSec", typeof(float)),
+			("_NormTex20", typeof(Texture2D)),
+			("_NormTex21", typeof(Texture2D)),
+
 			("_Norm2", typeof(float)),
-			("_NormRati", typeof(float))
+			("_NormRati", typeof(float)),
+			
+			("_AOTex", typeof(Texture2D)),
+			("_AOStrength", typeof(float)),
 		};
 
 		public Material MainObject { get; set; }
@@ -66,7 +52,7 @@ namespace helloVoRld.NewScripts.Wrappers
 
 
 		[JsonProperty]
-		internal Dictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
+		public Dictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
 
 		public MaterialWrapper() { }
 

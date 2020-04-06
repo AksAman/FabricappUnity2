@@ -7,7 +7,7 @@ using helloVoRld.NewScripts.Engine;
 using System.Runtime.Serialization;
 using UnityEngine;
 using Newtonsoft.Json;
-
+/*
 namespace helloVoRld.NewScripts.Wrappers
 {
     [JsonObject(MemberSerialization.OptIn)]
@@ -39,3 +39,4 @@ namespace helloVoRld.NewScripts.Wrappers
 
     }
 }
+*/

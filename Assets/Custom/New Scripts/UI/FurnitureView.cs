@@ -17,12 +17,18 @@ namespace helloVoRld.NewScripts.UI
         [Header("List Reference")]
         public Test.Databases.S_Models modelsList;
 
+        public void Start()
+        {
+            OnUIVisible();
+        }
+
         public override void GetList(object param = null)
         {
             ModelList = new List<FurnitureModel>(from x in modelsList.modelList select new FurnitureModel(x));
             Globals.Furnitures.Clear();
             Globals.Furnitures.AddRange(ModelList);
             DownloadingCompleted = true;
+            Globals.SelectedFurniture = ModelList[0];
         }
 
         public override void OnButtonClick(FurnitureModel Model)

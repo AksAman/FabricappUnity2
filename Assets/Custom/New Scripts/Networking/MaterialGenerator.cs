@@ -18,7 +18,7 @@ namespace helloVoRld.Networking
     {
         readonly Dictionary<int, Material> Materials = new Dictionary<int, Material>();
         readonly Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
-        readonly MaterialWrapper MaterialDeserializer = new MaterialWrapper();
+        public readonly MaterialWrapper MaterialDeserializer = new MaterialWrapper();
 
         FurnitureModel Furniture => Globals.SelectedFurniture;
         CatalogueModel Catalogue => Globals.SelectedCatalogue;
@@ -31,8 +31,6 @@ namespace helloVoRld.Networking
 
             StartCoroutine(MaterialRequest(Fabric.MaterialIndex, (material) =>
             {
-                Materials.Add(Fabric.MaterialIndex, material);
-
                 if (Fabric.MainTexURL != "" && Fabric.MainTexURL != null)
                 {
                     StartCoroutine(TexturesRequest(Fabric.MainTexURL, texture => 
@@ -48,7 +46,7 @@ namespace helloVoRld.Networking
                         material.SetTexture("_NormTex", texture);
                     }));
                 }
-
+                
                 OnSuccess(material);
             }));
         }
@@ -67,7 +65,7 @@ namespace helloVoRld.Networking
                     Textures.Add(url, tex);
                     TexturesOnSuccess(tex);
                 },
-                progress => Debug.Log(progress));
+                progress => { });
         }
 
         IEnumerator MaterialRequest(int index, Action<Material> MaterialOnSuccess)

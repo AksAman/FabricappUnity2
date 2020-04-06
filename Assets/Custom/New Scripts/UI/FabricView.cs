@@ -41,7 +41,8 @@ namespace helloVoRld.NewScripts.UI
             Globals.SelectedFabric = Model;
             MaterialGenerator.Instance.GetAppropriateMaterial(material => 
             {
-                // Attach to furniture here
+                foreach (var x in MaterialGenerator.Instance.MaterialDeserializer.Properties)
+                    Debug.Log(x.Key + " : " + x.Value);
             });
             Debug.Log("Fabric Clicked : " + Model.ToString());
         }

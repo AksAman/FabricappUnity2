@@ -58,8 +58,11 @@ namespace helloVoRld
                 return material.GetColor(name).ToHexString(IncludeA: true);
             if (type == typeof(Texture2D))
                 return null;// AssetDatabase.GetAssetPath(material.GetTexture(name));
-            if (type == typeof(Vector2Wrapper))
-                return new Vector2Wrapper(material.GetTextureScale(name.Substring(0, name.IndexOf("_Tiling"))));
+            if (type == typeof(Vector2))
+            {
+                Vector2 v = material.GetTextureScale(name.Substring(0, name.IndexOf("_Tiling")));
+                return string.Format("{0},{1}", v.x, v.y);
+            }
 
             throw new Exception();
         }
@@ -67,10 +70,15 @@ namespace helloVoRld
         [Obsolete]
         public static void SetPropertyString(this Material m, string name, Type type, object value)
         {
-            if (type == typeof(Vector2Wrapper))
+            if (type == typeof(Vector2))
             {
-                Vector2Wrapper wrapper = JsonConvert.DeserializeObject<Vector2Wrapper>(value.ToString());
-                m.SetTextureScale(name.Substring(0, name.LastIndexOf("_Tiling")), wrapper.MainObject);
+                string[] temp = (value as string).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (temp.Length == 0)
+                    m.SetTextureScale(name.Substring(0, name.LastIndexOf("_Tiling")),
+                        new Vector2(1, 1));
+                else
+                    m.SetTextureScale(name.Substring(0, name.LastIndexOf("_Tiling")),
+                        new Vector2(float.Parse(temp[0]), float.Parse(temp[1])));
                 return;
             }
 
@@ -92,11 +100,12 @@ namespace helloVoRld
 
             if (type == typeof(Texture2D))
             {
+                m.SetTexture(name, null);/*
                 // Null was exported
-                if (val.Length == 0)
+                if (val == null || val.Length == 0)
                     m.SetTexture(name, null);
                 else
-                    m.SetTexture(name, null/* AssetDatabase.LoadAssetAtPath<Texture2D>(val)*/);
+                    m.SetTexture(name, null/* AssetDatabase.LoadAssetAtPath<Texture2D>(val));*/
             }
         }
     }
