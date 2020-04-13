@@ -22,7 +22,7 @@ namespace helloVoRld.NewScripts.Catalogue
             Name = model.c_name;
             Description = model.c_description;
             ManufacturerName = model.c_manufacturer_name;
-            NormalMapURL = model.c_normal_map;
+            NormalMapURL = Globals.IP + model.c_normal_map;
 
             FabricList = new List<FabricModel>();
         }

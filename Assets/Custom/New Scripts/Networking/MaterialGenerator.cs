@@ -33,7 +33,7 @@ namespace helloVoRld.Networking
             {
                 if (Fabric.MainTexURL != "" && Fabric.MainTexURL != null)
                 {
-                    StartCoroutine(TexturesRequest(Fabric.MainTexURL, texture => 
+                    StartCoroutine(TexturesRequest(Fabric.MainTexURL, Fabric.DateSuffix, texture => 
                     {
                         material.SetTexture("_MainTex", texture);
                     }));
@@ -41,7 +41,7 @@ namespace helloVoRld.Networking
 
                 if (Catalogue.NormalMapURL != "" && Catalogue.NormalMapURL != null)
                 {
-                    StartCoroutine(TexturesRequest(Catalogue.NormalMapURL, texture =>
+                    StartCoroutine(TexturesRequest(Catalogue.NormalMapURL, Fabric.DateSuffix, texture =>
                     {
                         material.SetTexture("_NormTex", texture);
                     }));
@@ -51,18 +51,27 @@ namespace helloVoRld.Networking
             }));
         }
 
-        IEnumerator TexturesRequest(string url, Action<Texture2D> TexturesOnSuccess)
+        IEnumerator TexturesRequest(string url, string Date, Action<Texture2D> TexturesOnSuccess)
         {
             if (Textures.ContainsKey(url))
             {
                 TexturesOnSuccess(Textures[url]);
                 yield return null;
             }
+            
+            else if (Globals.IsTextureOnDisk(url, Date, out Texture2D t))
+            {
+                Textures.Add(url, t);
+                TexturesOnSuccess(t);
+                yield return null;
+            }
+
             else yield return RestWebClient.Instance.HttpDownloadImage(url,
                 response =>
                 {
                     Texture2D tex = response.textureDownloaded;
                     Textures.Add(url, tex);
+                    Globals.WriteTextureOnDisk(url, Date, tex);
                     TexturesOnSuccess(tex);
                 },
                 progress => { });

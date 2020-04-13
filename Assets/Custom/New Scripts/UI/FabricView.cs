@@ -45,12 +45,12 @@ namespace helloVoRld.NewScripts.UI
         public override void OnButtonClick(FabricModel Model)
         {
             Globals.SelectedFabric = Model;
+            Debug.Log("Fabric Clicked : " + Model.ToString());
             MaterialGenerator.Instance.GetAppropriateMaterial(material => 
             {
                 foreach (var x in MaterialGenerator.Instance.MaterialDeserializer.Properties)
                     Debug.Log(x.Key + " : " + x.Value);
             });
-            Debug.Log("Fabric Clicked : " + Model.ToString());
         }
 
         public override void OnUILeave()

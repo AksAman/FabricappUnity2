@@ -8,7 +8,7 @@ namespace helloVoRld.NewScripts
     {
         public readonly string ThumbnailURL;
         protected Sprite ThumbnailSprite;
-        protected string DateSuffix;
+        public readonly string DateSuffix;
 
         public bool IsThumbnailLoaded => ThumbnailSprite == null;
 

@@ -23,7 +23,7 @@ namespace helloVoRld.NewScripts.Fabric
             Title = model.f_name;
             Catalogue = CatalogueView.Instance.ModelList.Find((cat) => cat.WebID == model.id);
             MaterialIndex = model.f_material;
-            MainTexURL = model.f_thumbnail_url;
+            MainTexURL = Globals.IP + model.f_thumbnail_url;
         }
 
         public override string ToString()

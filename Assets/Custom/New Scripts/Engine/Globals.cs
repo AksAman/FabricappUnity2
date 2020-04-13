@@ -28,6 +28,12 @@ namespace helloVoRld
         public static CatalogueModel SelectedCatalogue;
         public static FabricModel SelectedFabric;
 
+        static Globals()
+        {
+            Catalogues.Clear();
+            Furnitures.Clear();
+        }
+
         public static string FabricIP(int catIndex)
         {
             return IP + @"/fabricapp/api/fabrics?catpk=" + catIndex;
@@ -62,8 +68,7 @@ namespace helloVoRld
             if (temp.Length < 2)    // For Filename and extension, just for corner case
                 return false;
 
-            string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2] + " - " + Date + "." + temp[temp.Length - 1];
-            fileloc.Replace("%20", " ");
+            string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
 
             if (File.Exists(fileloc))
             {
@@ -89,9 +94,46 @@ namespace helloVoRld
             if (temp.Length < 2)    // For Filename and extension, just for corner case
                 return;
 
-            string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2] + " - " + Date + "." + temp[temp.Length - 1];
-            fileloc.Replace("%20", " ");
+            string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
             File.WriteAllBytes(fileloc, sp.texture.EncodeToPNG());
+        }
+
+        public static bool IsTextureOnDisk(string TextureURL, string Date, out Texture2D tex)
+        {
+            tex = null;
+            if (!Directory.Exists(TexturesFolderLocation))
+                return false;
+
+            var temp = TextureURL.Split(new char[] { '/', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (temp.Length < 2)    // For Filename and extension, just for corner case
+                return false;
+        
+            string fileloc = TexturesFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
+            
+            if (File.Exists(fileloc))
+            {
+                tex = new Texture2D(2, 2);
+                tex.LoadImage(File.ReadAllBytes(fileloc));
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void WriteTextureOnDisk(string TextureURL, string Date, Texture2D tex)
+        {
+            if (!Directory.Exists(TexturesFolderLocation))
+                Directory.CreateDirectory(TexturesFolderLocation);
+
+            if (tex == null)
+                return;
+
+            var temp = TextureURL.Split(new char[] { '/', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (temp.Length < 2)    // For Filename and extension, just for corner case
+                return;
+
+            string fileloc = TexturesFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
+            File.WriteAllBytes(fileloc, tex.EncodeToPNG());
         }
 
         [Obsolete]
