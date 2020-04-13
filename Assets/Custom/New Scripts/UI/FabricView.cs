@@ -9,11 +9,15 @@ using UnityEngine.UI;
 using helloVoRld.NewScripts.Fabric;
 using helloVoRld.NewScripts.Engine;
 using helloVoRld.Networking;
+using TMPro;
 
 namespace helloVoRld.NewScripts.UI
 {
     public class FabricView : ScrollView<FabricButton, FabricModel, FabricWebModel>
     {
+        [Header("Additional References")]
+        public TMP_Text HeaderText;
+
         public override void GetList(object param = null)
         {
             int catalogueIndex = (int)param;
@@ -33,6 +37,8 @@ namespace helloVoRld.NewScripts.UI
 
         public override void OnUIVisible(object param = null)
         {
+            int catalogueIndex = (int)param;
+            HeaderText.text = Globals.Catalogues[catalogueIndex].Name;
             base.OnUIVisible(param);
         }
 

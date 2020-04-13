@@ -12183,6 +12183,7 @@ MonoBehaviour:
   ObjectToPool: {fileID: 9066321357623420411, guid: f714ab07adfce624b812387507319f24,
     type: 3}
   ScrollViewer: {fileID: 1985018573}
+  HeaderText: {fileID: 354878440}
 --- !u!1 &870938025
 GameObject:
   m_ObjectHideFlags: 0
