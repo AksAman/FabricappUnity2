@@ -16,7 +16,7 @@ namespace helloVoRld.NewScripts.Catalogue
 
         public readonly List<FabricModel> FabricList;
 
-        public CatalogueModel(CatalogueWebModel model) : base(model.c_thumbnail_url)
+        public CatalogueModel(CatalogueWebModel model) : base(model.c_thumbnail_url, model.modified)
         {
             WebID = model.id;
             Name = model.c_name;

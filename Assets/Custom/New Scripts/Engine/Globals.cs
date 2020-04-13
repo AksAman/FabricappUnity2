@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using helloVoRld.NewScripts.Wrappers;
 using System;
+using System.IO;
 
 namespace helloVoRld
 {
@@ -17,6 +18,8 @@ namespace helloVoRld
         public static readonly string AllFabricsIP = IP + @"/fabricapp/api/fabrics";
         public static readonly RequestHeader RequestHeader = new RequestHeader { Key = "Authorization", Value = "Token " + "0ef442a637f1570b5f848f164ee972219eaca8bc" };
 
+        public static string ThumbnailsFolderLocation = Application.persistentDataPath + "/Data/Thumbnails/";
+        public static string TexturesFolderLocation = Application.persistentDataPath + "/Data/Textures/";
 
         public static readonly List<CatalogueModel> Catalogues = new List<CatalogueModel>();
         public static readonly List<FurnitureModel> Furnitures = new List<FurnitureModel>();
@@ -47,6 +50,48 @@ namespace helloVoRld
                 return string.Format(@"0x{0}{1}{2}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"));
             else
                 return string.Format(@"0x{0}{1}{2}{3}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"), A.ToString("X2"));
+        }
+
+        public static bool IsThumbnailOnDisk(string ThumbnailURL, string Date, out Sprite sp)
+        {
+            sp = null;
+            if (!Directory.Exists(ThumbnailsFolderLocation))
+                return false;
+
+            var temp = ThumbnailURL.Split(new char[] { '/', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (temp.Length < 2)    // For Filename and extension, just for corner case
+                return false;
+
+            string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2] + " - " + Date + "." + temp[temp.Length - 1];
+            fileloc.Replace("%20", " ");
+
+            if (File.Exists(fileloc))
+            {
+                Texture2D tex = new Texture2D(2, 2);
+                tex.LoadImage(File.ReadAllBytes(fileloc));
+                sp = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void WriteThumbnailOnDisk(string ThumbnailURL, string Date, Sprite sp)
+        {
+            if (!Directory.Exists(ThumbnailsFolderLocation))
+                Directory.CreateDirectory(ThumbnailsFolderLocation);
+
+            if (sp == null)
+                return;
+
+            var temp = ThumbnailURL.Split(new char[] { '/', '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (temp.Length < 2)    // For Filename and extension, just for corner case
+                return;
+
+            string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2] + " - " + Date + "." + temp[temp.Length - 1];
+            fileloc.Replace("%20", " ");
+            File.WriteAllBytes(fileloc, sp.texture.EncodeToPNG());
         }
 
         [Obsolete]

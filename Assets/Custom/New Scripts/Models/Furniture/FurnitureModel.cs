@@ -9,17 +9,17 @@ namespace helloVoRld.NewScripts.Furniture
     public class FurnitureModel : Model<FurnitureWebModel>
     {
         public string Name;
-        public List<helloVoRld.Test.Databases.AllowedParts> allowedParts = new List<helloVoRld.Test.Databases.AllowedParts>();
+        public List<Test.Databases.AllowedParts> allowedParts = new List<Test.Databases.AllowedParts>();
         public int meshForMaterialUpdate = 0;
         public int materialIndexToChange;
         public GameObject Prefab;
 
-        public FurnitureModel(FurnitureWebModel model) : base("")
+        public FurnitureModel(FurnitureWebModel model) : base("", "")
         {
 
         }
 
-        public FurnitureModel(Test.Databases.Model Model) : base("")
+        public FurnitureModel(Test.Databases.Model Model) : base("", "")
         {
             Name = Model.modelName;
             ThumbnailSprite = Model.modelThumbnail;

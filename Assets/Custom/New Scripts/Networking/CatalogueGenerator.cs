@@ -21,6 +21,12 @@ namespace helloVoRld.Networking
 
         public void GetCatalogues(Action<List<CatalogueModel>> OnSuccess)
         {
+            if (Catalogues.Count > 0)
+            {
+                OnSuccess(Catalogues);
+                return;
+            }
+
             StartCoroutine(RestWebClient.Instance.HttpInternetCheck(IP + "/fabricapp/",
                 OnSuccess: () =>
                 {

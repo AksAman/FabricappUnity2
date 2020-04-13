@@ -17,7 +17,7 @@ namespace helloVoRld.NewScripts.Fabric
 
         protected override FixedCountDownloader TextureDownloader => FabricView.Instance.TextureDownloader;
 
-        public FabricModel(FabricWebModel model) : base(model.f_thumbnail_url)
+        public FabricModel(FabricWebModel model) : base(model.f_thumbnail_url, model.modified)
         {
             WebID = model.id;
             Title = model.f_name;

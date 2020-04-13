@@ -8,15 +8,17 @@ namespace helloVoRld.NewScripts
     {
         public readonly string ThumbnailURL;
         protected Sprite ThumbnailSprite;
+        protected string DateSuffix;
 
         public bool IsThumbnailLoaded => ThumbnailSprite == null;
 
         protected abstract FixedCountDownloader TextureDownloader { get; }
 
-        protected Model(string URL)
+        protected Model(string URL, string Date)
         {
-            ThumbnailURL = (Globals.IP + URL);
+            ThumbnailURL = Globals.IP + URL;
             ThumbnailSprite = null;
+            DateSuffix = string.Join("_", Date.Split(new char[] { '-', ' ', ':' }));
         }
         
         public void LoadThumbnail(Action<Sprite> OnSuccess, Action<float> Progress)
@@ -27,11 +29,19 @@ namespace helloVoRld.NewScripts
                 return;
             }
 
+            if (Globals.IsThumbnailOnDisk(ThumbnailURL, DateSuffix, out Sprite sp))
+            {
+                ThumbnailSprite = sp;
+                OnSuccess(ThumbnailSprite);
+                return;
+            }
+
             TextureDownloader.AddTask(ThumbnailURL,
                 (sprite) =>
                 {
                     ThumbnailSprite = sprite;
                     OnSuccess(ThumbnailSprite);
+                    Globals.WriteThumbnailOnDisk(ThumbnailURL, DateSuffix, sprite);
                 },
                 (progress) =>
                 {

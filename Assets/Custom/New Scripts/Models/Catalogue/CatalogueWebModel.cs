@@ -8,5 +8,6 @@
         public string c_thumbnail_url;
         public string c_manufacturer_name;
         public string c_normal_map;
+        public string modified;
     }
 }
