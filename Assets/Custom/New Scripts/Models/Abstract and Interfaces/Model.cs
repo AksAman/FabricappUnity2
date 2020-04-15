@@ -20,7 +20,7 @@ namespace helloVoRld.NewScripts
             ThumbnailSprite = null;
             DateSuffix = string.Join("_", Date.Split(new char[] { '-', ' ', ':' }));
         }
-        
+
         public void LoadThumbnail(Action<Sprite> OnSuccess, Action<float> Progress)
         {
             if (ThumbnailSprite != null)
@@ -29,24 +29,28 @@ namespace helloVoRld.NewScripts
                 return;
             }
 
-            if (Globals.IsThumbnailOnDisk(ThumbnailURL, DateSuffix, out Sprite sp))
-            {
-                ThumbnailSprite = sp;
-                OnSuccess(ThumbnailSprite);
-                return;
-            }
-
-            TextureDownloader.AddTask(ThumbnailURL,
-                (sprite) =>
+            GlobalMonobehaviour.Instance.StartCoroutine(
+                Globals.IsThumbnailOnDisk(ThumbnailURL, DateSuffix,
+                (sp) =>
                 {
-                    ThumbnailSprite = sprite;
+                    ThumbnailSprite = sp;
                     OnSuccess(ThumbnailSprite);
-                    Globals.WriteThumbnailOnDisk(ThumbnailURL, DateSuffix, sprite);
+                    return;
                 },
-                (progress) =>
+                () =>
                 {
-                    Progress(progress);
-                });
+                    TextureDownloader.AddTask(ThumbnailURL,
+                        (sprite) =>
+                        {
+                            ThumbnailSprite = sprite;
+                            OnSuccess(ThumbnailSprite);
+                            Globals.WriteThumbnailOnDisk(ThumbnailURL, DateSuffix, sprite);
+                        },
+                        (progress) =>
+                        {
+                            Progress(progress);
+                        });
+                }));
         }
     }
 }

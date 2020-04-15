@@ -24,6 +24,8 @@ namespace helloVoRld.Networking
         CatalogueModel Catalogue => Globals.SelectedCatalogue;
         FabricModel Fabric => Globals.SelectedFabric;
 
+        readonly Dictionary<string, List<Action<Texture2D>>> CallbackHistory = new Dictionary<string, List<Action<Texture2D>>>();
+
         public void GetAppropriateMaterial(Action<Material> OnSuccess)
         {
             if (Furniture == null || Catalogue == null || Fabric == null)
@@ -58,7 +60,7 @@ namespace helloVoRld.Networking
                 TexturesOnSuccess(Textures[url]);
                 yield return null;
             }
-            
+
             else if (Globals.IsTextureOnDisk(url, Date, out Texture2D t))
             {
                 Textures.Add(url, t);
@@ -66,15 +68,28 @@ namespace helloVoRld.Networking
                 yield return null;
             }
 
-            else yield return RestWebClient.Instance.HttpDownloadImage(url,
-                response =>
-                {
-                    Texture2D tex = response.textureDownloaded;
-                    Textures.Add(url, tex);
-                    Globals.WriteTextureOnDisk(url, Date, tex);
-                    TexturesOnSuccess(tex);
-                },
-                progress => { });
+            else if (CallbackHistory.ContainsKey(url))
+            {
+                CallbackHistory[url].Add(TexturesOnSuccess);
+            }
+
+            else
+            {
+                CallbackHistory.Add(url, new List<Action<Texture2D>> { TexturesOnSuccess });
+                yield return RestWebClient.Instance.HttpDownloadImage(url,
+                  response =>
+                  {
+                      Texture2D tex = response.textureDownloaded;
+                      Textures.Add(url, tex);
+                      Globals.WriteTextureOnDisk(url, Date, tex);
+
+                      foreach (var x in CallbackHistory[url])
+                          x(tex);
+
+                      CallbackHistory.Remove(url);
+                  },
+                  progress => { });
+            }
         }
 
         IEnumerator MaterialRequest(int index, Action<Material> MaterialOnSuccess)

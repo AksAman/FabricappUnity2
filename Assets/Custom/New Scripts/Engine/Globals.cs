@@ -3,11 +3,13 @@ using helloVoRld.NewScripts.Furniture;
 using helloVoRld.NewScripts.Fabric;
 using System.Collections.Generic;
 using helloVoRld.Networking.Models;
+using System.Collections;
 using Newtonsoft.Json;
 using UnityEngine;
 using helloVoRld.NewScripts.Wrappers;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace helloVoRld
 {
@@ -58,27 +60,39 @@ namespace helloVoRld
                 return string.Format(@"0x{0}{1}{2}{3}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"), A.ToString("X2"));
         }
 
-        public static bool IsThumbnailOnDisk(string ThumbnailURL, string Date, out Sprite sp)
+        public static IEnumerator IsThumbnailOnDisk(string ThumbnailURL, string Date, Action<Sprite> OnSuccess, Action OnFail)
         {
-            sp = null;
-            if (!Directory.Exists(ThumbnailsFolderLocation))
-                return false;
-
-            var temp = ThumbnailURL.Split(new char[] { '/', '.' }, StringSplitOptions.RemoveEmptyEntries);
-            if (temp.Length < 2)    // For Filename and extension, just for corner case
-                return false;
-
-            string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
-
-            if (File.Exists(fileloc))
+            void Method()
             {
-                Texture2D tex = new Texture2D(2, 2);
-                tex.LoadImage(File.ReadAllBytes(fileloc));
-                sp = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
-                return true;
+                if (!Directory.Exists(ThumbnailsFolderLocation))
+                {
+                    OnFail();
+                    return;
+                }
+
+                var temp = ThumbnailURL.Split(new char[] { '/', '.' }, StringSplitOptions.RemoveEmptyEntries);
+                if (temp.Length < 2)    // For Filename and extension, just for corner case
+                {
+                    OnFail();
+                    return;
+                }
+
+                string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
+
+                if (File.Exists(fileloc))
+                {
+                    Texture2D tex = new Texture2D(2, 2);
+                    tex.LoadImage(Encryptor.DecryptLoad(fileloc));
+                    OnSuccess(Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f)));
+                    return;
+                }
+
+                OnFail();
+                return;
             }
 
-            return false;
+            yield return null;
+            Method();
         }
 
         public static void WriteThumbnailOnDisk(string ThumbnailURL, string Date, Sprite sp)
@@ -95,7 +109,7 @@ namespace helloVoRld
                 return;
 
             string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
-            File.WriteAllBytes(fileloc, sp.texture.EncodeToPNG());
+            Encryptor.EncryptWrite(fileloc, sp.texture.EncodeToPNG());
         }
 
         public static bool IsTextureOnDisk(string TextureURL, string Date, out Texture2D tex)
@@ -113,7 +127,7 @@ namespace helloVoRld
             if (File.Exists(fileloc))
             {
                 tex = new Texture2D(2, 2);
-                tex.LoadImage(File.ReadAllBytes(fileloc));
+                tex.LoadImage(Encryptor.DecryptLoad(fileloc));
                 return true;
             }
 
@@ -133,7 +147,7 @@ namespace helloVoRld
                 return;
 
             string fileloc = TexturesFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
-            File.WriteAllBytes(fileloc, tex.EncodeToPNG());
+            Encryptor.EncryptWrite(fileloc, tex.EncodeToPNG());
         }
 
         [Obsolete]
