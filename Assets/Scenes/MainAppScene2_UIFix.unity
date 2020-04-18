@@ -5103,10 +5103,10 @@ RectTransform:
   m_Father: {fileID: 749899761}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 117.872345, y: -44.39}
-  m_SizeDelta: {x: 104.25532, y: 28.779999}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &271687569
 CanvasRenderer:
@@ -12227,6 +12227,7 @@ MonoBehaviour:
     type: 3}
   ScrollViewer: {fileID: 1985018573}
   HeaderText: {fileID: 354878440}
+  FooterText: {fileID: 926595797}
 --- !u!1 &870938025
 GameObject:
   m_ObjectHideFlags: 0
@@ -13395,7 +13396,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'FABRIC : MAIZE 3'
+  m_text: 'FABRIC :'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1f1872f7934d8d44a9409f85f69df237, type: 2}
   m_sharedMaterial: {fileID: -6758783895164944960, guid: 1f1872f7934d8d44a9409f85f69df237,
@@ -13465,10 +13466,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0.24, w: 0}
   m_textInfo:
     textComponent: {fileID: 926595797}
-    characterCount: 16
+    characterCount: 8
     spriteCount: 0
-    spaceCount: 3
-    wordCount: 3
+    spaceCount: 1
+    wordCount: 1
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -16322,10 +16323,10 @@ RectTransform:
   m_Father: {fileID: 749899761}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 47.87234, y: -44.39}
-  m_SizeDelta: {x: 35.744682, y: 28.779999}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1388774159
 CanvasRenderer:
@@ -18331,7 +18332,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'FURNITURE : CHAIR 3'
+  m_text: 'FURNITURE :'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1f1872f7934d8d44a9409f85f69df237, type: 2}
   m_sharedMaterial: {fileID: -6758783895164944960, guid: 1f1872f7934d8d44a9409f85f69df237,
@@ -18401,10 +18402,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0.24, w: 0}
   m_textInfo:
     textComponent: {fileID: 1633102939}
-    characterCount: 19
+    characterCount: 11
     spriteCount: 0
-    spaceCount: 3
-    wordCount: 3
+    spaceCount: 1
+    wordCount: 1
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -21165,6 +21166,7 @@ MonoBehaviour:
     type: 3}
   ScrollViewer: {fileID: 1770277511}
   modelsList: {fileID: 11400000, guid: 7521b75e977115a4c9e67538dc755729, type: 2}
+  FooterText: {fileID: 1633102939}
 --- !u!1 &1963302383
 GameObject:
   m_ObjectHideFlags: 0

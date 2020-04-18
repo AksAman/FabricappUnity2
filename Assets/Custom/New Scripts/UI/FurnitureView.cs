@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using helloVoRld.NewScripts.Furniture;
 using helloVoRld.NewScripts.Engine;
 using helloVoRld.Networking;
+using TMPro;
 
 namespace helloVoRld.NewScripts.UI
 {
@@ -16,6 +17,9 @@ namespace helloVoRld.NewScripts.UI
     {
         [Header("List Reference")]
         public Test.Databases.S_Models modelsList;
+
+        [Header("Additional References")]
+        public TMP_Text FooterText;
 
         public void Start()
         {
@@ -34,7 +38,8 @@ namespace helloVoRld.NewScripts.UI
         public override void OnButtonClick(FurnitureModel Model)
         {
             Globals.SelectedFurniture = Model;
-            Debug.Log("Clicked : " + Model.Name);
+            Debug.Log("Clicked : " + Model.ToString());
+            FooterText.text = $"FURNITURE : { Model.Name }";
         }
     }
 }

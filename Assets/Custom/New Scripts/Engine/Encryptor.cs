@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace helloVoRld
 {
+    [Obsolete("This class is not supposed to use anywhere", error: true)]
     public static class Encryptor
     {
         [DllImport("KERNEL32.DLL", EntryPoint = "RtlZeroMemory")]

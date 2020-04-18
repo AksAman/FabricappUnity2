@@ -17,6 +17,7 @@ namespace helloVoRld.NewScripts.UI
     {
         [Header("Additional References")]
         public TMP_Text HeaderText;
+        public TMP_Text FooterText;
 
         public override void GetList(object param = null)
         {
@@ -46,6 +47,7 @@ namespace helloVoRld.NewScripts.UI
         {
             Globals.SelectedFabric = Model;
             Debug.Log("Fabric Clicked : " + Model.ToString());
+            FooterText.text = $"FABRIC : { HeaderText.text } - { Model.Title }";
             MaterialGenerator.Instance.GetAppropriateMaterial(material => 
             {
                 foreach (var x in MaterialGenerator.Instance.MaterialDeserializer.Properties)

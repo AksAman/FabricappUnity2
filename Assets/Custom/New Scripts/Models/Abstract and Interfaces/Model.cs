@@ -29,28 +29,24 @@ namespace helloVoRld.NewScripts
                 return;
             }
 
-            GlobalMonobehaviour.Instance.StartCoroutine(
-                Globals.IsThumbnailOnDisk(ThumbnailURL, DateSuffix,
-                (sp) =>
+            if (Globals.IsThumbnailOnDisk(ThumbnailURL, DateSuffix, out Sprite sp))
+            {
+                ThumbnailSprite = sp;
+                OnSuccess(ThumbnailSprite);
+                return;
+            }
+
+            TextureDownloader.AddTask(ThumbnailURL,
+                (sprite) =>
                 {
-                    ThumbnailSprite = sp;
+                    ThumbnailSprite = sprite;
                     OnSuccess(ThumbnailSprite);
-                    return;
+                    Globals.WriteThumbnailOnDisk(ThumbnailURL, DateSuffix, sprite);
                 },
-                () =>
+                (progress) =>
                 {
-                    TextureDownloader.AddTask(ThumbnailURL,
-                        (sprite) =>
-                        {
-                            ThumbnailSprite = sprite;
-                            OnSuccess(ThumbnailSprite);
-                            Globals.WriteThumbnailOnDisk(ThumbnailURL, DateSuffix, sprite);
-                        },
-                        (progress) =>
-                        {
-                            Progress(progress);
-                        });
-                }));
+                    Progress(progress);
+                });
         }
     }
 }

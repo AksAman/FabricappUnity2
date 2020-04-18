@@ -58,14 +58,12 @@ namespace helloVoRld.Networking
             if (Textures.ContainsKey(url))
             {
                 TexturesOnSuccess(Textures[url]);
-                yield return null;
             }
 
             else if (Globals.IsTextureOnDisk(url, Date, out Texture2D t))
             {
                 Textures.Add(url, t);
                 TexturesOnSuccess(t);
-                yield return null;
             }
 
             else if (CallbackHistory.ContainsKey(url))
@@ -90,6 +88,8 @@ namespace helloVoRld.Networking
                   },
                   progress => { });
             }
+
+            yield return null;
         }
 
         IEnumerator MaterialRequest(int index, Action<Material> MaterialOnSuccess)
@@ -105,7 +105,8 @@ namespace helloVoRld.Networking
                 {
                     MaterialDeserializer.DeserializeValues(JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Data));
                     var material = MaterialDeserializer.MainObject;
-                    Materials.Add(index, material);
+                    if (!Materials.ContainsKey(index))
+                        Materials.Add(index, material);
                     MaterialOnSuccess(material);
                 }
             },

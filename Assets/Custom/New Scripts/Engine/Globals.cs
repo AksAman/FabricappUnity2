@@ -6,6 +6,8 @@ using helloVoRld.Networking.Models;
 using System.Collections;
 using Newtonsoft.Json;
 using UnityEngine;
+using System.Security.Cryptography;
+using System.Text;
 using helloVoRld.NewScripts.Wrappers;
 using System;
 using System.IO;
@@ -46,53 +48,26 @@ namespace helloVoRld
             return IP + "/fabricapp/api/materials?pk=" + index;
         }
 
-        public static string ToHexString(this Color c, bool IncludeA = false)
+        public static bool IsThumbnailOnDisk(string ThumbnailURL, string Date, out Sprite sp)
         {
-            int R = (int)(c.r * 255);
-            int G = (int)(c.g * 255);
-            int B = (int)(c.b * 255);
-            int A = (int)(c.a * 255);
+            sp = null;
+            if (!Directory.Exists(ThumbnailsFolderLocation))
+                return false;
 
-            // int.ToString("X2") converts the int to two digit Hex
-            if (!IncludeA)
-                return string.Format(@"0x{0}{1}{2}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"));
-            else
-                return string.Format(@"0x{0}{1}{2}{3}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"), A.ToString("X2"));
-        }
+            var temp = ThumbnailURL.Split(new char[] { '/', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (temp.Length < 2)    // For Filename and extension, just for corner case
+                return false;
 
-        public static IEnumerator IsThumbnailOnDisk(string ThumbnailURL, string Date, Action<Sprite> OnSuccess, Action OnFail)
-        {
-            void Method()
+            string fileloc = ThumbnailsFolderLocation + (temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1]).GetSHA256String();
+
+            if (File.Exists(fileloc))
             {
-                if (!Directory.Exists(ThumbnailsFolderLocation))
-                {
-                    OnFail();
-                    return;
-                }
-
-                var temp = ThumbnailURL.Split(new char[] { '/', '.' }, StringSplitOptions.RemoveEmptyEntries);
-                if (temp.Length < 2)    // For Filename and extension, just for corner case
-                {
-                    OnFail();
-                    return;
-                }
-
-                string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
-
-                if (File.Exists(fileloc))
-                {
-                    Texture2D tex = new Texture2D(2, 2);
-                    tex.LoadImage(Encryptor.DecryptLoad(fileloc));
-                    OnSuccess(Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f)));
-                    return;
-                }
-
-                OnFail();
-                return;
+                Texture2D tex = new Texture2D(2, 2);
+                tex.LoadImage(File.ReadAllBytes(fileloc));
+                sp = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+                return true;
             }
-
-            yield return null;
-            Method();
+            return false;
         }
 
         public static void WriteThumbnailOnDisk(string ThumbnailURL, string Date, Sprite sp)
@@ -108,8 +83,8 @@ namespace helloVoRld
             if (temp.Length < 2)    // For Filename and extension, just for corner case
                 return;
 
-            string fileloc = ThumbnailsFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
-            Encryptor.EncryptWrite(fileloc, sp.texture.EncodeToPNG());
+            string fileloc = ThumbnailsFolderLocation + (temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1]).GetSHA256String();
+            File.WriteAllBytes(fileloc, sp.texture.EncodeToPNG());
         }
 
         public static bool IsTextureOnDisk(string TextureURL, string Date, out Texture2D tex)
@@ -122,12 +97,12 @@ namespace helloVoRld
             if (temp.Length < 2)    // For Filename and extension, just for corner case
                 return false;
         
-            string fileloc = TexturesFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
-            
+            string fileloc = TexturesFolderLocation + (temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1]).GetSHA256String();
+
             if (File.Exists(fileloc))
             {
                 tex = new Texture2D(2, 2);
-                tex.LoadImage(Encryptor.DecryptLoad(fileloc));
+                tex.LoadImage(File.ReadAllBytes(fileloc));
                 return true;
             }
 
@@ -146,8 +121,35 @@ namespace helloVoRld
             if (temp.Length < 2)    // For Filename and extension, just for corner case
                 return;
 
-            string fileloc = TexturesFolderLocation + temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1];
-            Encryptor.EncryptWrite(fileloc, tex.EncodeToPNG());
+            string fileloc = TexturesFolderLocation + (temp[temp.Length - 2].Replace("%20", " ") + " - " + Date + "." + temp[temp.Length - 1]).GetSHA256String();
+            File.WriteAllBytes(fileloc, tex.EncodeToPNG());
+        }
+
+        public static string GetSHA256String(this string text)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            SHA256Managed hashstring = new SHA256Managed();
+            byte[] hash = hashstring.ComputeHash(bytes);
+            string hashString = string.Empty;
+            foreach (byte x in hash)
+            {
+                hashString += string.Format("{0:x2}", x);
+            }
+            return hashString;
+        }
+
+        public static string ToHexString(this Color c, bool IncludeA = false)
+        {
+            int R = (int)(c.r * 255);
+            int G = (int)(c.g * 255);
+            int B = (int)(c.b * 255);
+            int A = (int)(c.a * 255);
+
+            // int.ToString("X2") converts the int to two digit Hex
+            if (!IncludeA)
+                return string.Format(@"0x{0}{1}{2}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"));
+            else
+                return string.Format(@"0x{0}{1}{2}{3}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"), A.ToString("X2"));
         }
 
         [Obsolete]
