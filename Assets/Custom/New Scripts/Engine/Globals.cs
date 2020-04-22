@@ -152,7 +152,6 @@ namespace helloVoRld
                 return string.Format(@"0x{0}{1}{2}{3}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"), A.ToString("X2"));
         }
 
-        [Obsolete]
         public static object GetPropertyString(this Material material, string name, Type type)
         {
             if (type == typeof(float))
@@ -170,7 +169,6 @@ namespace helloVoRld
             throw new Exception();
         }
 
-        [Obsolete]
         public static void SetPropertyString(this Material m, string name, Type type, object value)
         {
             if (type == typeof(Vector2))
