@@ -23,6 +23,11 @@ namespace helloVoRld.NewScripts.UI
             });
         }
 
+        public override void OnRefreshClickAction(object param = null)
+        {
+            Globals.Catalogues.Clear();
+        }
+
         public override void OnUIVisible(object param = null)
         {
             base.OnUIVisible(param);

@@ -22,6 +22,7 @@ namespace helloVoRld.NewScripts
 
         [Header("UI Elements")]
         public RectTransform ScrollViewer;
+        public Button RefreshButton;
 
         protected Coroutine DownloaderCoroutine;
         protected Pooler<T, U, V> PoolObject { get; set; }
@@ -29,10 +30,21 @@ namespace helloVoRld.NewScripts
         public List<U> ModelList { get; protected set; }
         protected bool DownloadingCompleted = false;
 
+        private object ObjectPassed { get; set; } = null;
         public void Awake()
         {
             TextureDownloader = new FixedCountDownloader(this);
             PoolObject = new Pooler<T, U, V>(ObjectToPool, ScrollViewer);
+            if (RefreshButton != null)
+            {
+                RefreshButton.onClick.RemoveAllListeners();
+                RefreshButton.onClick.AddListener(() => 
+                {
+                    OnUILeave(); 
+                    OnRefreshClickAction(ObjectPassed); 
+                    OnUIVisible(ObjectPassed); 
+                });
+            }
         }
 
         public void Update()
@@ -44,6 +56,7 @@ namespace helloVoRld.NewScripts
 
         public virtual void OnUIVisible(object param = null)
         {
+            ObjectPassed = param;
             DownloadingCompleted = false;
             GetList(param);
             DownloaderCoroutine = StartCoroutine(LoadUI());
@@ -77,6 +90,15 @@ namespace helloVoRld.NewScripts
                 DownloaderCoroutine = null;
             }
             PoolObject.ClearViewer();
+        }
+
+        /// <summary>
+        /// Work required when Refresh is clicked. Will be called after OnUILeave is called and before next OnUIVisible
+        /// </summary>
+        /// <param name="param">Parameter that was originally passed to OnUIVisible</param>
+        public virtual void OnRefreshClickAction(object param = null)
+        {
+
         }
     }
 }
