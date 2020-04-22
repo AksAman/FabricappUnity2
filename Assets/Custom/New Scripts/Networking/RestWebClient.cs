@@ -9,6 +9,7 @@ using System;
 
 namespace helloVoRld.Networking
 {
+    [Obsolete("This code is for old script support, that are disabled in unity currently.")]
     public class RestWebClient : Singleton<RestWebClient>
     {
         private void Awake()

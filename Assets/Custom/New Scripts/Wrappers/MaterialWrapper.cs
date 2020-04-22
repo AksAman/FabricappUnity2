@@ -78,7 +78,7 @@ namespace helloVoRld.NewScripts.Wrappers
 
 		public void DeserializeValues(Dictionary<string, object> input)
 		{
-			MainObject = new Material(Shader.Find("Standard"));
+			MainObject = new Material(Shader.Find("Shader Smart/Fabric | Cloth | Foam/Mobile/ARN(S)"));
 			Properties = input;
 
 			for (int i = 0; i < PropertiesNames.Count; ++i)
