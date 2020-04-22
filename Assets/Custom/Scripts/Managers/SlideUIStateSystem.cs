@@ -4,7 +4,7 @@ using helloVoRld.Test.UI;
 using UnityEngine;
 
 namespace helloVoRld.Test.Managers
-{
+{/*
     public class SlideUIStateSystem : UIStateSystem
     {
         private AnimationManager animationManager => AnimationManager.Instance;
@@ -19,5 +19,5 @@ namespace helloVoRld.Test.Managers
                 animationManager.AnimateSelectionPanel();
             }
         }
-    } 
+    } */
 }
