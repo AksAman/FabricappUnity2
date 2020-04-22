@@ -19,6 +19,8 @@ namespace helloVoRld.NewScripts.UI
         public TMP_Text HeaderText;
         public TMP_Text FooterText;
 
+        public GameObject Cube;
+
         public override void GetList(object param = null)
         {
             int catalogueIndex = (int)param;
@@ -52,6 +54,7 @@ namespace helloVoRld.NewScripts.UI
             {
                 foreach (var x in MaterialGenerator.Instance.MaterialDeserializer.Properties)
                     Debug.Log(x.Key + " : " + x.Value);
+                Cube.GetComponent<MeshRenderer>().material = material;
             });
         }
 
