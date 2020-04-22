@@ -16,7 +16,7 @@ namespace helloVoRld.Networking
 {
     public class MaterialGenerator : Singleton<MaterialGenerator>
     {
-        readonly Dictionary<int, Material> Materials = new Dictionary<int, Material>();
+        readonly Dictionary<int, string> Materials = new Dictionary<int, string>();
         readonly Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
         public readonly MaterialWrapper MaterialDeserializer = new MaterialWrapper();
 
@@ -94,19 +94,25 @@ namespace helloVoRld.Networking
 
         IEnumerator MaterialRequest(int index, Action<Material> MaterialOnSuccess)
         {
+            Material GetFromJson(string JSON)
+            {
+                MaterialDeserializer.DeserializeValues(JsonConvert.DeserializeObject<Dictionary<string, object>>(JSON));
+                return MaterialDeserializer.MainObject;
+            }
+
             if (Materials.ContainsKey(index))
             {
-                MaterialOnSuccess(Materials[index]);
+                MaterialOnSuccess(GetFromJson(Materials[index]));
                 yield return null;
             }
             else yield return RestWebClient.Instance.HttpGet(Globals.MaterialIP(index), response =>
             {
                 if (response.IsValidResponse)
                 {
-                    MaterialDeserializer.DeserializeValues(JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Data));
-                    var material = MaterialDeserializer.MainObject;
+                    var material = GetFromJson(response.Data);
+
                     if (!Materials.ContainsKey(index))
-                        Materials.Add(index, material);
+                        Materials.Add(index, response.Data);
                     MaterialOnSuccess(material);
                 }
             },
