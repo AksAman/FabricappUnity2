@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace helloVoRld.NewScripts.Fabric
 {
+    /// <summary>
+    /// Script that must be attached to Button Button Prefab
+    /// </summary>
     public class FabricButton : ButtonModel<FabricModel, FabricWebModel>
     {
         [Header("References")]

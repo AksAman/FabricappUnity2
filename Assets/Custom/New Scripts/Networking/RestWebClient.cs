@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using helloVoRld.Core.Singletons;
+using helloVoRld.NewScripts.Engine;
 using helloVoRld.Networking.Models;
 using helloVoRld.Utilities.Debugging;
 using UnityEngine;
@@ -9,7 +9,6 @@ using System;
 
 namespace helloVoRld.Networking
 {
-    [Obsolete("This code is for old script support, that are disabled in unity currently.")]
     public class RestWebClient : Singleton<RestWebClient>
     {
         private void Awake()

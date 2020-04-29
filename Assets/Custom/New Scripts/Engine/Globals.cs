@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace helloVoRld
 {
+    /// <summary>
+    /// Keeps track of current state of app
+    /// </summary>
     public static class Globals
     {
         public static readonly string IP = @"http://hvrplfabricapp.ml";
@@ -28,8 +31,17 @@ namespace helloVoRld
         public static readonly List<CatalogueModel> Catalogues = new List<CatalogueModel>();
         public static readonly List<FurnitureModel> Furnitures = new List<FurnitureModel>();
 
+        /// <summary>
+        /// Furniture that was last selected in FurnitureViewer
+        /// </summary>
         public static FurnitureModel SelectedFurniture;
+        /// <summary>
+        /// Catalogue that was last selected in CatalogueViewer
+        /// </summary>
         public static CatalogueModel SelectedCatalogue;
+        /// <summary>
+        /// Fabric that was last selected in FabricViewer
+        /// </summary>
         public static FabricModel SelectedFabric;
 
         static Globals()
@@ -38,16 +50,33 @@ namespace helloVoRld
             Furnitures.Clear();
         }
 
+        /// <summary>
+        /// Maps Fabric JSON URL Address from catalogue index
+        /// </summary>
+        /// <param name="catIndex">Catalogue index for generation of Fabric URL on Web</param>
+        /// <returns>Web Address</returns>
         public static string FabricIP(int catIndex)
         {
             return IP + @"/fabricapp/api/fabrics?catpk=" + catIndex;
         }
 
+        /// <summary>
+        /// Maps material index to webaddress 
+        /// </summary>
+        /// <param name="index">Material index</param>
+        /// <returns>Web Address</returns>
         public static string MaterialIP(int index)
         {
             return IP + "/fabricapp/api/materials?pk=" + index;
         }
 
+        /// <summary>
+        /// Checks for presence of Thumbnail on disk
+        /// </summary>
+        /// <param name="ThumbnailURL">Complete Thumbnail URL on Web</param>
+        /// <param name="Date">Last modified date of thummbnail on server</param>
+        /// <param name="sp">Deserialized Sprite, in case Thumbnail was on disk</param>
+        /// <returns>True if thumbnail was present on disk.</returns>
         public static bool IsThumbnailOnDisk(string ThumbnailURL, string Date, out Sprite sp)
         {
             sp = null;
@@ -70,6 +99,12 @@ namespace helloVoRld
             return false;
         }
 
+        /// <summary>
+        /// Writes thumbnail on disk
+        /// </summary>
+        /// <param name="ThumbnailURL">Complete Thumbnail URL on Web</param>
+        /// <param name="Date">Last modified date of thummbnail on server</param>
+        /// <param name="sp">Sprite to write on disk</param>
         public static void WriteThumbnailOnDisk(string ThumbnailURL, string Date, Sprite sp)
         {
             if (!Directory.Exists(ThumbnailsFolderLocation))
@@ -87,6 +122,13 @@ namespace helloVoRld
             File.WriteAllBytes(fileloc, sp.texture.EncodeToPNG());
         }
 
+        /// <summary>
+        /// Checks for presence of Textures on disk
+        /// </summary>
+        /// <param name="TextureURL">Complete Texture URL on Web</param>
+        /// <param name="Date">Last modified date of texture on server</param>
+        /// <param name="tex">Deserialized texture, in case Texture was on disk</param>
+        /// <returns>True if texture was present on disk.</returns>
         public static bool IsTextureOnDisk(string TextureURL, string Date, out Texture2D tex)
         {
             tex = null;
@@ -109,6 +151,12 @@ namespace helloVoRld
             return false;
         }
 
+        /// <summary>
+        /// Writes texture on disk
+        /// </summary>
+        /// <param name="TextureURL">Complete Texture URL on Web</param>
+        /// <param name="Date">Last modified date of texture on server</param>
+        /// <param name="tex">Texture to write on disk</param>
         public static void WriteTextureOnDisk(string TextureURL, string Date, Texture2D tex)
         {
             if (!Directory.Exists(TexturesFolderLocation))
@@ -125,7 +173,12 @@ namespace helloVoRld
             File.WriteAllBytes(fileloc, tex.EncodeToPNG());
         }
 
-        public static string GetSHA256String(this string text)
+        /// <summary>
+        /// Used to generate FileNames to store on disk
+        /// </summary>
+        /// <param name="text">FileName to process</param>
+        /// <returns></returns>
+        private static string GetSHA256String(this string text)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(text);
             SHA256Managed hashstring = new SHA256Managed();
@@ -138,6 +191,14 @@ namespace helloVoRld
             return hashString;
         }
 
+
+        #region Extension Methods
+        /// <summary>
+        /// Extension method for converting color to its hex string
+        /// </summary>
+        /// <param name="c">Color to process</param>
+        /// <param name="IncludeA">Set it true if expected string is in format 0xRRGGBBAA, otherwise string will be in 0xRRGGBB</param>
+        /// <returns>Hex equivalent of color</returns>
         public static string ToHexString(this Color c, bool IncludeA = false)
         {
             int R = (int)(c.r * 255);
@@ -152,6 +213,13 @@ namespace helloVoRld
                 return string.Format(@"0x{0}{1}{2}{3}", R.ToString("X2"), G.ToString("X2"), B.ToString("X2"), A.ToString("X2"));
         }
 
+        /// <summary>
+        /// Get Property from material based on parameters
+        /// </summary>
+        /// <param name="material">Material of Interest</param>
+        /// <param name="name">Property name</param>
+        /// <param name="type">Property type</param>
+        /// <returns>Property  value that was set to material</returns>
         public static object GetPropertyString(this Material material, string name, Type type)
         {
             if (type == typeof(float))
@@ -169,6 +237,13 @@ namespace helloVoRld
             throw new Exception();
         }
 
+        /// <summary>
+        /// Set Property to material based on parameters
+        /// </summary>
+        /// <param name="m">Material of Interest</param>
+        /// <param name="name">Property name</param>
+        /// <param name="type">Property type</param>
+        /// <param name="value">Property value to set</param>
         public static void SetPropertyString(this Material m, string name, Type type, object value)
         {
             if (type == typeof(Vector2))
@@ -209,5 +284,6 @@ namespace helloVoRld
                     m.SetTexture(name, null/* AssetDatabase.LoadAssetAtPath<Texture2D>(val));*/
             }
         }
+        #endregion
     }
 }

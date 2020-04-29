@@ -1,5 +1,8 @@
 ﻿namespace helloVoRld.NewScripts.Fabric
 {
+    /// <summary>
+    /// Layout of JSON file for Fabric entry
+    /// </summary>
     public class FabricWebModel : IWebModel
     {
         public int id;

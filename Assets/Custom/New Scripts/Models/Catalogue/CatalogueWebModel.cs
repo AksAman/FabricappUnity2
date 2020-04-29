@@ -1,5 +1,8 @@
 ﻿namespace helloVoRld.NewScripts.Catalogue
 {
+    /// <summary>
+    /// Layout of JSON file for catalogue entry
+    /// </summary>
     public class CatalogueWebModel : IWebModel
     {
         public int id;

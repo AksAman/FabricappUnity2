@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace helloVoRld.NewScripts.Catalogue
 {
+    /// <summary>
+    /// Script that must be attached to Catalogue Button Prefab
+    /// </summary>
     public class CatalogueButton : ButtonModel<CatalogueModel, CatalogueWebModel>
     {
         [Header("References")]
@@ -14,6 +17,7 @@ namespace helloVoRld.NewScripts.Catalogue
 
         private void Awake()
         {
+            // Check for All References
             var names = new[] { nameof(Name),  nameof(Manufacturer), nameof(Thumbnail), nameof(Button), nameof(ProgressObject), nameof(ProgressBar) };
             var objs = new object[] { Name,  Manufacturer, Thumbnail, Button, ProgressObject, ProgressBar };
 
