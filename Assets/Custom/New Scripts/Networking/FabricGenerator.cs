@@ -18,7 +18,12 @@ namespace helloVoRld.Networking
     {
         static string IP => Globals.IP;
         static List<CatalogueModel> CatalogueModels => Globals.Catalogues;
-
+        /// <summary>
+        /// Load fabrics based on the catalogue index defined in scrollview
+        /// </summary>
+        /// <param name="CatIndex">Local Catalogue Index</param>
+        /// <param name="OnSuccess">Callback when Fabric List is loaded</param>
+        /// <param name="OnFailure">Callback for Fabric List Loading Error</param>
         public void LoadFabrics(int CatIndex, Action<List<FabricModel>> OnSuccess, Action OnFailure)
         {
             if (CatIndex >= CatalogueModels.Count || CatIndex < 0)
