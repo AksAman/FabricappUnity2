@@ -41,27 +41,32 @@ namespace helloVoRld.Networking
         /// <param name="OnSuccess">After creating material with </param>
         public void GetAppropriateMaterial(Action<Material> OnSuccess)
         {
-            if (Furniture == null || Catalogue == null || Fabric == null)
+            if ((Furniture == null || Catalogue == null || Fabric == null) && Globals.InitialFabricLoaded)
                 throw new Exception("Developer Error - This code shold not be called at this stage");
 
-            StartCoroutine(MaterialRequest(Fabric.MaterialIndex, (material) =>
+            GetAppropriateMaterial(Fabric.MaterialIndex, Fabric.MainTexURL, Catalogue.NormalMapURL, Fabric.DateSuffix, OnSuccess);
+        }
+
+        public void GetAppropriateMaterial(int matIndex, string MainTextureURL, string NormalMAPURL, string Date, Action<Material> OnSuccess)
+        {
+            StartCoroutine(MaterialRequest(matIndex, (material) =>
             {
-                if (Fabric.MainTexURL != "" && Fabric.MainTexURL != null)
+                if (MainTextureURL != "" && MainTextureURL != null)
                 {
-                    StartCoroutine(TexturesRequest(Fabric.MainTexURL, Fabric.DateSuffix, texture => 
+                    StartCoroutine(TexturesRequest(MainTextureURL, Date, texture =>
                     {
                         material.SetTexture("_MainTex", texture);
                     }));
                 }
 
-                if (Catalogue.NormalMapURL != "" && Catalogue.NormalMapURL != null)
+                if (NormalMAPURL != "" && NormalMAPURL != null)
                 {
-                    StartCoroutine(TexturesRequest(Catalogue.NormalMapURL, Fabric.DateSuffix, texture =>
+                    StartCoroutine(TexturesRequest(NormalMAPURL, Date, texture =>
                     {
                         material.SetTexture("_NormTex", texture);
                     }));
                 }
-                
+
                 OnSuccess(material);
             }));
         }

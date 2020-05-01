@@ -106,7 +106,7 @@ namespace helloVoRld.NewScripts
         {
             ObjectPassed = param;
             DownloadingCompleted = false;
-            GetList(param);
+            GetList(param); 
             UILoaderCoroutine = StartCoroutine(LoadUI());
         }
 

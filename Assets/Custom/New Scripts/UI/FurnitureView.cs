@@ -10,6 +10,7 @@ using helloVoRld.NewScripts.Furniture;
 using helloVoRld.NewScripts.Engine;
 using helloVoRld.Networking;
 using TMPro;
+using Newtonsoft.Json;
 
 namespace helloVoRld.NewScripts.UI
 {
@@ -24,6 +25,34 @@ namespace helloVoRld.NewScripts.UI
         public void Start()
         {
             OnUIVisible();
+            if (!Globals.InitialFabricLoaded)
+            {
+                StartCoroutine(RestWebClient.Instance.HttpGet(Globals.DefaultFabricIP, (response) =>
+                {
+                    if (response.Error != null)
+                    {
+                        Debug.Log("Failed loading default fabric!!");
+                        return;
+                    }
+                    else
+                    {
+                        var fabric = JsonConvert.DeserializeObject<DefaultFabric>(response.Data);
+                        MaterialGenerator.Instance.GetAppropriateMaterial(
+                            fabric.f_material,
+                            Globals.IP + fabric.f_fabric_texture,
+                            Globals.IP + fabric.c_normal_map,
+                            string.Join("_", "".Split(new char[] { '-', ' ', ':' })),
+                            OnSuccess: (material) =>
+                            {
+                                foreach (var x in MaterialGenerator.Instance.MaterialDeserializer.Properties)
+                                    Debug.Log(x.Key + " : " + x.Value);
+
+                                (FabricView.Instance as FabricView).Cube.GetComponent<MeshRenderer>().material = material;
+                            });
+                    }
+                },
+                new[] { Globals.RequestHeader }));
+            }
         }
 
         public override void GetList(object param = null)

@@ -57,5 +57,9 @@ namespace helloVoRld.Networking
             new[] { Globals.RequestHeader }));
         }
 
+        public void LoadInitialFabric(Action<FabricModel> OnSuccess)
+        {
+
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using helloVoRld.NewScripts.Engine;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -85,7 +86,7 @@ namespace helloVoRld.NewScripts.UI
 
         internal void SwitchTo(GameObject g)
         {
-            foreach (var x in Panels)
+            foreach (var x in from a in Panels where a != g select a)
             {
                 x.SetActive(false);
             }

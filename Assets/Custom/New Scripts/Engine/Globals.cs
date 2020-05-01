@@ -23,6 +23,8 @@ namespace helloVoRld
         public static readonly string IP = @"http://hvrplfabricapp.ml";
         public static readonly string AllCataloguesIP = IP + @"/fabricapp/api/catalogues";
         public static readonly string AllFabricsIP = IP + @"/fabricapp/api/fabrics";
+        public static readonly string DefaultFabricIP = IP + @"/fabricapp/api/defaultfabric";
+
         public static readonly RequestHeader RequestHeader = new RequestHeader { Key = "Authorization", Value = "Token " + "0ef442a637f1570b5f848f164ee972219eaca8bc" };
 
         public static string ThumbnailsFolderLocation = Application.persistentDataPath + "/Data/Thumbnails/";
@@ -43,6 +45,8 @@ namespace helloVoRld
         /// Fabric that was last selected in FabricViewer
         /// </summary>
         public static FabricModel SelectedFabric;
+
+        public static bool InitialFabricLoaded = false;
 
         static Globals()
         {
