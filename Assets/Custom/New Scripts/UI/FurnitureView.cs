@@ -41,7 +41,7 @@ namespace helloVoRld.NewScripts.UI
                             fabric.f_material,
                             Globals.IP + fabric.f_fabric_texture,
                             Globals.IP + fabric.c_normal_map,
-                            string.Join("_", "".Split(new char[] { '-', ' ', ':' })),
+                            string.Join("_", fabric.modified.Split(new char[] { '-', ' ', ':' })),
                             OnSuccess: (material) =>
                             {
                                 foreach (var x in MaterialGenerator.Instance.MaterialDeserializer.Properties)

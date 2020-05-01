@@ -12,5 +12,6 @@ namespace helloVoRld.NewScripts
         public int f_material;
         public string f_fabric_texture;
         public string c_normal_map;
+        public string modified;
     }
 }
